@@ -90,7 +90,7 @@ public final class SuspiciousRitual {
 	 * @return true if the ritual was performed successfully, false otherwise
 	 */
 	public static boolean performRitual(Level level, Player player) {
-		if (level.isNight() || player.getAbilities().instabuild) { //allow players in creative mode to bypass the night restriction
+		if (level.isDarkOutside() || player.getAbilities().instabuild) { //allow players in creative mode to bypass the night restriction
 			Optional<Animal> potentialSacrifice = level.getEntitiesOfClass(Animal.class, new AABB(player.position(), player.position()).inflate(3), ZombifiedAnimal.class::isInstance).stream().filter(SuspiciousRitual::isGoodSacrifice).findFirst();
 
 			if (potentialSacrifice.isPresent()) {
@@ -142,13 +142,13 @@ public final class SuspiciousRitual {
 	}
 
 	public static void maybeSendInfoMessages(Leashable leashedMob, Level level, BlockPos pos, Player player) {
-		if (!level.isClientSide && (leashedMob != null || !level.isNight())) {
+		if (!level.isClientSide && (leashedMob != null || !level.isDarkOutside())) {
 			BlockState state = level.getBlockState(pos);
 
 			if (state.is(BlockTags.WOODEN_FENCES) && isStructurePresent(level, pos, false)) {
 				if (!(leashedMob instanceof ZombifiedAnimal))
 					player.displayClientMessage(Component.translatable("message.suszombification.ritual.need_zombified_animal"), true);
-				else if (!level.isNight())
+				else if (!level.isDarkOutside())
 					player.displayClientMessage(Component.translatable("message.suszombification.ritual.need_night"), true);
 			}
 		}

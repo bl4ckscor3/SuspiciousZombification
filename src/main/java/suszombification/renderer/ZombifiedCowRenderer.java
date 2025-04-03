@@ -2,7 +2,7 @@ package suszombification.renderer;
 
 import net.minecraft.client.renderer.entity.CowRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
-import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
+import net.minecraft.client.renderer.entity.state.CowRenderState;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.animal.Cow;
 import suszombification.SuspiciousZombification;
@@ -16,23 +16,23 @@ public class ZombifiedCowRenderer extends CowRenderer {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(LivingEntityRenderState renderState) {
+	public ResourceLocation getTextureLocation(CowRenderState renderState) {
 		return COW_LOCATION;
 	}
 
 	@Override
-	public LivingEntityRenderState createRenderState() {
+	public CowRenderState createRenderState() {
 		return new ZombifiedRenderState.Cow();
 	}
 
 	@Override
-	public void extractRenderState(Cow cow, LivingEntityRenderState renderState, float partialTicks) {
+	public void extractRenderState(Cow cow, CowRenderState renderState, float partialTicks) {
 		super.extractRenderState(cow, renderState, partialTicks);
 		((ZombifiedRenderState.Cow) renderState).isConverting = ((ZombifiedCow) cow).isConverting();
 	}
 
 	@Override
-	protected boolean isShaking(LivingEntityRenderState renderState) {
+	protected boolean isShaking(CowRenderState renderState) {
 		return super.isShaking(renderState) || ((ZombifiedRenderState.Cow) renderState).isConverting;
 	}
 }

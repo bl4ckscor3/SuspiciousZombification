@@ -2,8 +2,8 @@ package suszombification.renderer;
 
 import net.minecraft.client.renderer.entity.state.CatRenderState;
 import net.minecraft.client.renderer.entity.state.ChickenRenderState;
+import net.minecraft.client.renderer.entity.state.CowRenderState;
 import net.minecraft.client.renderer.entity.state.EquineRenderState;
-import net.minecraft.client.renderer.entity.state.LivingEntityRenderState;
 import net.minecraft.client.renderer.entity.state.PigRenderState;
 import net.minecraft.client.renderer.entity.state.SheepRenderState;
 
@@ -16,7 +16,7 @@ public class ZombifiedRenderState {
 		public boolean isConverting;
 	}
 
-	public static class Cow extends LivingEntityRenderState {
+	public static class Cow extends CowRenderState {
 		public boolean isConverting;
 	}
 

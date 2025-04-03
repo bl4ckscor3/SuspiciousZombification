@@ -7,14 +7,13 @@ import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.EntityTypeTagsProvider;
 import net.minecraft.tags.EntityTypeTags;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import suszombification.SZTags;
 import suszombification.SuspiciousZombification;
 import suszombification.registration.SZEntityTypes;
 
 public class EntityTypeTagGenerator extends EntityTypeTagsProvider {
-	public EntityTypeTagGenerator(PackOutput output, CompletableFuture<Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
-		super(output, lookupProvider, SuspiciousZombification.MODID, existingFileHelper);
+	public EntityTypeTagGenerator(PackOutput output, CompletableFuture<Provider> lookupProvider) {
+		super(output, lookupProvider, SuspiciousZombification.MODID);
 	}
 
 	@Override

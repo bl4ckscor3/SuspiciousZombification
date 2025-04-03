@@ -8,13 +8,12 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.TagsProvider;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageType;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import suszombification.SZDamageSources;
 import suszombification.SuspiciousZombification;
 
 public class DamageTypeTagGenerator extends TagsProvider<DamageType> {
-	protected DamageTypeTagGenerator(PackOutput output, CompletableFuture<Provider> lookupProvider, ExistingFileHelper existingFileHelper) {
-		super(output, Registries.DAMAGE_TYPE, lookupProvider, SuspiciousZombification.MODID, existingFileHelper);
+	protected DamageTypeTagGenerator(PackOutput output, CompletableFuture<Provider> lookupProvider) {
+		super(output, Registries.DAMAGE_TYPE, lookupProvider, SuspiciousZombification.MODID);
 	}
 
 	@Override

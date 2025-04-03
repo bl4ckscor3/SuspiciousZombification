@@ -24,9 +24,9 @@ public class SZEffects {
 	public static final DeferredHolder<MobEffect,VicinityAffectingEffect> STENCH = EFFECTS.register("stench", () -> new VicinityAffectingEffect(MobEffectCategory.BENEFICIAL, 0xCACC52,
 			amplifier -> Math.max((amplifier + 1) * 3, 10),
 			e -> true,
-			() -> new MobEffectInstance(MobEffects.CONFUSION, 200, 1),
+			() -> new MobEffectInstance(MobEffects.NAUSEA, 200, 1),
 			() -> new MobEffectInstance(MobEffects.WEAKNESS, 200, 1),
-			() -> new MobEffectInstance(MobEffects.MOVEMENT_SLOWDOWN, 200, 0)));
+			() -> new MobEffectInstance(MobEffects.SLOWNESS, 200, 0)));
 	//@formatter:on
 	public static final DeferredHolder<MobEffect, MobEffect> ZOMBIES_GRACE = EFFECTS.register("zombies_grace", () -> new MobEffect(MobEffectCategory.BENEFICIAL, 0x009E9E));
 	public static final DeferredHolder<MobEffect, ZombiesCurseEffect> ZOMBIES_CURSE = EFFECTS.register("zombies_curse", () -> new ZombiesCurseEffect(MobEffectCategory.HARMFUL, 0xAE1A1A));

@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -134,8 +133,10 @@ public class ZombifiedCat extends Cat implements NeutralMob, ZombifiedAnimal {
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
 
-		if (tag.contains("ConversionTime", Tag.TAG_ANY_NUMERIC) && tag.getInt("ConversionTime") > -1)
-			startConverting(tag.getInt("ConversionTime"));
+		int conversionTime = tag.getIntOr("ConversionTime", -1);
+
+		if (conversionTime > -1)
+			startConverting(conversionTime);
 	}
 
 	@Override
@@ -183,7 +184,7 @@ public class ZombifiedCat extends Cat implements NeutralMob, ZombifiedAnimal {
 			setVariant(getVariant());
 			setTame(cat.isTame(), true);
 			setCollarColor(cat.getCollarColor());
-			setOwnerUUID(cat.getOwnerUUID());
+			setOwnerReference(cat.getOwnerReference());
 		}
 	}
 
@@ -193,7 +194,7 @@ public class ZombifiedCat extends Cat implements NeutralMob, ZombifiedAnimal {
 			cat.setVariant(getVariant());
 			cat.setTame(isTame(), true);
 			cat.setCollarColor(getCollarColor());
-			cat.setOwnerUUID(getOwnerUUID());
+			cat.setOwnerReference(getOwnerReference());
 		}
 	}
 

@@ -26,13 +26,13 @@ public class SZItems {
 	public static final DeferredItem<SuspiciousPumpkinPieItem> SUSPICIOUS_PUMPKIN_PIE = ITEMS.registerItem("suspicious_pumpkin_pie", SuspiciousPumpkinPieItem::new, new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationModifier(0.3F).alwaysEdible().build()));
 	//candies
 	public static final DeferredItem<CandyItem> CARAMEL_CANDY = ITEMS.registerItem("caramel_candy", p -> new CandyItem(MobEffects.SLOW_FALLING, 20, p));
-	public static final DeferredItem<CandyItem> CHOCOLATE_CREAM_CANDY = ITEMS.registerItem("chocolate_cream_candy", p -> new CandyItem(MobEffects.DIG_SLOWDOWN, 20, p));
+	public static final DeferredItem<CandyItem> CHOCOLATE_CREAM_CANDY = ITEMS.registerItem("chocolate_cream_candy", p -> new CandyItem(MobEffects.MINING_FATIGUE, 20, p));
 	public static final DeferredItem<CandyItem> CINNAMON_CANDY = ITEMS.registerItem("cinnamon_candy", p -> new CandyItem(MobEffects.GLOWING, 20, p));
-	public static final DeferredItem<CandyItem> HONEY_CANDY = ITEMS.registerItem("honey_candy", p -> new CandyItem(MobEffects.DAMAGE_BOOST, 20, p));
+	public static final DeferredItem<CandyItem> HONEY_CANDY = ITEMS.registerItem("honey_candy", p -> new CandyItem(MobEffects.STRENGTH, 20, p));
 	public static final DeferredItem<CandyItem> MELON_CANDY = ITEMS.registerItem("melon_candy", p -> new CandyItem(MobEffects.WATER_BREATHING, 20, p));
 	public static final DeferredItem<CandyItem> PEPPERMINT_CANDY = ITEMS.registerItem("peppermint_candy", p -> new CandyItem(MobEffects.LEVITATION, 20, p));
 	public static final DeferredItem<CandyItem> PUMPKIN_CANDY = ITEMS.registerItem("pumpkin_candy", p -> new CandyItem(MobEffects.INVISIBILITY, 20, p));
-	public static final DeferredItem<CandyItem> VANILLA_CREAM_CANDY = ITEMS.registerItem("vanilla_cream_candy", p -> new CandyItem(MobEffects.DIG_SPEED, 20, p));
+	public static final DeferredItem<CandyItem> VANILLA_CREAM_CANDY = ITEMS.registerItem("vanilla_cream_candy", p -> new CandyItem(MobEffects.HASTE, 20, p));
 	//TODO: maybe more candy flavours?
 	//other items
 	//@formatter:off
@@ -44,7 +44,7 @@ public class SZItems {
 					Consumables.defaultDrink()
 						.onConsume(new ApplyStatusEffectsConsumeEffect(
 							List.of(
-								new MobEffectInstance(MobEffects.CONFUSION, 300),
+								new MobEffectInstance(MobEffects.NAUSEA, 300),
 								new MobEffectInstance(MobEffects.POISON, 300, 2)))).build())
 				.usingConvertsTo(Items.BUCKET));
 	//@formatter:on

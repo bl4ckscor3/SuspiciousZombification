@@ -8,7 +8,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -119,10 +118,12 @@ public class ZombieHorseMixin extends AbstractHorse implements ZombifiedAnimal, 
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
 
-		if (tag.contains("ConversionTime", Tag.TAG_ANY_NUMERIC) && tag.getInt("ConversionTime") > -1)
-			startConverting(tag.getInt("ConversionTime"));
+		int conversionTime = tag.getIntOr("ConversionTime", -1);
 
-		entityData.set(DATA_ID_TYPE_VARIANT, tag.getInt("Variant"));
+		if (conversionTime > -1)
+			startConverting(conversionTime);
+
+		entityData.set(DATA_ID_TYPE_VARIANT, tag.getIntOr("Variant", 0));
 	}
 
 	@Override

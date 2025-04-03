@@ -9,7 +9,7 @@ version = '1.2.7'
 group = 'suszombification'
 
 base {
-	archivesName = 'suszombification-1.21.4'
+	archivesName = 'suszombification-1.21.5'
 }
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
@@ -48,7 +48,7 @@ runs {
 }
 
 dependencies {
-	implementation 'net.neoforged:neoforge:21.4.12-beta'
+	implementation 'net.neoforged:neoforge:21.5.14-beta'
 }
 
 tasks.named('jar', Jar).configure {

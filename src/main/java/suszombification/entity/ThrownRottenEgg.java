@@ -49,7 +49,7 @@ public class ThrownRottenEgg extends ThrowableItemProjectile {
 			result.getEntity().hurtServer(serverLevel, damageSources().thrown(this, getOwner()), 0.0F);
 
 		if (entity instanceof LivingEntity livingEntity && random.nextInt(8) == 0)
-			livingEntity.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200));
+			livingEntity.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 200));
 	}
 
 	@Override

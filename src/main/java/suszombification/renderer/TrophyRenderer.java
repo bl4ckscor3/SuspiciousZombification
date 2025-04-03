@@ -11,13 +11,14 @@ import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemDisplayContext;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.HorizontalDirectionalBlock;
+import net.minecraft.world.phys.Vec3;
 import suszombification.block.entity.TrophyBlockEntity;
 
 public class TrophyRenderer implements BlockEntityRenderer<TrophyBlockEntity> {
 	public TrophyRenderer(BlockEntityRendererProvider.Context ctx) {}
 
 	@Override
-	public void render(TrophyBlockEntity be, float partialTick, PoseStack pose, MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+	public void render(TrophyBlockEntity be, float partialTick, PoseStack pose, MultiBufferSource bufferSource, int packedLight, int packedOverlay, Vec3 cameraPos) {
 		ItemStack stackToRender = be.getTrophyType().displayItem;
 		Direction direction = be.getBlockState().getValue(HorizontalDirectionalBlock.FACING);
 		int additionalRotation = direction.getAxis() == Direction.Axis.X ? 180 : 0; //fixes item being mirrored when the trophy is placed facing on the X axis

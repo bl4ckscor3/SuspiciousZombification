@@ -4,7 +4,6 @@ import java.util.UUID;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -160,7 +159,7 @@ public class ZombifiedChicken extends Animal implements NeutralMob, ZombifiedAni
 	}
 
 	@Override
-	public boolean causeFallDamage(float height, float mult, DamageSource source) {
+	public boolean causeFallDamage(double height, float mult, DamageSource source) {
 		return false;
 	}
 
@@ -207,13 +206,13 @@ public class ZombifiedChicken extends Animal implements NeutralMob, ZombifiedAni
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
-		isChickenJockey = tag.getBoolean("IsChickenJockey");
+		isChickenJockey = tag.getBooleanOr("IsChickenJockey", false);
+		eggTime = tag.getIntOr("EggLayTime", 0);
 
-		if (tag.contains("EggLayTime"))
-			this.eggTime = tag.getInt("EggLayTime");
+		int conversionTime = tag.getIntOr("ConversionTime", -1);
 
-		if (tag.contains("ConversionTime", Tag.TAG_ANY_NUMERIC) && tag.getInt("ConversionTime") > -1)
-			startConverting(tag.getInt("ConversionTime"));
+		if (conversionTime > -1)
+			startConverting(conversionTime);
 	}
 
 	@Override

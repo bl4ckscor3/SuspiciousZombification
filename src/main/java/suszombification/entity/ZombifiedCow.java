@@ -3,7 +3,6 @@ package suszombification.entity;
 import java.util.UUID;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.Tag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
@@ -133,8 +132,10 @@ public class ZombifiedCow extends Cow implements NeutralMob, ZombifiedAnimal {
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
 
-		if (tag.contains("ConversionTime", Tag.TAG_ANY_NUMERIC) && tag.getInt("ConversionTime") > -1)
-			startConverting(tag.getInt("ConversionTime"));
+		int conversionTime = tag.getIntOr("ConversionTime", -1);
+
+		if (conversionTime > -1)
+			startConverting(conversionTime);
 	}
 
 	@Override

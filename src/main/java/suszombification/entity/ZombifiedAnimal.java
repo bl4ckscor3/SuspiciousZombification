@@ -42,7 +42,7 @@ public interface ZombifiedAnimal {
 		setConversionTime(conversionTime);
 		setConverting();
 		animal.removeEffect(MobEffects.WEAKNESS);
-		animal.addEffect(new MobEffectInstance(MobEffects.DAMAGE_BOOST, conversionTime, Math.min(animal.level().getDifficulty().getId() - 1, 0)));
+		animal.addEffect(new MobEffectInstance(MobEffects.STRENGTH, conversionTime, Math.min(animal.level().getDifficulty().getId() - 1, 0)));
 		animal.level().broadcastEntityEvent(animal, EntityEvent.ZOMBIE_CONVERTING);
 	}
 
@@ -52,7 +52,7 @@ public interface ZombifiedAnimal {
 		zombifiedAnimal.convertTo(getNormalVariant(), ConversionParams.single(zombifiedAnimal, true, true), vanillaAnimal -> {
 			EventHooks.finalizeMobSpawn(vanillaAnimal, level, level.getCurrentDifficultyAt(vanillaAnimal.blockPosition()), EntitySpawnReason.CONVERSION, null);
 			writeToVanilla(vanillaAnimal);
-			vanillaAnimal.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0));
+			vanillaAnimal.addEffect(new MobEffectInstance(MobEffects.NAUSEA, 200, 0));
 
 			if (!zombifiedAnimal.isSilent())
 				level.levelEvent(null, LevelEvent.SOUND_ZOMBIE_CONVERTED, zombifiedAnimal.blockPosition(), 0);

@@ -4,6 +4,7 @@ import com.mojang.datafixers.util.Unit;
 
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentGetter;
 import net.minecraft.core.component.DataComponentMap;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
@@ -51,14 +52,14 @@ public class TrophyBlockEntity extends BlockEntity {
 	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
 		super.loadAdditional(tag, lookupProvider);
 
-		int savedOrdinal = tag.getInt("TrophyType");
+		int savedOrdinal = tag.getIntOr("TrophyType", 0);
 
 		if (savedOrdinal < 0 || savedOrdinal >= TrophyType.values().length)
 			trophyType = TrophyType.CARROT;
 		else
 			trophyType = TrophyType.values()[savedOrdinal];
 
-		curseGiven = tag.getBoolean("CurseGiven");
+		curseGiven = tag.getBooleanOr("CurseGiven", false);
 	}
 
 	@Override
@@ -72,8 +73,8 @@ public class TrophyBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	protected void applyImplicitComponents(DataComponentInput componentInput) {
-		curseGiven = componentInput.get(SZDataComponents.CURSE_GIVEN) != null;
+	protected void applyImplicitComponents(DataComponentGetter getter) {
+		curseGiven = getter.get(SZDataComponents.CURSE_GIVEN) != null;
 	}
 
 	@Override

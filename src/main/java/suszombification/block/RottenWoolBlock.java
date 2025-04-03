@@ -13,7 +13,7 @@ public class RottenWoolBlock extends Block {
 	}
 
 	@Override
-	public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, float fallDistance) {
+	public void fallOn(Level level, BlockState state, BlockPos pos, Entity entity, double fallDistance) {
 		entity.causeFallDamage(fallDistance, 0.5F, entity.damageSources().fall());
 		entity.playSound(SoundEvents.SLIME_SQUISH, 0.3F, 1.5F);
 	}

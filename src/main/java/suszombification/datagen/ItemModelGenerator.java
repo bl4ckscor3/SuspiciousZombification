@@ -4,29 +4,22 @@ import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemDisplayContext;
-import net.minecraft.world.item.SpawnEggItem;
 import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
 import net.neoforged.neoforge.client.model.generators.ItemModelProvider;
 import net.neoforged.neoforge.client.model.generators.ModelFile.UncheckedModelFile;
-import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import suszombification.SuspiciousZombification;
 import suszombification.registration.SZItems;
 
 public class ItemModelGenerator extends ItemModelProvider {
-	public ItemModelGenerator(PackOutput output, ExistingFileHelper existingFileHelper) {
-		super(output, SuspiciousZombification.MODID, existingFileHelper);
+	public ItemModelGenerator(PackOutput output) {
+		super(output, SuspiciousZombification.MODID);
 	}
 
 	@Override
 	protected void registerModels() {
 		for (DeferredHolder<Item, ? extends Item> holder : SZItems.ITEMS.getEntries()) {
-			Item item = holder.get();
-
-			if (item instanceof SpawnEggItem)
-				spawnEgg(item);
-			else
-				flatItem(item);
+			flatItem(holder.get());
 		}
 
 		//@formatter:off
@@ -51,9 +44,5 @@ public class ItemModelGenerator extends ItemModelProvider {
 		String name = BuiltInRegistries.ITEM.getKey(item).getPath();
 
 		getBuilder(name).parent(new UncheckedModelFile("item/handheld_rod")).texture("layer0", SuspiciousZombification.resLoc("item/" + name));
-	}
-
-	private void spawnEgg(Item item) {
-		getBuilder(BuiltInRegistries.ITEM.getKey(item).getPath()).parent(new UncheckedModelFile("item/template_spawn_egg"));
 	}
 }
