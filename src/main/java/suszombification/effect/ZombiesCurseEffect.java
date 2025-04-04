@@ -6,6 +6,7 @@ import net.minecraft.world.entity.TamableAnimal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.player.Player;
+import suszombification.SZConfig;
 import suszombification.SZTags;
 import suszombification.registration.SZEffects;
 
@@ -22,6 +23,11 @@ public class ZombiesCurseEffect extends VicinityAffectingEffect {
 							&& (!(a instanceof Bucketable b) || !b.fromBucket()))), //don't affect animals that were spawned from a bucket
 				() -> new MobEffectInstance(SZEffects.DECOMPOSING, 300));
 		//@formatter:on
+	}
+
+	@Override
+	public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
+		return super.shouldApplyEffectTickThisTick(duration, amplifier) && SZConfig.INSTANCE.zombiesCurseZombification.get();
 	}
 
 	//TODO: (1.21.3) Replace when https://github.com/neoforged/NeoForge/pull/1603 is merged
