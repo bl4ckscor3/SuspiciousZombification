@@ -37,12 +37,14 @@ public class DecomposingEffect extends MobEffect {
 				if (conversionType != null && EventHooks.canLivingConvert(animal, conversionType, timer -> {})) {
 					Mob convertedAnimal = animal.convertTo(conversionType, false);
 
-					EventHooks.finalizeMobSpawn(convertedAnimal, (ServerLevel) animal.level(), animal.level().getCurrentDifficultyAt(convertedAnimal.blockPosition()), MobSpawnType.CONVERSION, null);
-					((ZombifiedAnimal) convertedAnimal).readFromVanilla(animal);
-					EventHooks.onLivingConvert(animal, convertedAnimal);
+                    if (convertedAnimal != null) {
+				    	EventHooks.finalizeMobSpawn(convertedAnimal, (ServerLevel) animal.level(), animal.level().getCurrentDifficultyAt(convertedAnimal.blockPosition()), MobSpawnType.CONVERSION, null);
+				    	((ZombifiedAnimal) convertedAnimal).readFromVanilla(animal);
+					    EventHooks.onLivingConvert(animal, convertedAnimal);
 
-					if (!animal.isSilent())
-						animal.level().levelEvent(null, LevelEvent.SOUND_ZOMBIE_INFECTED, animal.blockPosition(), 0);
+				    	if (!animal.isSilent())
+					    	animal.level().levelEvent(null, LevelEvent.SOUND_ZOMBIE_INFECTED, animal.blockPosition(), 0);
+                    }
 				}
 				else {
 					entity.hurt(SZDamageSources.decomposing(entity.level().registryAccess()), Float.MAX_VALUE);
