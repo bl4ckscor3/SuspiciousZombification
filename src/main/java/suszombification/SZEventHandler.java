@@ -123,12 +123,14 @@ public class SZEventHandler {
 
 				Mob convertedAnimal = killedEntity.convertTo(conversionType, false);
 
-				EventHooks.finalizeMobSpawn(convertedAnimal, (ServerLevel) level, level.getCurrentDifficultyAt(convertedAnimal.blockPosition()), MobSpawnType.CONVERSION, null);
-				((ZombifiedAnimal) convertedAnimal).readFromVanilla(killedEntity);
-				EventHooks.onLivingConvert(livingEntity, convertedAnimal);
-
-				if (!killer.isSilent())
-					level.levelEvent(null, LevelEvent.SOUND_ZOMBIE_INFECTED, killer.blockPosition(), 0);
+                if (convertedAnimal != null) {
+	    			EventHooks.finalizeMobSpawn(convertedAnimal, (ServerLevel) level, level.getCurrentDifficultyAt(convertedAnimal.blockPosition()), MobSpawnType.CONVERSION, null);
+	    			((ZombifiedAnimal) convertedAnimal).readFromVanilla(killedEntity);
+	    			EventHooks.onLivingConvert(livingEntity, convertedAnimal);
+    
+	    			if (!killer.isSilent())
+	    				level.levelEvent(null, LevelEvent.SOUND_ZOMBIE_INFECTED, killer.blockPosition(), 0);
+                }
 			}
 		}
 	}

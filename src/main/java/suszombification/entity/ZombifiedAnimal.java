@@ -49,14 +49,16 @@ public interface ZombifiedAnimal {
 		Animal zombifiedAnimal = (Animal) this;
 		Animal vanillaAnimal = zombifiedAnimal.convertTo(getNormalVariant(), false);
 
-		EventHooks.finalizeMobSpawn(vanillaAnimal, level, level.getCurrentDifficultyAt(vanillaAnimal.blockPosition()), MobSpawnType.CONVERSION, null);
-		writeToVanilla(vanillaAnimal);
-		vanillaAnimal.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0));
+        if (vanillaAnimal != null) {
+	    	EventHooks.finalizeMobSpawn(vanillaAnimal, level, level.getCurrentDifficultyAt(vanillaAnimal.blockPosition()), MobSpawnType.CONVERSION, null);
+	    	writeToVanilla(vanillaAnimal);
+	    	vanillaAnimal.addEffect(new MobEffectInstance(MobEffects.CONFUSION, 200, 0));
 
-		if (!zombifiedAnimal.isSilent())
-			level.levelEvent(null, LevelEvent.SOUND_ZOMBIE_CONVERTED, zombifiedAnimal.blockPosition(), 0);
+    		if (!zombifiedAnimal.isSilent())
+			    level.levelEvent(null, LevelEvent.SOUND_ZOMBIE_CONVERTED, zombifiedAnimal.blockPosition(), 0);
 
-		EventHooks.onLivingConvert(zombifiedAnimal, vanillaAnimal);
+		    EventHooks.onLivingConvert(zombifiedAnimal, vanillaAnimal);
+        }
 	}
 
 	default int getConversionProgress() {
