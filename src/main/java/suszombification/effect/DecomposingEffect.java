@@ -36,13 +36,15 @@ public class DecomposingEffect extends MobEffect {
 
 			if (conversionType != null && EventHooks.canLivingConvert(animal, conversionType, timer -> {})) {
 				animal.convertTo(conversionType, ConversionParams.single(animal, true, true), convertedAnimal -> {
-					convertedAnimal.removeEffect(SZEffects.DECOMPOSING); //The decomposing effect from the original animal gets assigned to the zombified animal automatically, and the latter would die to Decomposing on the next tick
-					EventHooks.finalizeMobSpawn(convertedAnimal, level, level.getCurrentDifficultyAt(convertedAnimal.blockPosition()), EntitySpawnReason.CONVERSION, null);
-					((ZombifiedAnimal) convertedAnimal).readFromVanilla(animal);
-					EventHooks.onLivingConvert(animal, convertedAnimal);
+					if (convertedAnimal != null) {
+						convertedAnimal.removeEffect(SZEffects.DECOMPOSING); //The decomposing effect from the original animal gets assigned to the zombified animal automatically, and the latter would die to Decomposing on the next tick
+						EventHooks.finalizeMobSpawn(convertedAnimal, level, level.getCurrentDifficultyAt(convertedAnimal.blockPosition()), EntitySpawnReason.CONVERSION, null);
+						((ZombifiedAnimal) convertedAnimal).readFromVanilla(animal);
+						EventHooks.onLivingConvert(animal, convertedAnimal);
 
-					if (!animal.isSilent())
-						level.levelEvent(null, LevelEvent.SOUND_ZOMBIE_INFECTED, animal.blockPosition(), 0);
+						if (!animal.isSilent())
+							level.levelEvent(null, LevelEvent.SOUND_ZOMBIE_INFECTED, animal.blockPosition(), 0);
+					}
 				});
 			}
 			else {
