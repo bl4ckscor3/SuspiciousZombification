@@ -26,8 +26,8 @@ public class ZombiesCurseEffect extends VicinityAffectingEffect {
 	}
 
 	@Override
-	protected boolean shouldAffectVicinity() {
-		return SZConfig.INSTANCE.zombiesCurseZombification.get();
+	public boolean shouldApplyEffectTickThisTick(int duration, int amplifier) {
+		return super.shouldApplyEffectTickThisTick(duration, amplifier) && SZConfig.INSTANCE.zombiesCurseZombification.get();
 	}
 
 	//TODO: (1.21.3) Replace when https://github.com/neoforged/NeoForge/pull/1603 is merged

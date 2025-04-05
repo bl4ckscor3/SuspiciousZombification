@@ -28,22 +28,16 @@ public class VicinityAffectingEffect extends MobEffect {
 
 	@Override
 	public boolean applyEffectTick(ServerLevel level, LivingEntity entity, int amplifier) {
-		if (shouldAffectVicinity()) {
-			List<Entity> nearbyEntities = level.getEntities(entity, entity.getBoundingBox().inflate(areaSize.apply(amplifier)), e -> e instanceof LivingEntity target && filter.test(target));
+		List<Entity> nearbyEntities = level.getEntities(entity, entity.getBoundingBox().inflate(areaSize.apply(amplifier)), e -> e instanceof LivingEntity target && filter.test(target));
 
-			for (Entity nearbyEntity : nearbyEntities) {
-				LivingEntity nearby = (LivingEntity) nearbyEntity; //the filter parameter in getEntities makes sure this is true
+		for (Entity nearbyEntity : nearbyEntities) {
+			LivingEntity nearby = (LivingEntity) nearbyEntity; //the filter parameter in getEntities makes sure this is true
 
-				for (Supplier<MobEffectInstance> effect : effects) {
-					nearby.addEffect(effect.get());
-				}
+			for (Supplier<MobEffectInstance> effect : effects) {
+				nearby.addEffect(effect.get());
 			}
 		}
 
-		return true;
-	}
-
-	protected boolean shouldAffectVicinity() {
 		return true;
 	}
 
