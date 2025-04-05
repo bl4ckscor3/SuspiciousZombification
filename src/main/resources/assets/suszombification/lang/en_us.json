@@ -80,5 +80,15 @@
 	"effect.suszombification.zombies_grace": "Zombie's Grace",
 	"effect.suszombification.zombies_curse": "Zombie's Curse",
 
-	"itemGroup.suszombification": "Suspicious Zombification"
+	"itemGroup.suszombification": "Suspicious Zombification",
+
+	"suszombification.configuration.animal_zombification": "Animal Zombification",
+	"suszombification.configuration.animal_zombification.tooltip": "Set this to false to disable the feature of zombified animals being able to zombify its prey on Normal and Hard difficulty.",
+	"suszombification.configuration.candy_morning_gifts": "Candy Morning Gifts",
+	"suszombification.configuration.candy_morning_gifts.tooltip": "Set this to false to disable the feature of cats being able to gift players candy.",
+	"suszombification.configuration.section.suszombification.server.toml": "Suspicious Zombification server config settings",
+	"suszombification.configuration.section.suszombification.server.toml.title": "Suspicious Zombification server config settings",
+	"suszombification.configuration.title": "Suspicious Zombification Configuration",
+	"suszombification.configuration.zombies_curse_zombification": "Zombie's Curse Zombification",
+	"suszombification.configuration.zombies_curse_zombification.tooltip": "Set this to false to disable the feature of a player with the Zombie's Curse effect converting every animal in range to its zombified variant."
 }
