@@ -9,6 +9,7 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Bucketable;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import suszombification.SZConfig;
 import suszombification.SZTags;
 import suszombification.registration.SZEffects;
 
@@ -27,6 +28,11 @@ public class ZombiesCurseEffect extends VicinityAffectingEffect {
 				},
 				() -> new MobEffectInstance(SZEffects.DECOMPOSING.get(), 300));
 		//@formatter:on
+	}
+
+	@Override
+	public boolean isDurationEffectTick(int duration, int amplifier) {
+		return super.isDurationEffectTick(duration, amplifier) && SZConfig.INSTANCE.zombiesCurseZombification.get();
 	}
 
 	@Override

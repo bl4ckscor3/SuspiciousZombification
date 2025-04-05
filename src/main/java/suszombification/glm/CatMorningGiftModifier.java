@@ -12,6 +12,7 @@ import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.minecraftforge.common.loot.IGlobalLootModifier;
 import net.minecraftforge.common.loot.LootModifier;
+import suszombification.SZConfig;
 import suszombification.registration.SZLoot;
 
 public class CatMorningGiftModifier extends LootModifier {
@@ -23,6 +24,9 @@ public class CatMorningGiftModifier extends LootModifier {
 
 	@Override
 	protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> generatedLoot, LootContext context) {
+		if (!SZConfig.INSTANCE.candyMorningGifts.get())
+			return generatedLoot;
+
 		return context.getLevel().getServer().getLootData().getLootTable(SZLoot.ZOMBIFIED_CAT_MORNING_GIFT).getRandomItems(context);
 	}
 

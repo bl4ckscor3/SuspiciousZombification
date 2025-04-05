@@ -1,7 +1,9 @@
 package suszombification;
 
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.config.ModConfig;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import suszombification.registration.SZBlockEntityTypes;
 import suszombification.registration.SZBlocks;
@@ -18,6 +20,7 @@ public class SuspiciousZombification {
 	public SuspiciousZombification() {
 		IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
 
+		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, SZConfig.SERVER_SPEC);
 		SZBlocks.BLOCKS.register(modEventBus);
 		SZBlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
 		SZCreativeModeTabs.CREATIVE_MODE_TABS.register(modEventBus);
