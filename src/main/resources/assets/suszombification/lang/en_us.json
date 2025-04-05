@@ -77,8 +77,8 @@
 	"effect.suszombification.cushion": "Cushion",
 	"effect.suszombification.decomposing": "Decomposing",
 	"effect.suszombification.stench": "Stench",
-	"effect.suszombification.zombies_grace": "Zombie's Grace",
-	"effect.suszombification.zombies_curse": "Zombie's Curse",
+	"effect.suszombification.zombies_grace": "Zombies' Grace",
+	"effect.suszombification.zombies_curse": "Zombies' Curse",
 
 	"itemGroup.suszombification": "Suspicious Zombification",
 
@@ -89,6 +89,6 @@
 	"suszombification.configuration.section.suszombification.server.toml": "Suspicious Zombification server config settings",
 	"suszombification.configuration.section.suszombification.server.toml.title": "Suspicious Zombification server config settings",
 	"suszombification.configuration.title": "Suspicious Zombification Configuration",
-	"suszombification.configuration.zombies_curse_zombification": "Zombie's Curse Zombification",
-	"suszombification.configuration.zombies_curse_zombification.tooltip": "Set this to false to disable the feature of a player with the Zombie's Curse effect converting every animal in range to its zombified variant."
+	"suszombification.configuration.zombies_curse_zombification": "Zombies' Curse Zombification",
+	"suszombification.configuration.zombies_curse_zombification.tooltip": "Set this to false to disable the feature of a player with the Zombies' Curse effect converting every animal in range to its zombified variant."
 }
