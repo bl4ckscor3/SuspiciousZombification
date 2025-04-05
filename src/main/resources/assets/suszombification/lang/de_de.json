@@ -78,5 +78,15 @@
 	"effect.suszombification.decomposing": "Zersetzung",
 	"effect.suszombification.stench": "Gestank",
 	"effect.suszombification.zombies_grace": "Gnade der Zombies",
-	"effect.suszombification.zombies_curse": "Fluch der Zombies"
+	"effect.suszombification.zombies_curse": "Fluch der Zombies",
+
+	"suszombification.configuration.animal_zombification": "Zombifizierung durch Tiere",
+	"suszombification.configuration.animal_zombification.tooltip": "Deaktiviere diese Option, um zu verhindern, dass zombifizierte Tiere ihre Beute auf Schwierigkeitsstufe Normal und Schwer zombifizieren können.",
+	"suszombification.configuration.candy_morning_gifts": "Süßigkeiten-Morgengeschenke",
+	"suszombification.configuration.candy_morning_gifts.tooltip": "Deaktiviere diese Option, um zu verhindern, dass Katzen Spielern Süßigkeiten schenken können.",
+	"suszombification.configuration.section.suszombification.server.toml": "Suspicious Zombification Server-Konfiguration",
+	"suszombification.configuration.section.suszombification.server.toml.title": "Suspicious Zombification Server-Konfiguration",
+	"suszombification.configuration.title": "Suspicious Zombification Konfiguration",
+	"suszombification.configuration.zombies_curse_zombification": "Zombifizierung durch Fluch der Zombies",
+	"suszombification.configuration.zombies_curse_zombification.tooltip": "Deaktiviere diese Option, um zu verhindern, dass Spieler mit dem \"Fluch der Zombies\"-Effekt jedes Tier in Reichweite zombifizieren."
 }
