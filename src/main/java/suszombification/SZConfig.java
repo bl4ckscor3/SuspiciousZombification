@@ -28,7 +28,7 @@ public class SZConfig {
 				.comment("Set this to false to disable the feature of cats being able to gift players candy.")
 				.define("candy_morning_gifts", true);
 		zombiesCurseZombification = builder
-				.comment("Set this to false to disable the feature of a player with the Zombie's Curse effect converting every animal in range to its zombified variant.")
+				.comment("Set this to false to disable the feature of a player with the Zombies' Curse effect converting every animal in range to its zombified variant.")
 				.define("zombies_curse_zombification", true);
 		//@formatter:on
 	}

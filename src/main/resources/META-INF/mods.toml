@@ -9,7 +9,7 @@ issueTrackerURL="https://github.com/bl4ckscor3/SuspiciousZombification/issues"
 	displayName="Suspicious Zombification"
 	displayURL="https://www.curseforge.com/minecraft/mc-mods/suspicious-zombification"
 	authors="Redstone_Dubstep, bl4ckscor3"
-	description='''A mod about zombifying animals, fighting off the zombie's curse, eating suspicious pies, and benefiting from their effects.'''
+	description='''A mod about zombifying animals, fighting off the zombies' curse, eating suspicious pies, and benefiting from their effects.'''
 
 [[dependencies.suszombification]]
 	modId="forge"
