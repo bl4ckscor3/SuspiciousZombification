@@ -18,7 +18,12 @@ public class DamageTypeTagGenerator extends TagsProvider<DamageType> {
 
 	@Override
 	protected void addTags(Provider provider) {
-		tag(DamageTypeTags.BYPASSES_ARMOR).add(SZDamageSources.DECOMPOSING, SZDamageSources.RITUAL_SACRIFICE);
-		tag(DamageTypeTags.IS_EXPLOSION).add(SZDamageSources.SPP_EXPLOSION);
+		//@formatter:off
+		tag(DamageTypeTags.BYPASSES_ARMOR)
+				.addOptional(SZDamageSources.DECOMPOSING.location())
+				.addOptional(SZDamageSources.RITUAL_SACRIFICE.location());
+		tag(DamageTypeTags.IS_EXPLOSION)
+				.addOptional(SZDamageSources.SPP_EXPLOSION.location());
+		//@formatter:on
 	}
 }

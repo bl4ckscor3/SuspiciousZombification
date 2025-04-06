@@ -1,6 +1,12 @@
 {
   "values": [
-    "suszombification:decomposing",
-    "suszombification:ritual_sacrifice"
+    {
+      "id": "suszombification:decomposing",
+      "required": false
+    },
+    {
+      "id": "suszombification:ritual_sacrifice",
+      "required": false
+    }
   ]
 }

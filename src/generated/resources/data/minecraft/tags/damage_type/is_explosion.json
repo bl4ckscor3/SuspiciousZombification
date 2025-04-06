@@ -1,5 +1,8 @@
 {
   "values": [
-    "suszombification:spp_explosion"
+    {
+      "id": "suszombification:spp_explosion",
+      "required": false
+    }
   ]
 }
