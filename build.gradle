@@ -2,7 +2,7 @@ plugins {
     id 'java-library'
     id 'eclipse'
     id 'idea'
-    id 'net.neoforged.gradle.userdev' version '7.0.+'
+	id 'net.neoforged.moddev' version '2.0.82'
 }
 
 version = '1.3'
@@ -24,31 +24,36 @@ sourceSets.main.resources {
     srcDir 'src/generated/resources' //include generated files
 }
 
-minecraft.accessTransformers.file rootProject.file('src/main/resources/META-INF/accesstransformer.cfg')
+neoForge {
+	version = "21.5.62-beta"
 
-runs {
-    configureEach {
-        systemProperty 'forge.logging.console.level', 'debug'
-        modSource project.sourceSets.main
-    }
+	runs {
+		configureEach {
+			logLevel = org.slf4j.event.Level.DEBUG
+			gameDirectory = project.file("run/" + name)
+			ideName = "SusZ " + ideName.get()
+		}
 
-    client {
-        workingDirectory project.file('run/client')
-    }
+		client {
+			client()
+		}
 
-    server {
-        workingDirectory project.file('run/server')
-        argument '-nogui'
-    }
-	
-	clientData {
-		workingDirectory project.file('run/data')
-		arguments.addAll '--mod', 'suszombification', '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+		server {
+			server()
+			programArgument('-nogui')
+		}
+
+		data {
+			clientData()
+			programArguments.addAll('--mod', 'suszombification', '--all', '--output', file('src/generated/resources/').getAbsolutePath())
+		}
 	}
-}
 
-dependencies {
-	implementation 'net.neoforged:neoforge:21.5.14-beta'
+	mods {
+		suszombification {
+			sourceSet(sourceSets.main)
+		}
+	}
 }
 
 tasks.named('jar', Jar).configure {
@@ -69,4 +74,11 @@ tasks.named('jar', Jar).configure {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 	options.release = 21
+}
+
+idea {
+	module {
+		downloadSources = true
+		downloadJavadoc = true
+	}
 }
