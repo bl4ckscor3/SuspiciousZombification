@@ -27,11 +27,9 @@ public class DataGenHandler {
 	@SubscribeEvent
 	public static void onGatherData(GatherDataEvent.Client event) {
 		event.createProvider(BiomeTagGenerator::new);
-		event.createProvider(BlockModelAndStateGenerator::new);
 		event.createProvider(DamageTypeTagGenerator::new);
 		event.createProvider(EntityTypeTagGenerator::new);
 		event.createProvider(GlobalLootModifierGenerator::new);
-		event.createProvider(ItemModelGenerator::new);
 		event.createBlockAndItemTags(BlockTagGenerator::new, ItemTagGenerator::new);
 		//@formatter:off
 		event.createProvider((DataProviderFromOutputLookup<LootTableProvider>) (output, lookupProvider) -> new LootTableProvider(output, Set.of(), List.of(
