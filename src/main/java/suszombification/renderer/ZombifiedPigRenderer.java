@@ -3,21 +3,14 @@ package suszombification.renderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.PigRenderer;
 import net.minecraft.client.renderer.entity.state.PigRenderState;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.animal.Pig;
-import suszombification.SuspiciousZombification;
 import suszombification.entity.ZombifiedPig;
+import suszombification.renderer.layers.ZombifiedPigZombieLayer;
 
 public class ZombifiedPigRenderer extends PigRenderer {
-	private static final ResourceLocation PIG_LOCATION = SuspiciousZombification.resLoc("textures/entity/zombified_pig.png");
-
 	public ZombifiedPigRenderer(EntityRendererProvider.Context ctx) {
 		super(ctx);
-	}
-
-	@Override
-	public ResourceLocation getTextureLocation(PigRenderState renderState) {
-		return PIG_LOCATION;
+		addLayer(new ZombifiedPigZombieLayer(this, ctx.getModelSet()));
 	}
 
 	@Override

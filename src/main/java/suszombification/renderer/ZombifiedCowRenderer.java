@@ -3,21 +3,14 @@ package suszombification.renderer;
 import net.minecraft.client.renderer.entity.CowRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.CowRenderState;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.animal.Cow;
-import suszombification.SuspiciousZombification;
 import suszombification.entity.ZombifiedCow;
+import suszombification.renderer.layers.ZombifiedCowZombieLayer;
 
 public class ZombifiedCowRenderer extends CowRenderer {
-	private static final ResourceLocation COW_LOCATION = SuspiciousZombification.resLoc("textures/entity/zombified_cow.png");
-
 	public ZombifiedCowRenderer(EntityRendererProvider.Context ctx) {
 		super(ctx);
-	}
-
-	@Override
-	public ResourceLocation getTextureLocation(CowRenderState renderState) {
-		return COW_LOCATION;
+		addLayer(new ZombifiedCowZombieLayer(this, ctx.getModelSet()));
 	}
 
 	@Override

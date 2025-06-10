@@ -1,8 +1,14 @@
 package suszombification.entity;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.component.DataComponentGetter;
+import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -13,6 +19,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.damagesource.DamageSource;
@@ -24,6 +31,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.BreedGoal;
@@ -36,11 +44,17 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.animal.ChickenVariant;
+import net.minecraft.world.entity.animal.ChickenVariants;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.entity.variant.SpawnContext;
+import net.minecraft.world.entity.variant.VariantUtils;
+import net.minecraft.world.item.EitherHolder;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.ServerLevelAccessor;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.Vec3;
 import suszombification.entity.ai.NearestNormalVariantTargetGoal;
@@ -53,6 +67,7 @@ public class ZombifiedChicken extends Animal implements NeutralMob, ZombifiedAni
 	private static final EntityDimensions BABY_DIMENSIONS = EntityType.CHICKEN.getDimensions().scale(0.5F).withEyeHeight(0.2975F);
 	private static final Ingredient FOOD_ITEMS = Ingredient.of(Items.CHICKEN, Items.FEATHER);
 	private static final EntityDataAccessor<Boolean> DATA_CONVERTING_ID = SynchedEntityData.defineId(ZombifiedChicken.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Holder<ChickenVariant>> DATA_VARIANT_ID = SynchedEntityData.defineId(ZombifiedChicken.class, EntityDataSerializers.CHICKEN_VARIANT);
 	private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
 	private int conversionTime;
 	private float flap;
@@ -74,6 +89,7 @@ public class ZombifiedChicken extends Animal implements NeutralMob, ZombifiedAni
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 		super.defineSynchedData(builder);
 		builder.define(DATA_CONVERTING_ID, false);
+		builder.define(DATA_VARIANT_ID, VariantUtils.getDefaultOrAny(registryAccess(), ChickenVariants.TEMPERATE));
 	}
 
 	@Override
@@ -190,7 +206,19 @@ public class ZombifiedChicken extends Animal implements NeutralMob, ZombifiedAni
 
 	@Override
 	public ZombifiedChicken getBreedOffspring(ServerLevel level, AgeableMob parent) {
-		return SZEntityTypes.ZOMBIFIED_CHICKEN.get().create(level, EntitySpawnReason.BREEDING);
+		ZombifiedChicken chicken = SZEntityTypes.ZOMBIFIED_CHICKEN.get().create(level, EntitySpawnReason.BREEDING);
+
+		if (chicken != null && parent instanceof ZombifiedChicken chicken1)
+			chicken.setVariant(random.nextBoolean() ? getVariant() : chicken1.getVariant());
+
+		return chicken;
+	}
+
+	@Override
+	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficultyInstance, EntitySpawnReason entitySpawnReason, SpawnGroupData spawnGroupData) {
+		ChickenVariants.selectVariantToSpawn(random, registryAccess(), SpawnContext.create(level, blockPosition())).ifPresent(this::setVariant);
+
+		return super.finalizeSpawn(level, difficultyInstance, entitySpawnReason, spawnGroupData);
 	}
 
 	@Override
@@ -208,6 +236,7 @@ public class ZombifiedChicken extends Animal implements NeutralMob, ZombifiedAni
 		super.readAdditionalSaveData(tag);
 		isChickenJockey = tag.getBooleanOr("IsChickenJockey", false);
 		eggTime = tag.getIntOr("EggLayTime", 0);
+		VariantUtils.readVariant(tag, this.registryAccess(), Registries.CHICKEN_VARIANT).ifPresent(this::setVariant);
 
 		int conversionTime = tag.getIntOr("ConversionTime", -1);
 
@@ -221,6 +250,42 @@ public class ZombifiedChicken extends Animal implements NeutralMob, ZombifiedAni
 		tag.putBoolean("IsChickenJockey", isChickenJockey);
 		tag.putInt("EggLayTime", eggTime);
 		tag.putInt("ConversionTime", isConverting() ? conversionTime : -1);
+		VariantUtils.writeVariant(tag, getVariant());
+	}
+
+	public void setVariant(Holder<ChickenVariant> variant) {
+		entityData.set(DATA_VARIANT_ID, variant);
+	}
+
+	public Holder<ChickenVariant> getVariant() {
+		return entityData.get(DATA_VARIANT_ID);
+	}
+
+	@Override
+	public <T> T get(DataComponentType<? extends T> type) {
+		return type == DataComponents.CHICKEN_VARIANT ? castComponentValue((DataComponentType<T>) type, new EitherHolder<>(getVariant())) : super.get(type);
+	}
+
+	@Override
+	protected void applyImplicitComponents(DataComponentGetter dataComponentGetter) {
+		applyImplicitComponentIfPresent(dataComponentGetter, DataComponents.CHICKEN_VARIANT);
+		super.applyImplicitComponents(dataComponentGetter);
+	}
+
+	@Override
+	protected <T> boolean applyImplicitComponent(DataComponentType<T> type, T value) {
+		if (type == DataComponents.CHICKEN_VARIANT) {
+			Optional<Holder<ChickenVariant>> optional = castComponentValue(DataComponents.CHICKEN_VARIANT, value).unwrap(registryAccess());
+
+			if (optional.isPresent()) {
+				setVariant(optional.get());
+				return true;
+			}
+			else
+				return false;
+		}
+		else
+			return super.applyImplicitComponent(type, value);
 	}
 
 	@Override
