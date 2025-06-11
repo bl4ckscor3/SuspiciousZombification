@@ -25,9 +25,9 @@ public class ZombifiedCowZombieLayer extends RenderLayer<CowRenderState, CowMode
 		super(parentRenderer);
 		//@formatter:off
 		models = Maps.newEnumMap(Map.of(
-				CowVariant.ModelType.NORMAL, new ModelAndTexture<>(new CowModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_COW_ZOMBIE_LAYER)), SuspiciousZombification.resLoc("entity/zombified_cow_zombie_layer")),
-				CowVariant.ModelType.COLD, new ModelAndTexture<>(new ColdCowModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_COLD_COW_ZOMBIE_LAYER)), SuspiciousZombification.resLoc("entity/zombified_cold_cow_zombie_layer")),
-				CowVariant.ModelType.WARM, new ModelAndTexture<>(new WarmCowModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_WARM_COW_ZOMBIE_LAYER)), SuspiciousZombification.resLoc("entity/zombified_warm_cow_zombie_layer"))
+				CowVariant.ModelType.NORMAL, new ModelAndTexture<>(new CowModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_COW_ZOMBIE_LAYER)), SuspiciousZombification.resLoc("entity/zombified_cow/temperate_layer")),
+				CowVariant.ModelType.COLD, new ModelAndTexture<>(new ColdCowModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_COLD_COW_ZOMBIE_LAYER)), SuspiciousZombification.resLoc("entity/zombified_cow/cold_layer")),
+				CowVariant.ModelType.WARM, new ModelAndTexture<>(new WarmCowModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_WARM_COW_ZOMBIE_LAYER)), SuspiciousZombification.resLoc("entity/zombified_cow/warm_layer"))
 		));
 		//@formatter:on
 	}

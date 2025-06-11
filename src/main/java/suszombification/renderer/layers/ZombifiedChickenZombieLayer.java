@@ -24,8 +24,8 @@ public class ZombifiedChickenZombieLayer extends RenderLayer<ZombifiedRenderStat
 		super(parentRenderer);
 		//@formatter:off
 		models = Maps.newEnumMap(Map.of(
-				ChickenVariant.ModelType.NORMAL, new ModelAndTexture<>(new ChickenModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_CHICKEN_ZOMBIE_LAYER)), SuspiciousZombification.resLoc("entity/zombified_chicken_zombie_layer")),
-				ChickenVariant.ModelType.COLD, new ModelAndTexture<>(new ColdChickenModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_COLD_CHICKEN_ZOMBIE_LAYER)), SuspiciousZombification.resLoc("entity/zombified_cold_chicken_zombie_layer"))
+				ChickenVariant.ModelType.NORMAL, new ModelAndTexture<>(new ChickenModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_CHICKEN_ZOMBIE_LAYER)), SuspiciousZombification.resLoc("entity/zombified_chicken/temperate_layer")),
+				ChickenVariant.ModelType.COLD, new ModelAndTexture<>(new ColdChickenModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_COLD_CHICKEN_ZOMBIE_LAYER)), SuspiciousZombification.resLoc("entity/zombified_chicken/cold_layer"))
 		));
 		//@formatter:on
 	}

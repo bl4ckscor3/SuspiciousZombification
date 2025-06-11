@@ -24,8 +24,8 @@ public class ZombifiedPigZombieLayer extends RenderLayer<PigRenderState, PigMode
 		super(parentRenderer);
 		//@formatter:off
 		models = Maps.newEnumMap(Map.of(
-				ModelType.NORMAL, new ModelAndTexture<>(new PigModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_PIG_ZOMBIE_LAYER)), SuspiciousZombification.resLoc("entity/zombified_pig_zombie_layer")),
-				ModelType.COLD, new ModelAndTexture<>(new ColdPigModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_COLD_PIG_ZOMBIE_LAYER)), SuspiciousZombification.resLoc("entity/zombified_cold_pig_zombie_layer"))
+				ModelType.NORMAL, new ModelAndTexture<>(new PigModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_PIG_ZOMBIE_LAYER)), SuspiciousZombification.resLoc("entity/zombified_pig/temperate_layer")),
+				ModelType.COLD, new ModelAndTexture<>(new ColdPigModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_COLD_PIG_ZOMBIE_LAYER)), SuspiciousZombification.resLoc("entity/zombified_pig/cold_layer"))
 		));
 		//@formatter:on
 	}
