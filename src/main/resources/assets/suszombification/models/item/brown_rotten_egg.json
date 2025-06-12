@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "suszombification:item/brown_rotten_egg"
+  }
+}

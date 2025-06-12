@@ -107,6 +107,8 @@ public class RecipeGenerator extends RecipeProvider {
 		addSusPieRecipe(Items.GUNPOWDER);
 		addSusPieRecipe(SZItems.SPOILED_MILK_BUCKET.get());
 		addSusPieRecipe(SZItems.ROTTEN_EGG.get());
+		addSusPieRecipe(SZItems.BROWN_ROTTEN_EGG.get());
+		addSusPieRecipe(SZItems.BLUE_ROTTEN_EGG.get());
 		//@formatter:off
 		ShapedRecipeBuilder.shaped(items, RecipeCategory.TRANSPORTATION, SZItems.PORKCHOP_ON_A_STICK.get())
 		.pattern("R ")

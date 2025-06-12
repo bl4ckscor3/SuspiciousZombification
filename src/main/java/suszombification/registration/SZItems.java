@@ -49,6 +49,8 @@ public class SZItems {
 				.usingConvertsTo(Items.BUCKET));
 	//@formatter:on
 	public static final DeferredItem<RottenEggItem> ROTTEN_EGG = ITEMS.registerItem("rotten_egg", RottenEggItem::new, new Item.Properties().stacksTo(16));
+	public static final DeferredItem<RottenEggItem> BROWN_ROTTEN_EGG = ITEMS.registerItem("brown_rotten_egg", RottenEggItem::new, new Item.Properties().stacksTo(16));
+	public static final DeferredItem<RottenEggItem> BLUE_ROTTEN_EGG = ITEMS.registerItem("blue_rotten_egg", RottenEggItem::new, new Item.Properties().stacksTo(16));
 	public static final DeferredItem<FoodOnAStickItem<ZombifiedPig>> PORKCHOP_ON_A_STICK = ITEMS.registerItem("porkchop_on_a_stick", p -> new FoodOnAStickItem<>(SZEntityTypes.ZOMBIFIED_PIG.get(), 7, p), new Item.Properties().durability(50));
 	//spawn eggs
 	public static final DeferredItem<SpawnEggItem> ZOMBIFIED_CAT_SPAWN_EGG = ITEMS.registerItem("zombified_cat_spawn_egg", p -> new SpawnEggItem(SZEntityTypes.ZOMBIFIED_CAT.get(), p));

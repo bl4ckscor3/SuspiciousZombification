@@ -35,6 +35,7 @@ public class SZTags {
 	}
 
 	public static class Items {
+		public static final TagKey<Item> ROTTEN_EGGS = tag("rotten_eggs");
 		public static final TagKey<Item> ROTTEN_WOOL = tag("rotten_wool");
 
 		private Items() {}

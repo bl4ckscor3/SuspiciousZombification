@@ -39,7 +39,7 @@ public class SuspiciousPumpkinPieItem extends Item {
 
 	static {
 		PIE_EFFECTS.add(new PieEffect(stack -> stack.is(SZItems.SPOILED_MILK_BUCKET.get()), () -> new MobEffectInstance(SZEffects.AMPLIFYING, 1), () -> new MobEffectInstance(MobEffects.NAUSEA, 100), ChatFormatting.DARK_PURPLE, ""));
-		PIE_EFFECTS.add(new PieEffect(stack -> stack.is(SZItems.ROTTEN_EGG.get()), () -> new MobEffectInstance(SZEffects.STENCH, 2400), () -> new MobEffectInstance(MobEffects.NAUSEA, 100), ChatFormatting.DARK_PURPLE, ""));
+		PIE_EFFECTS.add(new PieEffect(stack -> stack.is(SZTags.Items.ROTTEN_EGGS), () -> new MobEffectInstance(SZEffects.STENCH, 2400), () -> new MobEffectInstance(MobEffects.NAUSEA, 100), ChatFormatting.DARK_PURPLE, ""));
 		PIE_EFFECTS.add(new PieEffect(stack -> stack.is(SZTags.Items.ROTTEN_WOOL), () -> new MobEffectInstance(SZEffects.CUSHION, 2400), () -> new MobEffectInstance(MobEffects.NAUSEA, 100), ChatFormatting.DARK_PURPLE, "rotten_wool"));
 		PIE_EFFECTS.add(new PieEffect(stack -> stack.is(Items.GOLDEN_APPLE), () -> new MobEffectInstance(MobEffects.REGENERATION, 200, 1), () -> new MobEffectInstance(MobEffects.ABSORPTION, 2400), ChatFormatting.AQUA, ""));
 		PIE_EFFECTS.add(new PieEffect(stack -> stack.is(Items.ROTTEN_FLESH), () -> new MobEffectInstance(SZEffects.DECOMPOSING, 600), () -> null, ChatFormatting.AQUA, ""));

@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_brown_rotten_egg": {
+      "conditions": {
+        "items": [
+          {
+            "items": "suszombification:brown_rotten_egg"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "suszombification:suspicious_pumpkin_pie_from_brown_rotten_egg"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_brown_rotten_egg"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "suszombification:suspicious_pumpkin_pie_from_brown_rotten_egg"
+    ]
+  }
+}
