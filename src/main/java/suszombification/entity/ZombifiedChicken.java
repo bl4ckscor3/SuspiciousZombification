@@ -1,37 +1,22 @@
 package suszombification.entity;
 
-import java.util.Optional;
 import java.util.UUID;
+import java.util.function.BiConsumer;
 
-import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
-import net.minecraft.core.component.DataComponentGetter;
-import net.minecraft.core.component.DataComponentType;
-import net.minecraft.core.component.DataComponents;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
 import net.minecraft.network.syncher.SynchedEntityData;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.sounds.SoundEvent;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.DifficultyInstance;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.AgeableMob;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.EntityDimensions;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.NeutralMob;
-import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.SpawnGroupData;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.BreedGoal;
@@ -44,40 +29,24 @@ import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.Chicken;
-import net.minecraft.world.entity.animal.ChickenVariant;
-import net.minecraft.world.entity.animal.ChickenVariants;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.entity.variant.SpawnContext;
-import net.minecraft.world.entity.variant.VariantUtils;
-import net.minecraft.world.item.EitherHolder;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerLevelAccessor;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.level.storage.loot.BuiltInLootTables;
+import net.minecraft.world.level.storage.loot.LootTable;
 import suszombification.entity.ai.NearestNormalVariantTargetGoal;
 import suszombification.entity.ai.SPPTemptGoal;
 import suszombification.misc.AnimalUtil;
 import suszombification.registration.SZEntityTypes;
-import suszombification.registration.SZItems;
+import suszombification.registration.SZLoot;
 
-public class ZombifiedChicken extends Animal implements NeutralMob, ZombifiedAnimal { //can't extend Chicken because of the hardcoded egg laying logic in Chicken#aiStep
-	private static final EntityDimensions BABY_DIMENSIONS = EntityType.CHICKEN.getDimensions().scale(0.5F).withEyeHeight(0.2975F);
+public class ZombifiedChicken extends Chicken implements NeutralMob, ZombifiedAnimal {
 	private static final Ingredient FOOD_ITEMS = Ingredient.of(Items.CHICKEN, Items.FEATHER);
 	private static final EntityDataAccessor<Boolean> DATA_CONVERTING_ID = SynchedEntityData.defineId(ZombifiedChicken.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Holder<ChickenVariant>> DATA_VARIANT_ID = SynchedEntityData.defineId(ZombifiedChicken.class, EntityDataSerializers.CHICKEN_VARIANT);
 	private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
 	private int conversionTime;
-	private float flap;
-	private float flapSpeed;
-	private float previousFlapSpeed;
-	private float previousFlap;
-	private float flapping = 1.0F;
-	private float nextFlap = 1.0F;
-	private int eggTime = random.nextInt(6000) + 6000;
-	private boolean isChickenJockey;
 	private int remainingPersistentAngerTime;
 	private UUID persistentAngerTarget;
 
@@ -89,7 +58,6 @@ public class ZombifiedChicken extends Animal implements NeutralMob, ZombifiedAni
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 		super.defineSynchedData(builder);
 		builder.define(DATA_CONVERTING_ID, false);
-		builder.define(DATA_VARIANT_ID, VariantUtils.getDefaultOrAny(registryAccess(), ChickenVariants.TEMPERATE));
 	}
 
 	@Override
@@ -106,11 +74,6 @@ public class ZombifiedChicken extends Animal implements NeutralMob, ZombifiedAni
 		targetSelector.addGoal(3, new ResetUniversalAngerTargetGoal<>(this, false));
 	}
 
-	@Override
-	public EntityDimensions getDefaultDimensions(Pose pose) {
-		return isBaby() ? BABY_DIMENSIONS : super.getDefaultDimensions(pose);
-	}
-
 	public static AttributeSupplier.Builder createAttributes() {
 		return createAnimalAttributes().add(Attributes.MAX_HEALTH, 4.0D).add(Attributes.MOVEMENT_SPEED, 0.23D).add(Attributes.ATTACK_DAMAGE, 1.0D);
 	}
@@ -122,30 +85,8 @@ public class ZombifiedChicken extends Animal implements NeutralMob, ZombifiedAni
 	}
 
 	@Override
-	public void aiStep() {
-		super.aiStep();
-		previousFlap = flap;
-		previousFlapSpeed = flapSpeed;
-		flapSpeed = (float) (flapSpeed + (onGround() ? -1 : 4) * 0.3D);
-		flapSpeed = Mth.clamp(flapSpeed, 0.0F, 1.0F);
-
-		if (!onGround() && flapping < 1.0F)
-			flapping = 1.0F;
-
-		flapping = flapping * 0.9F;
-
-		Vec3 deltaMovement = getDeltaMovement();
-
-		if (!onGround() && deltaMovement.y < 0.0D)
-			setDeltaMovement(deltaMovement.multiply(1.0D, 0.6D, 1.0D));
-
-		flap += flapping * 2.0F;
-
-		if (level() instanceof ServerLevel serverLevel && isAlive() && !isBaby() && !isChickenJockey() && --eggTime <= 0) {
-			playSound(SoundEvents.CHICKEN_EGG, 1.0F, (random.nextFloat() - random.nextFloat()) * 0.2F + 1.0F);
-			spawnAtLocation(serverLevel, SZItems.ROTTEN_EGG.get());
-			eggTime = random.nextInt(6000) + 6000;
-		}
+	public float getVoicePitch() {
+		return isBaby() ? (random.nextFloat() - random.nextFloat()) * 0.2F + 0.5F : (random.nextFloat() - random.nextFloat()) * 0.2F;
 	}
 
 	@Override
@@ -165,46 +106,6 @@ public class ZombifiedChicken extends Animal implements NeutralMob, ZombifiedAni
 	}
 
 	@Override
-	protected boolean isFlapping() {
-		return flyDist > nextFlap;
-	}
-
-	@Override
-	protected void onFlap() {
-		nextFlap = flyDist + flapSpeed / 2.0F;
-	}
-
-	@Override
-	public boolean causeFallDamage(double height, float mult, DamageSource source) {
-		return false;
-	}
-
-	@Override
-	protected SoundEvent getAmbientSound() {
-		return SoundEvents.CHICKEN_AMBIENT;
-	}
-
-	@Override
-	protected SoundEvent getHurtSound(DamageSource damageSource) {
-		return SoundEvents.CHICKEN_HURT;
-	}
-
-	@Override
-	protected SoundEvent getDeathSound() {
-		return SoundEvents.CHICKEN_DEATH;
-	}
-
-	@Override
-	protected void playStepSound(BlockPos pos, BlockState block) {
-		playSound(SoundEvents.CHICKEN_STEP, 0.15F, 1.0F);
-	}
-
-	@Override
-	public float getVoicePitch() {
-		return isBaby() ? (random.nextFloat() - random.nextFloat()) * 0.2F + 0.5F : (random.nextFloat() - random.nextFloat()) * 0.2F;
-	}
-
-	@Override
 	public ZombifiedChicken getBreedOffspring(ServerLevel level, AgeableMob parent) {
 		ZombifiedChicken chicken = SZEntityTypes.ZOMBIFIED_CHICKEN.get().create(level, EntitySpawnReason.BREEDING);
 
@@ -215,14 +116,8 @@ public class ZombifiedChicken extends Animal implements NeutralMob, ZombifiedAni
 	}
 
 	@Override
-	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficultyInstance, EntitySpawnReason entitySpawnReason, SpawnGroupData spawnGroupData) {
-		ChickenVariants.selectVariantToSpawn(random, registryAccess(), SpawnContext.create(level, blockPosition())).ifPresent(this::setVariant);
-		return super.finalizeSpawn(level, difficultyInstance, entitySpawnReason, spawnGroupData);
-	}
-
-	@Override
 	public int getBaseExperienceReward(ServerLevel level) {
-		return (isChickenJockey() ? 10 : super.getBaseExperienceReward(level)) + 5;
+		return super.getBaseExperienceReward(level) + 5;
 	}
 
 	@Override
@@ -233,9 +128,6 @@ public class ZombifiedChicken extends Animal implements NeutralMob, ZombifiedAni
 	@Override
 	public void readAdditionalSaveData(CompoundTag tag) {
 		super.readAdditionalSaveData(tag);
-		isChickenJockey = tag.getBooleanOr("IsChickenJockey", false);
-		eggTime = tag.getIntOr("EggLayTime", 0);
-		VariantUtils.readVariant(tag, this.registryAccess(), Registries.CHICKEN_VARIANT).ifPresent(this::setVariant);
 
 		int conversionTime = tag.getIntOr("ConversionTime", -1);
 
@@ -246,66 +138,7 @@ public class ZombifiedChicken extends Animal implements NeutralMob, ZombifiedAni
 	@Override
 	public void addAdditionalSaveData(CompoundTag tag) {
 		super.addAdditionalSaveData(tag);
-		tag.putBoolean("IsChickenJockey", isChickenJockey);
-		tag.putInt("EggLayTime", eggTime);
 		tag.putInt("ConversionTime", isConverting() ? conversionTime : -1);
-		VariantUtils.writeVariant(tag, getVariant());
-	}
-
-	public void setVariant(Holder<ChickenVariant> variant) {
-		entityData.set(DATA_VARIANT_ID, variant);
-	}
-
-	public Holder<ChickenVariant> getVariant() {
-		return entityData.get(DATA_VARIANT_ID);
-	}
-
-	@Override
-	public <T> T get(DataComponentType<? extends T> type) {
-		return type == DataComponents.CHICKEN_VARIANT ? castComponentValue((DataComponentType<T>) type, new EitherHolder<>(getVariant())) : super.get(type);
-	}
-
-	@Override
-	protected void applyImplicitComponents(DataComponentGetter dataComponentGetter) {
-		applyImplicitComponentIfPresent(dataComponentGetter, DataComponents.CHICKEN_VARIANT);
-		super.applyImplicitComponents(dataComponentGetter);
-	}
-
-	@Override
-	protected <T> boolean applyImplicitComponent(DataComponentType<T> type, T value) {
-		if (type == DataComponents.CHICKEN_VARIANT) {
-			Optional<Holder<ChickenVariant>> optional = castComponentValue(DataComponents.CHICKEN_VARIANT, value).unwrap(registryAccess());
-
-			if (optional.isPresent()) {
-				setVariant(optional.get());
-				return true;
-			}
-			else
-				return false;
-		}
-		else
-			return super.applyImplicitComponent(type, value);
-	}
-
-	@Override
-	public boolean removeWhenFarAway(double distanceToClosestPlayer) {
-		return isChickenJockey();
-	}
-
-	@Override
-	public void positionRider(Entity passenger, MoveFunction moveFunction) {
-		super.positionRider(passenger);
-
-		if (passenger instanceof LivingEntity entity)
-			entity.yBodyRot = yBodyRot;
-	}
-
-	public boolean isChickenJockey() {
-		return isChickenJockey;
-	}
-
-	public void setChickenJockey(boolean jockey) {
-		isChickenJockey = jockey;
 	}
 
 	@Override
@@ -372,21 +205,5 @@ public class ZombifiedChicken extends Animal implements NeutralMob, ZombifiedAni
 	@Override
 	public int getConversionTime() {
 		return conversionTime;
-	}
-
-	public float getPreviousFlap() {
-		return previousFlap;
-	}
-
-	public float getPreviousFlapSpeed() {
-		return previousFlapSpeed;
-	}
-
-	public float getFlap() {
-		return flap;
-	}
-
-	public float getFlapSpeed() {
-		return flapSpeed;
 	}
 }
