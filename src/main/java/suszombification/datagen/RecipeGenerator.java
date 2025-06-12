@@ -13,6 +13,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -138,7 +139,7 @@ public class RecipeGenerator extends RecipeProvider {
 		ShapelessRecipeBuilder.shapeless(items, RecipeCategory.FOOD, result)
 		.group("suszombification:suspicious_pumpkin_pie")
 		.requires(Items.SUGAR)
-		.requires(Items.EGG)
+		.requires(ItemTags.EGGS)
 		.requires(Items.PUMPKIN)
 		.requires(ingredient)
 		.unlockedBy(getHasName(ingredient), has(ingredient))

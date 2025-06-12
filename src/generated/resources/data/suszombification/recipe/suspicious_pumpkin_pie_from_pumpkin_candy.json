@@ -4,7 +4,7 @@
   "group": "suszombification:suspicious_pumpkin_pie",
   "ingredients": [
     "minecraft:sugar",
-    "minecraft:egg",
+    "#minecraft:eggs",
     "minecraft:pumpkin",
     "suszombification:pumpkin_candy"
   ],
