@@ -176,6 +176,18 @@ public class ZombifiedPig extends Pig implements NeutralMob, ZombifiedAnimal {
 	}
 
 	@Override
+	public void readFromVanilla(Animal animal) {
+		if (animal instanceof Pig pig)
+			setVariant(pig.getVariant());
+	}
+
+	@Override
+	public void writeToVanilla(Animal animal) {
+		if (animal instanceof Pig pig)
+			pig.setVariant(getVariant());
+	}
+
+	@Override
 	public boolean isConverting() {
 		return getEntityData().get(DATA_CONVERTING_ID);
 	}

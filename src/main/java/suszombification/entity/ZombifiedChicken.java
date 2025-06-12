@@ -217,7 +217,6 @@ public class ZombifiedChicken extends Animal implements NeutralMob, ZombifiedAni
 	@Override
 	public SpawnGroupData finalizeSpawn(ServerLevelAccessor level, DifficultyInstance difficultyInstance, EntitySpawnReason entitySpawnReason, SpawnGroupData spawnGroupData) {
 		ChickenVariants.selectVariantToSpawn(random, registryAccess(), SpawnContext.create(level, blockPosition())).ifPresent(this::setVariant);
-
 		return super.finalizeSpawn(level, difficultyInstance, entitySpawnReason, spawnGroupData);
 	}
 
@@ -341,14 +340,18 @@ public class ZombifiedChicken extends Animal implements NeutralMob, ZombifiedAni
 
 	@Override
 	public void readFromVanilla(Animal animal) {
-		if (animal instanceof Chicken chicken)
+		if (animal instanceof Chicken chicken) {
 			setChickenJockey(chicken.isChickenJockey());
+			setVariant(chicken.getVariant());
+		}
 	}
 
 	@Override
 	public void writeToVanilla(Animal animal) {
-		if (animal instanceof Chicken chicken)
+		if (animal instanceof Chicken chicken) {
 			chicken.setChickenJockey(isChickenJockey());
+			chicken.setVariant(getVariant());
+		}
 	}
 
 	@Override

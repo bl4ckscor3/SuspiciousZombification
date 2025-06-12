@@ -175,6 +175,18 @@ public class ZombifiedCow extends Cow implements NeutralMob, ZombifiedAnimal {
 	}
 
 	@Override
+	public void readFromVanilla(Animal animal) {
+		if (animal instanceof Cow cow)
+			setVariant(cow.getVariant());
+	}
+
+	@Override
+	public void writeToVanilla(Animal animal) {
+		if (animal instanceof Cow cow)
+			cow.setVariant(getVariant());
+	}
+
+	@Override
 	public boolean isConverting() {
 		return getEntityData().get(DATA_CONVERTING_ID);
 	}
