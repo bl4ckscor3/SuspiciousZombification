@@ -115,8 +115,13 @@ public class ZombifiedPig extends Pig implements NeutralMob, ZombifiedAnimal {
 	}
 
 	@Override
-	public Pig getBreedOffspring(ServerLevel level, AgeableMob mob) {
-		return SZEntityTypes.ZOMBIFIED_PIG.get().create(level, EntitySpawnReason.BREEDING);
+	public Pig getBreedOffspring(ServerLevel level, AgeableMob parent) {
+		ZombifiedPig pig = SZEntityTypes.ZOMBIFIED_PIG.get().create(level, EntitySpawnReason.BREEDING);
+
+		if (pig != null && parent instanceof ZombifiedPig pig1)
+			pig.setVariant(random.nextBoolean() ? getVariant() : pig1.getVariant());
+
+		return pig;
 	}
 
 	@Override

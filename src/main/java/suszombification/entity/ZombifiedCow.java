@@ -115,7 +115,12 @@ public class ZombifiedCow extends Cow implements NeutralMob, ZombifiedAnimal {
 
 	@Override
 	public ZombifiedCow getBreedOffspring(ServerLevel level, AgeableMob parent) {
-		return SZEntityTypes.ZOMBIFIED_COW.get().create(level, EntitySpawnReason.BREEDING);
+		ZombifiedCow cow = SZEntityTypes.ZOMBIFIED_COW.get().create(level, EntitySpawnReason.BREEDING);
+
+		if (cow != null && parent instanceof ZombifiedCow cow1)
+			cow.setVariant(random.nextBoolean() ? getVariant() : cow1.getVariant());
+
+		return cow;
 	}
 
 	@Override
