@@ -181,7 +181,7 @@ public class ZombifiedCat extends Cat implements NeutralMob, ZombifiedAnimal {
 	@Override
 	public void readFromVanilla(Animal animal) {
 		if (animal instanceof Cat cat) {
-			setVariant(getVariant());
+			setVariant(cat.getVariant());
 			setTame(cat.isTame(), true);
 			setCollarColor(cat.getCollarColor());
 			setOwnerReference(cat.getOwnerReference());
