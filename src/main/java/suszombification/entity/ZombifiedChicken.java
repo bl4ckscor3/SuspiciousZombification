@@ -79,6 +79,14 @@ public class ZombifiedChicken extends Chicken implements NeutralMob, ZombifiedAn
 	}
 
 	@Override
+	public boolean dropFromGiftLootTable(ServerLevel level, ResourceKey<LootTable> lootTable, BiConsumer<ServerLevel, ItemStack> dropConsumer) {
+		if (lootTable == BuiltInLootTables.CHICKEN_LAY)
+			lootTable = SZLoot.ZOMBIFIED_CHICKEN_LAY;
+
+		return super.dropFromGiftLootTable(level, lootTable, dropConsumer);
+	}
+
+	@Override
 	public void tick() {
 		AnimalUtil.tick(this);
 		super.tick();

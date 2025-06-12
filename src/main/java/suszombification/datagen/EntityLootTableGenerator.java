@@ -4,23 +4,33 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
+import net.minecraft.advancements.critereon.DataComponentMatchers;
+import net.minecraft.advancements.critereon.EntityPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.component.DataComponentExactPredicate;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.ChickenVariants;
+import net.minecraft.world.item.EitherHolder;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
 import net.minecraft.world.level.storage.loot.LootTable;
+import net.minecraft.world.level.storage.loot.entries.AlternativesEntry;
 import net.minecraft.world.level.storage.loot.entries.LootItem;
 import net.minecraft.world.level.storage.loot.functions.EnchantedCountIncreaseFunction;
 import net.minecraft.world.level.storage.loot.functions.SetItemCountFunction;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
+import net.minecraft.world.level.storage.loot.predicates.LootItemEntityPropertyCondition;
 import net.minecraft.world.level.storage.loot.providers.number.ConstantValue;
 import net.minecraft.world.level.storage.loot.providers.number.UniformGenerator;
 import suszombification.entity.ZombifiedSheep;
 import suszombification.registration.SZEntityTypes;
+import suszombification.registration.SZItems;
 import suszombification.registration.SZLoot;
 
 public record EntityLootTableGenerator(HolderLookup.Provider lookupProvider) implements LootTableSubProvider {
@@ -35,6 +45,37 @@ public record EntityLootTableGenerator(HolderLookup.Provider lookupProvider) imp
 						.setRolls(ConstantValue.exactly(1.0F))
 						.add(LootItem.lootTableItem(Items.ROTTEN_FLESH)
 								.apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, 3.0F))))));
+		lootTables.put(SZLoot.ZOMBIFIED_CHICKEN_LAY, LootTable.lootTable()
+				.withPool(LootPool.lootPool()
+						.setRolls(ConstantValue.exactly(1.0F))
+						.add(AlternativesEntry.alternatives(
+								LootItem.lootTableItem(SZItems.ROTTEN_EGG).when(
+										LootItemEntityPropertyCondition.hasProperties(
+												LootContext.EntityTarget.THIS,
+												EntityPredicate.Builder.entity().components(
+														DataComponentMatchers.Builder.components().exact(
+																		DataComponentExactPredicate.expect(
+																				DataComponents.CHICKEN_VARIANT,
+																				new EitherHolder<>(lookupProvider.getOrThrow(ChickenVariants.TEMPERATE))))
+																.build()))),
+								LootItem.lootTableItem(SZItems.BROWN_ROTTEN_EGG).when(
+										LootItemEntityPropertyCondition.hasProperties(
+												LootContext.EntityTarget.THIS,
+												EntityPredicate.Builder.entity().components(
+														DataComponentMatchers.Builder.components().exact(
+																		DataComponentExactPredicate.expect(
+																				DataComponents.CHICKEN_VARIANT,
+																				new EitherHolder<>(lookupProvider.getOrThrow(ChickenVariants.WARM))))
+																.build()))),
+								LootItem.lootTableItem(SZItems.BLUE_ROTTEN_EGG).when(
+										LootItemEntityPropertyCondition.hasProperties(
+												LootContext.EntityTarget.THIS,
+												EntityPredicate.Builder.entity().components(
+														DataComponentMatchers.Builder.components().exact(
+																		DataComponentExactPredicate.expect(
+																				DataComponents.CHICKEN_VARIANT,
+																				new EitherHolder<>(lookupProvider.getOrThrow(ChickenVariants.COLD))))
+																.build())))))));
 		//entity drops
 		lootTables.put(lootTableOf(SZEntityTypes.ZOMBIFIED_CAT), LootTable.lootTable().withPool(rottenFleshDrop(2.0F)));
 		lootTables.put(lootTableOf(SZEntityTypes.ZOMBIFIED_CHICKEN), LootTable.lootTable().withPool(rottenFleshDrop(1.0F))

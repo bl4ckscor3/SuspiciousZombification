@@ -14,6 +14,7 @@ public class SZLoot {
 	//gameplay
 	public static final ResourceKey<LootTable> DEATH_BY_DECOMPOSING = create("gameplay/death_by_decomposing");
 	public static final ResourceKey<LootTable> ZOMBIFIED_CAT_MORNING_GIFT = create("gameplay/zombified_cat_morning_gift");
+	public static final ResourceKey<LootTable> ZOMBIFIED_CHICKEN_LAY = create("gameplay/zombified_chicken_lay");
 	//entities
 	public static final Map<DyeColor, ResourceKey<LootTable>> ZOMBIFIED_SHEEP_BY_DYE = Util.make(new EnumMap<>(DyeColor.class), map -> makeDyeKeyMap(map, "entities/zombified_sheep"));
 	public static final ResourceKey<LootTable> SHEAR_ZOMBIFIED_SHEEP = create("shearing/zombified_sheep");
