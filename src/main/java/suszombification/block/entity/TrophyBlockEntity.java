@@ -11,6 +11,8 @@ import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import suszombification.block.TrophyBlock.TrophyType;
 import suszombification.registration.SZBlockEntityTypes;
 import suszombification.registration.SZDataComponents;
@@ -42,15 +44,15 @@ public class TrophyBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public void saveAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
+	public void saveAdditional(ValueOutput tag) {
 		tag.putInt("TrophyType", trophyType.ordinal());
 		tag.putBoolean("CurseGiven", curseGiven);
-		super.saveAdditional(tag, lookupProvider);
+		super.saveAdditional(tag);
 	}
 
 	@Override
-	public void loadAdditional(CompoundTag tag, HolderLookup.Provider lookupProvider) {
-		super.loadAdditional(tag, lookupProvider);
+	public void loadAdditional(ValueInput tag) {
+		super.loadAdditional(tag);
 
 		int savedOrdinal = tag.getIntOr("TrophyType", 0);
 
@@ -84,7 +86,7 @@ public class TrophyBlockEntity extends BlockEntity {
 	}
 
 	@Override
-	public void removeComponentsFromTag(CompoundTag tag) {
-		tag.remove("CurseGiven");
+	public void removeComponentsFromTag(ValueOutput tag) {
+		tag.discard("CurseGiven");
 	}
 }

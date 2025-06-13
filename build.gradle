@@ -25,7 +25,7 @@ sourceSets.main.resources {
 }
 
 neoForge {
-	version = "21.5.62-beta"
+	version = "21.5.0-alpha.1.21.6-rc1.20250613.110817"
 
 	runs {
 		configureEach {
@@ -55,7 +55,16 @@ neoForge {
 		}
 	}
 }
-
+repositories {
+	maven {
+		name 'Maven for PR #2297' // https://github.com/neoforged/NeoForge/pull/2297
+		url 'https://prmaven.neoforged.net/NeoForge/pr2297'
+		content {
+			includeModule('net.neoforged', 'neoforge')
+			includeModule('net.neoforged', 'testframework')
+		}
+	}
+}
 tasks.named('jar', Jar).configure {
     exclude('suszombification/datagen/**') //exclude files from the built jar that are only used to generate the assets
 

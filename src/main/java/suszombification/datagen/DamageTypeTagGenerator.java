@@ -5,13 +5,13 @@ import java.util.concurrent.CompletableFuture;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.TagsProvider;
+import net.minecraft.data.tags.KeyTagProvider;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.world.damagesource.DamageType;
 import suszombification.SZDamageSources;
 import suszombification.SuspiciousZombification;
 
-public class DamageTypeTagGenerator extends TagsProvider<DamageType> {
+public class DamageTypeTagGenerator extends KeyTagProvider<DamageType> {
 	protected DamageTypeTagGenerator(PackOutput output, CompletableFuture<Provider> lookupProvider) {
 		super(output, Registries.DAMAGE_TYPE, lookupProvider, SuspiciousZombification.MODID);
 	}
@@ -20,10 +20,10 @@ public class DamageTypeTagGenerator extends TagsProvider<DamageType> {
 	protected void addTags(Provider provider) {
 		//@formatter:off
 		tag(DamageTypeTags.BYPASSES_ARMOR)
-				.addOptional(SZDamageSources.DECOMPOSING.location())
-				.addOptional(SZDamageSources.RITUAL_SACRIFICE.location());
+				.addOptional(SZDamageSources.DECOMPOSING)
+				.addOptional(SZDamageSources.RITUAL_SACRIFICE);
 		tag(DamageTypeTags.IS_EXPLOSION)
-				.addOptional(SZDamageSources.SPP_EXPLOSION.location());
+				.addOptional(SZDamageSources.SPP_EXPLOSION);
 		//@formatter:on
 	}
 }

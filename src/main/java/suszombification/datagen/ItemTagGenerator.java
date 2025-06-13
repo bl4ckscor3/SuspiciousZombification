@@ -4,13 +4,13 @@ import java.util.concurrent.CompletableFuture;
 
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;
-import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.world.level.block.Block;
+import net.neoforged.neoforge.common.data.BlockTagCopyingItemTagProvider;
 import suszombification.SZTags;
 import suszombification.SuspiciousZombification;
 import suszombification.registration.SZItems;
 
-public class ItemTagGenerator extends ItemTagsProvider {
+public class ItemTagGenerator extends BlockTagCopyingItemTagProvider {
 	public ItemTagGenerator(PackOutput output, CompletableFuture<HolderLookup.Provider> lookupProvider, CompletableFuture<TagLookup<Block>> blockTagsProvider) {
 		super(output, lookupProvider, blockTagsProvider, SuspiciousZombification.MODID);
 	}

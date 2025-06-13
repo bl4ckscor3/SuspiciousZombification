@@ -39,7 +39,7 @@ public class DataGenHandler {
 				new SubProviderEntry(GiftLootTableGenerator::new, LootContextParamSets.GIFT)), lookupProvider));
 		event.createProvider(output -> new PackMetadataGenerator(output)
                 .add(PackMetadataSection.TYPE, new PackMetadataSection(Component.literal("Suspicious Zombification resources & data"),
-                        DetectedVersion.BUILT_IN.getPackVersion(PackType.CLIENT_RESOURCES),
+                        DetectedVersion.BUILT_IN.packVersion(PackType.CLIENT_RESOURCES),
                         Optional.of(new InclusiveRange<>(0, Integer.MAX_VALUE)))));
 		//@formatter:on
 		event.createProvider(RecipeGenerator.Runner::new);
