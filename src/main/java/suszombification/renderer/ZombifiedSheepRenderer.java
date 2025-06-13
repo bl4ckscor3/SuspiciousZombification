@@ -7,7 +7,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.animal.sheep.Sheep;
 import suszombification.SuspiciousZombification;
 import suszombification.entity.ZombifiedSheep;
-import suszombification.renderer.layers.ZombifiedSheepFurLayer;
+import suszombification.renderer.layers.ZombifiedSheepWoolLayer;
 
 public class ZombifiedSheepRenderer extends SheepRenderer {
 	private static final ResourceLocation SHEEP_LOCATION = SuspiciousZombification.resLoc("textures/entity/zombified_sheep/zombified_sheep.png");
@@ -15,7 +15,7 @@ public class ZombifiedSheepRenderer extends SheepRenderer {
 	public ZombifiedSheepRenderer(EntityRendererProvider.Context ctx) {
 		super(ctx);
 		layers.clear();
-		addLayer(new ZombifiedSheepFurLayer(this, ctx.getModelSet()));
+		addLayer(new ZombifiedSheepWoolLayer(this, ctx.getModelSet()));
 	}
 
 	@Override

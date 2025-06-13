@@ -15,18 +15,14 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.SheepRenderState;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.util.ARGB;
-import net.minecraft.util.Mth;
-import net.minecraft.world.entity.animal.sheep.Sheep;
-import net.minecraft.world.item.DyeColor;
 import suszombification.SuspiciousZombification;
 
-public class ZombifiedSheepFurLayer extends RenderLayer<SheepRenderState, SheepModel> {
-	private static final ResourceLocation SHEEP_FUR_LOCATION = SuspiciousZombification.resLoc("textures/entity/zombified_sheep/zombified_sheep_fur.png");
+public class ZombifiedSheepWoolLayer extends RenderLayer<SheepRenderState, SheepModel> {
+	private static final ResourceLocation SHEEP_WOOL_LOCATION = SuspiciousZombification.resLoc("textures/entity/zombified_sheep/zombified_sheep_wool.png");
 	private final EntityModel<SheepRenderState> adultModel;
 	private final EntityModel<SheepRenderState> babyModel;
 
-	public ZombifiedSheepFurLayer(RenderLayerParent<SheepRenderState, SheepModel> parent, EntityModelSet modelSet) {
+	public ZombifiedSheepWoolLayer(RenderLayerParent<SheepRenderState, SheepModel> parent, EntityModelSet modelSet) {
 		super(parent);
 		this.adultModel = new SheepFurModel(modelSet.bakeLayer(ModelLayers.SHEEP_WOOL));
 		this.babyModel = new SheepFurModel(modelSet.bakeLayer(ModelLayers.SHEEP_BABY_WOOL));
@@ -39,33 +35,14 @@ public class ZombifiedSheepFurLayer extends RenderLayer<SheepRenderState, SheepM
 
 			if (renderState.isInvisible) {
 				if (renderState.appearsGlowing) {
-					VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.outline(SHEEP_FUR_LOCATION));
+					VertexConsumer vertexConsumer = buffer.getBuffer(RenderType.outline(SHEEP_WOOL_LOCATION));
 
 					model.setupAnim(renderState);
 					model.renderToBuffer(pose, vertexConsumer, packedLight, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), -16777216);
 				}
 			}
-			else {
-				int colorToUse;
-
-				if (renderState.customName != null && "jeb_".equals(renderState.customName.getString())) {
-					int speed = 25;
-					int tickCount = Mth.floor(renderState.ageInTicks);
-					int colorTick = tickCount / speed + renderState.id;
-					int colorCount = DyeColor.values().length;
-					int currentColorIndex = colorTick % colorCount;
-					int nextColorIndex = (colorTick + 1) % colorCount;
-					float interp = (tickCount % speed + Mth.frac(renderState.ageInTicks)) / speed;
-					int currentColor = Sheep.getColor(DyeColor.byId(currentColorIndex));
-					int nextColor = Sheep.getColor(DyeColor.byId(nextColorIndex));
-
-					colorToUse = ARGB.lerp(interp, currentColor, nextColor);
-				}
-				else
-					colorToUse = Sheep.getColor(renderState.woolColor);
-
-				coloredCutoutModelCopyLayerRender(model, SHEEP_FUR_LOCATION, pose, buffer, packedLight, renderState, colorToUse);
-			}
+			else
+				coloredCutoutModelCopyLayerRender(model, SHEEP_WOOL_LOCATION, pose, buffer, packedLight, renderState, renderState.getWoolColor());
 		}
 	}
 }
