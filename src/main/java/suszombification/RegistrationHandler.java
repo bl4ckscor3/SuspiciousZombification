@@ -13,7 +13,6 @@ import net.minecraft.world.item.SpawnEggItem;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.EventBusSubscriber.Bus;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
@@ -27,7 +26,7 @@ import suszombification.registration.SZBlocks;
 import suszombification.registration.SZEntityTypes;
 import suszombification.registration.SZItems;
 
-@EventBusSubscriber(modid = SuspiciousZombification.MODID, bus = Bus.MOD)
+@EventBusSubscriber(modid = SuspiciousZombification.MODID)
 public class RegistrationHandler {
 	private RegistrationHandler() {}
 

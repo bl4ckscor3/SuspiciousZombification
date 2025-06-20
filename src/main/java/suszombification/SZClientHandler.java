@@ -17,7 +17,6 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.EventBusSubscriber.Bus;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import suszombification.registration.SZBlockEntityTypes;
 import suszombification.registration.SZEntityTypes;
@@ -28,7 +27,7 @@ import suszombification.renderer.ZombifiedCowRenderer;
 import suszombification.renderer.ZombifiedPigRenderer;
 import suszombification.renderer.ZombifiedSheepRenderer;
 
-@EventBusSubscriber(modid = SuspiciousZombification.MODID, bus = Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(modid = SuspiciousZombification.MODID, value = Dist.CLIENT)
 public class SZClientHandler {
 	public static final ModelLayerLocation ZOMBIFIED_CAT_ZOMBIE_LAYER = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("cat"), "zombie");
 	public static final ModelLayerLocation ZOMBIFIED_COW_ZOMBIE_LAYER = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("cow"), "zombie");

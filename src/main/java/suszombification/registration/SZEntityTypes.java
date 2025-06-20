@@ -7,7 +7,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
-import net.neoforged.fml.common.EventBusSubscriber.Bus;
 import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -19,7 +18,7 @@ import suszombification.entity.ZombifiedCow;
 import suszombification.entity.ZombifiedPig;
 import suszombification.entity.ZombifiedSheep;
 
-@EventBusSubscriber(modid = SuspiciousZombification.MODID, bus = Bus.MOD)
+@EventBusSubscriber(modid = SuspiciousZombification.MODID)
 public class SZEntityTypes {
 	public static final DeferredRegister<EntityType<?>> ENTITY_TYPES = DeferredRegister.create(Registries.ENTITY_TYPE, SuspiciousZombification.MODID);
 	//@formatter:off
