@@ -13,27 +13,32 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.PigRenderState;
 import net.minecraft.world.entity.animal.PigVariant.ModelType;
-import net.minecraft.world.entity.variant.ModelAndTexture;
 import suszombification.SZClientHandler;
 import suszombification.SuspiciousZombification;
 
 public class ZombifiedPigZombieLayer extends RenderLayer<PigRenderState, PigModel> {
-	private final Map<ModelType, ModelAndTexture<PigModel>> models;
+	private final Map<ModelType, ModelAndTextureWithBaby<PigModel>> models;
 
 	public ZombifiedPigZombieLayer(RenderLayerParent<PigRenderState, PigModel> parentRenderer, EntityModelSet modelSet) {
 		super(parentRenderer);
 		//@formatter:off
 		models = Maps.newEnumMap(Map.of(
-				ModelType.NORMAL, new ModelAndTexture<>(new PigModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_PIG_ZOMBIE_LAYER)), SuspiciousZombification.resLoc("entity/zombified_pig/temperate_layer")),
-				ModelType.COLD, new ModelAndTexture<>(new ColdPigModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_COLD_PIG_ZOMBIE_LAYER)), SuspiciousZombification.resLoc("entity/zombified_pig/cold_layer"))
+				ModelType.NORMAL, new ModelAndTextureWithBaby<>(
+						new PigModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_PIG_ZOMBIE_LAYER)),
+						new PigModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_PIG_ZOMBIE_LAYER_BABY)),
+						SuspiciousZombification.resLoc("entity/zombified_pig/temperate_layer")),
+				ModelType.COLD, new ModelAndTextureWithBaby<>(
+						new ColdPigModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_COLD_PIG_ZOMBIE_LAYER)),
+						new ColdPigModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_COLD_PIG_ZOMBIE_LAYER_BABY)),
+						SuspiciousZombification.resLoc("entity/zombified_pig/cold_layer"))
 		));
 		//@formatter:on
 	}
 
 	@Override
 	public void render(PoseStack pose, MultiBufferSource buffer, int packedLight, PigRenderState renderState, float yRot, float xRot) {
-		ModelAndTexture<PigModel> tam = models.get(renderState.variant.modelAndTexture().model());
+		ModelAndTextureWithBaby<PigModel> mat = models.get(renderState.variant.modelAndTexture().model());
 
-		coloredCutoutModelCopyLayerRender(tam.model(), tam.asset().texturePath(), pose, buffer, packedLight, renderState, 0xFFFFFFFF);
+		coloredCutoutModelCopyLayerRender(renderState.isBaby ? mat.babyModel() : mat.model(), mat.asset().texturePath(), pose, buffer, packedLight, renderState, 0xFFFFFFFF);
 	}
 }

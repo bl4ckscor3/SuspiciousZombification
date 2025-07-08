@@ -6,7 +6,7 @@ import net.minecraft.client.model.ColdChickenModel;
 import net.minecraft.client.model.ColdCowModel;
 import net.minecraft.client.model.ColdPigModel;
 import net.minecraft.client.model.CowModel;
-import net.minecraft.client.model.OcelotModel;
+import net.minecraft.client.model.FelineModel;
 import net.minecraft.client.model.PigModel;
 import net.minecraft.client.model.WarmCowModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
@@ -30,13 +30,21 @@ import suszombification.renderer.ZombifiedSheepRenderer;
 @EventBusSubscriber(modid = SuspiciousZombification.MODID, value = Dist.CLIENT)
 public class SZClientHandler {
 	public static final ModelLayerLocation ZOMBIFIED_CAT_ZOMBIE_LAYER = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("cat"), "zombie");
+	public static final ModelLayerLocation ZOMBIFIED_CAT_ZOMBIE_LAYER_BABY = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("cat_baby"), "zombie");
 	public static final ModelLayerLocation ZOMBIFIED_COW_ZOMBIE_LAYER = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("cow"), "zombie");
+	public static final ModelLayerLocation ZOMBIFIED_COW_ZOMBIE_LAYER_BABY = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("cow_baby"), "zombie");
 	public static final ModelLayerLocation ZOMBIFIED_COLD_COW_ZOMBIE_LAYER = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("cold_cow"), "zombie");
+	public static final ModelLayerLocation ZOMBIFIED_COLD_COW_ZOMBIE_LAYER_BABY = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("cold_cow_baby"), "zombie");
 	public static final ModelLayerLocation ZOMBIFIED_WARM_COW_ZOMBIE_LAYER = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("warm_cow"), "zombie");
+	public static final ModelLayerLocation ZOMBIFIED_WARM_COW_ZOMBIE_LAYER_BABY = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("warm_cow_baby"), "zombie");
 	public static final ModelLayerLocation ZOMBIFIED_PIG_ZOMBIE_LAYER = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("pig"), "zombie");
+	public static final ModelLayerLocation ZOMBIFIED_PIG_ZOMBIE_LAYER_BABY = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("pig_baby"), "zombie");
 	public static final ModelLayerLocation ZOMBIFIED_COLD_PIG_ZOMBIE_LAYER = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("cold_pig"), "zombie");
+	public static final ModelLayerLocation ZOMBIFIED_COLD_PIG_ZOMBIE_LAYER_BABY = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("cold_pig_baby"), "zombie");
 	public static final ModelLayerLocation ZOMBIFIED_CHICKEN_ZOMBIE_LAYER = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("chicken"), "zombie");
+	public static final ModelLayerLocation ZOMBIFIED_CHICKEN_ZOMBIE_LAYER_BABY = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("chicken_baby"), "zombie");
 	public static final ModelLayerLocation ZOMBIFIED_COLD_CHICKEN_ZOMBIE_LAYER = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("cold_chicken"), "zombie");
+	public static final ModelLayerLocation ZOMBIFIED_COLD_CHICKEN_ZOMBIE_LAYER_BABY = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("cold_chicken_baby"), "zombie");
 
 	private SZClientHandler() {}
 
@@ -53,13 +61,30 @@ public class SZClientHandler {
 
 	@SubscribeEvent
 	public static void registerLayerDefinitions(EntityRenderersEvent.RegisterLayerDefinitions event) {
-		event.registerLayerDefinition(ZOMBIFIED_CAT_ZOMBIE_LAYER, () -> LayerDefinition.create(OcelotModel.createBodyMesh(new CubeDeformation(0.01F)), 64, 32).apply(CatModel.CAT_TRANSFORMER));
-		event.registerLayerDefinition(ZOMBIFIED_COW_ZOMBIE_LAYER, CowModel::createBodyLayer);
-		event.registerLayerDefinition(ZOMBIFIED_COLD_COW_ZOMBIE_LAYER, ColdCowModel::createBodyLayer);
-		event.registerLayerDefinition(ZOMBIFIED_WARM_COW_ZOMBIE_LAYER, WarmCowModel::createBodyLayer);
-		event.registerLayerDefinition(ZOMBIFIED_PIG_ZOMBIE_LAYER, () -> PigModel.createBodyLayer(CubeDeformation.NONE));
-		event.registerLayerDefinition(ZOMBIFIED_COLD_PIG_ZOMBIE_LAYER, () -> ColdPigModel.createBodyLayer(CubeDeformation.NONE));
-		event.registerLayerDefinition(ZOMBIFIED_CHICKEN_ZOMBIE_LAYER, ChickenModel::createBodyLayer);
-		event.registerLayerDefinition(ZOMBIFIED_COLD_CHICKEN_ZOMBIE_LAYER, ColdChickenModel::createBodyLayer);
+		LayerDefinition cat = LayerDefinition.create(FelineModel.createBodyMesh(new CubeDeformation(0.01F)), 64, 32).apply(CatModel.CAT_TRANSFORMER);
+		LayerDefinition cow = CowModel.createBodyLayer();
+		LayerDefinition coldCow = ColdCowModel.createBodyLayer();
+		LayerDefinition warmCow = WarmCowModel.createBodyLayer();
+		LayerDefinition pig = PigModel.createBodyLayer(CubeDeformation.NONE);
+		LayerDefinition coldPig = ColdPigModel.createBodyLayer(CubeDeformation.NONE);
+		LayerDefinition chicken = ChickenModel.createBodyLayer();
+		LayerDefinition coldChicken = ColdChickenModel.createBodyLayer();
+
+		event.registerLayerDefinition(ZOMBIFIED_CAT_ZOMBIE_LAYER, () -> cat);
+		event.registerLayerDefinition(ZOMBIFIED_CAT_ZOMBIE_LAYER_BABY, () -> cat.apply(FelineModel.BABY_TRANSFORMER));
+		event.registerLayerDefinition(ZOMBIFIED_COW_ZOMBIE_LAYER, () -> cow);
+		event.registerLayerDefinition(ZOMBIFIED_COW_ZOMBIE_LAYER_BABY, () -> cow.apply(CowModel.BABY_TRANSFORMER));
+		event.registerLayerDefinition(ZOMBIFIED_COLD_COW_ZOMBIE_LAYER, () -> coldCow);
+		event.registerLayerDefinition(ZOMBIFIED_COLD_COW_ZOMBIE_LAYER_BABY, () -> coldCow.apply(ColdCowModel.BABY_TRANSFORMER));
+		event.registerLayerDefinition(ZOMBIFIED_WARM_COW_ZOMBIE_LAYER, () -> warmCow);
+		event.registerLayerDefinition(ZOMBIFIED_WARM_COW_ZOMBIE_LAYER_BABY, () -> warmCow.apply(WarmCowModel.BABY_TRANSFORMER));
+		event.registerLayerDefinition(ZOMBIFIED_PIG_ZOMBIE_LAYER, () -> pig);
+		event.registerLayerDefinition(ZOMBIFIED_PIG_ZOMBIE_LAYER_BABY, () -> pig.apply(PigModel.BABY_TRANSFORMER));
+		event.registerLayerDefinition(ZOMBIFIED_COLD_PIG_ZOMBIE_LAYER, () -> coldPig);
+		event.registerLayerDefinition(ZOMBIFIED_COLD_PIG_ZOMBIE_LAYER_BABY, () -> coldPig.apply(ColdPigModel.BABY_TRANSFORMER));
+		event.registerLayerDefinition(ZOMBIFIED_CHICKEN_ZOMBIE_LAYER, () -> chicken);
+		event.registerLayerDefinition(ZOMBIFIED_CHICKEN_ZOMBIE_LAYER_BABY, () -> chicken.apply(ChickenModel.BABY_TRANSFORMER));
+		event.registerLayerDefinition(ZOMBIFIED_COLD_CHICKEN_ZOMBIE_LAYER, () -> coldChicken);
+		event.registerLayerDefinition(ZOMBIFIED_COLD_CHICKEN_ZOMBIE_LAYER_BABY, () -> coldChicken.apply(ColdChickenModel.BABY_TRANSFORMER));
 	}
 }

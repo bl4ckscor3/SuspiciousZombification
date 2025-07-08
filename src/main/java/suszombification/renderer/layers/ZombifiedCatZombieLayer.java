@@ -15,14 +15,16 @@ import suszombification.SuspiciousZombification;
 public class ZombifiedCatZombieLayer extends RenderLayer<CatRenderState, CatModel> {
 	private static final ResourceLocation TEXTURE = SuspiciousZombification.resLoc("textures/entity/zombified_cat_zombie_layer.png");
 	private final CatModel model;
+	private final CatModel babyModel;
 
 	public ZombifiedCatZombieLayer(RenderLayerParent<CatRenderState, CatModel> parentRenderer, EntityModelSet modelSet) {
 		super(parentRenderer);
 		model = new CatModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_CAT_ZOMBIE_LAYER));
+		babyModel = new CatModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_CAT_ZOMBIE_LAYER_BABY));
 	}
 
 	@Override
 	public void render(PoseStack pose, MultiBufferSource buffer, int packedLight, CatRenderState renderState, float yRot, float xRot) {
-		coloredCutoutModelCopyLayerRender(model, TEXTURE, pose, buffer, packedLight, renderState, 0xFFFFFFFF);
+		coloredCutoutModelCopyLayerRender(renderState.isBaby ? babyModel : model, TEXTURE, pose, buffer, packedLight, renderState, 0xFFFFFFFF);
 	}
 }
