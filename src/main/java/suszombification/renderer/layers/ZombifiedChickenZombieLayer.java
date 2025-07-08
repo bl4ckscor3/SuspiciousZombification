@@ -13,27 +13,32 @@ import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.ChickenRenderState;
 import net.minecraft.world.entity.animal.ChickenVariant;
-import net.minecraft.world.entity.variant.ModelAndTexture;
 import suszombification.SZClientHandler;
 import suszombification.SuspiciousZombification;
 
 public class ZombifiedChickenZombieLayer extends RenderLayer<ChickenRenderState, ChickenModel> {
-	private final Map<ChickenVariant.ModelType, ModelAndTexture<ChickenModel>> models;
+	private final Map<ChickenVariant.ModelType, ModelAndTextureWithBaby<ChickenModel>> models;
 
 	public ZombifiedChickenZombieLayer(RenderLayerParent<ChickenRenderState, ChickenModel> parentRenderer, EntityModelSet modelSet) {
 		super(parentRenderer);
 		//@formatter:off
 		models = Maps.newEnumMap(Map.of(
-				ChickenVariant.ModelType.NORMAL, new ModelAndTexture<>(new ChickenModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_CHICKEN_ZOMBIE_LAYER)), SuspiciousZombification.resLoc("entity/zombified_chicken/temperate_layer")),
-				ChickenVariant.ModelType.COLD, new ModelAndTexture<>(new ColdChickenModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_COLD_CHICKEN_ZOMBIE_LAYER)), SuspiciousZombification.resLoc("entity/zombified_chicken/cold_layer"))
+				ChickenVariant.ModelType.NORMAL, new ModelAndTextureWithBaby<>(
+						new ChickenModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_CHICKEN_ZOMBIE_LAYER)),
+						new ChickenModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_CHICKEN_ZOMBIE_LAYER_BABY)),
+						SuspiciousZombification.resLoc("entity/zombified_chicken/temperate_layer")),
+				ChickenVariant.ModelType.COLD, new ModelAndTextureWithBaby<>(
+						new ColdChickenModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_COLD_CHICKEN_ZOMBIE_LAYER)),
+						new ColdChickenModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_COLD_CHICKEN_ZOMBIE_LAYER_BABY)),
+						SuspiciousZombification.resLoc("entity/zombified_chicken/cold_layer"))
 		));
 		//@formatter:on
 	}
 
 	@Override
 	public void render(PoseStack pose, MultiBufferSource buffer, int packedLight, ChickenRenderState renderState, float yRot, float xRot) {
-		ModelAndTexture<ChickenModel> tam = models.get(renderState.variant.modelAndTexture().model());
+		ModelAndTextureWithBaby<ChickenModel> mat = models.get(renderState.variant.modelAndTexture().model());
 
-		coloredCutoutModelCopyLayerRender(tam.model(), tam.asset().texturePath(), pose, buffer, packedLight, renderState, 0xFFFFFFFF);
+		coloredCutoutModelCopyLayerRender(renderState.isBaby ? mat.babyModel() : mat.model(), mat.asset().texturePath(), pose, buffer, packedLight, renderState, 0xFFFFFFFF);
 	}
 }
