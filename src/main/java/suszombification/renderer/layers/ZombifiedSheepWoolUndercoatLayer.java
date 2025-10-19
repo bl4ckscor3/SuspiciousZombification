@@ -7,7 +7,7 @@ import net.minecraft.client.model.SheepFurModel;
 import net.minecraft.client.model.SheepModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.model.geom.ModelLayers;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.SheepRenderState;
@@ -26,8 +26,8 @@ public class ZombifiedSheepWoolUndercoatLayer extends RenderLayer<SheepRenderSta
 		babyModel = new SheepFurModel(modelSet.bakeLayer(ModelLayers.SHEEP_BABY_WOOL_UNDERCOAT));
 	}
 
-	public void render(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, SheepRenderState renderState, float yRot, float xRot) {
-		if (!renderState.isInvisible && (renderState.isJebSheep() || renderState.woolColor != DyeColor.WHITE))
-			coloredCutoutModelCopyLayerRender(renderState.isBaby ? babyModel : adultModel, SHEEP_WOOL_UNDERCOAT_LOCATION, poseStack, bufferSource, packedLight, renderState, renderState.getWoolColor());
+	public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, SheepRenderState renderState, float yRot, float xRot) {
+		if (!renderState.isInvisible && (renderState.isJebSheep || renderState.woolColor != DyeColor.WHITE))
+			coloredCutoutModelCopyLayerRender(renderState.isBaby ? babyModel : adultModel, SHEEP_WOOL_UNDERCOAT_LOCATION, poseStack, submitNodeCollector, packedLight, renderState, renderState.getWoolColor(), renderState.outlineColor);
 	}
 }

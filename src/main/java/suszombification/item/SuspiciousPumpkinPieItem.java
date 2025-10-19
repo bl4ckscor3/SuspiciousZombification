@@ -138,7 +138,7 @@ public class SuspiciousPumpkinPieItem extends Item {
 
 			if (!foundEffect && !(ingredient.getItem() instanceof CandyItem)) {
 				if (ingredient.is(Items.GUNPOWDER)) {
-					if (entity != null && !entity.level().isClientSide)
+					if (entity != null && !entity.level().isClientSide())
 						entity.level().explode(null, SZDamageSources.sppExplosion(entity.level().registryAccess()), null, entity.getX(), entity.getY(), entity.getZ(), 3, false, ExplosionInteraction.MOB);
 				}
 				else { //vanilla mob drop
@@ -155,7 +155,7 @@ public class SuspiciousPumpkinPieItem extends Item {
 			}
 		}
 
-		if (entity instanceof Player player && !entity.level().isClientSide)
+		if (entity instanceof Player player && !entity.level().isClientSide())
 			player.displayClientMessage(Component.translatable("message.suszombification.suspicious_pumpkin_pie." + messageSuffix).withStyle(color), false);
 	}
 }

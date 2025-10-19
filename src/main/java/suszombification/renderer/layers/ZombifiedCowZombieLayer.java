@@ -9,7 +9,7 @@ import net.minecraft.client.model.ColdCowModel;
 import net.minecraft.client.model.CowModel;
 import net.minecraft.client.model.WarmCowModel;
 import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.CowRenderState;
@@ -41,9 +41,9 @@ public class ZombifiedCowZombieLayer extends RenderLayer<CowRenderState, CowMode
 	}
 
 	@Override
-	public void render(PoseStack pose, MultiBufferSource buffer, int packedLight, CowRenderState renderState, float yRot, float xRot) {
+	public void submit(PoseStack pose, SubmitNodeCollector submitNodeCollector, int packedLight, CowRenderState renderState, float yRot, float xRot) {
 		ModelAndTextureWithBaby<CowModel> mat = models.get(renderState.variant.modelAndTexture().model());
 
-		coloredCutoutModelCopyLayerRender(renderState.isBaby ? mat.babyModel() : mat.model(), mat.asset().texturePath(), pose, buffer, packedLight, renderState, 0xFFFFFFFF);
+		coloredCutoutModelCopyLayerRender(renderState.isBaby ? mat.babyModel() : mat.model(), mat.asset().id(), pose, submitNodeCollector, packedLight, renderState, 0, renderState.outlineColor);
 	}
 }

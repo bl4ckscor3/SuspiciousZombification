@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 
 import net.minecraft.client.model.CatModel;
 import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.CatRenderState;
@@ -24,7 +24,7 @@ public class ZombifiedCatZombieLayer extends RenderLayer<CatRenderState, CatMode
 	}
 
 	@Override
-	public void render(PoseStack pose, MultiBufferSource buffer, int packedLight, CatRenderState renderState, float yRot, float xRot) {
-		coloredCutoutModelCopyLayerRender(renderState.isBaby ? babyModel : model, TEXTURE, pose, buffer, packedLight, renderState, 0xFFFFFFFF);
+	public void submit(PoseStack pose, SubmitNodeCollector submitNodeCollector, int packedLight, CatRenderState renderState, float yRot, float xRot) {
+		coloredCutoutModelCopyLayerRender(renderState.isBaby ? babyModel : model, TEXTURE, pose, submitNodeCollector, packedLight, renderState, 0, renderState.outlineColor);
 	}
 }

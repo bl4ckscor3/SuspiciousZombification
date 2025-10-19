@@ -23,7 +23,7 @@ import suszombification.item.TrophyItem;
 
 public class SZItems {
 	public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(SuspiciousZombification.MODID);
-	public static final DeferredItem<SuspiciousPumpkinPieItem> SUSPICIOUS_PUMPKIN_PIE = ITEMS.registerItem("suspicious_pumpkin_pie", SuspiciousPumpkinPieItem::new, new Item.Properties().food(new FoodProperties.Builder().nutrition(8).saturationModifier(0.3F).alwaysEdible().build()));
+	public static final DeferredItem<SuspiciousPumpkinPieItem> SUSPICIOUS_PUMPKIN_PIE = ITEMS.registerItem("suspicious_pumpkin_pie", SuspiciousPumpkinPieItem::new, p -> p.food(new FoodProperties.Builder().nutrition(8).saturationModifier(0.3F).alwaysEdible().build()));
 	//candies
 	public static final DeferredItem<CandyItem> CARAMEL_CANDY = ITEMS.registerItem("caramel_candy", p -> new CandyItem(MobEffects.SLOW_FALLING, 20, p));
 	public static final DeferredItem<CandyItem> CHOCOLATE_CREAM_CANDY = ITEMS.registerItem("chocolate_cream_candy", p -> new CandyItem(MobEffects.MINING_FATIGUE, 20, p));
@@ -37,7 +37,7 @@ public class SZItems {
 	//other items
 	//@formatter:off
 	public static final DeferredItem<Item> SPOILED_MILK_BUCKET = ITEMS.registerSimpleItem("spoiled_milk_bucket",
-			new Item.Properties()
+			p -> p
 				.stacksTo(1)
 				.craftRemainder(Items.BUCKET)
 				.component(DataComponents.CONSUMABLE,
@@ -48,20 +48,20 @@ public class SZItems {
 								new MobEffectInstance(MobEffects.POISON, 300, 2)))).build())
 				.usingConvertsTo(Items.BUCKET));
 	//@formatter:on
-	public static final DeferredItem<RottenEggItem> ROTTEN_EGG = ITEMS.registerItem("rotten_egg", RottenEggItem::new, new Item.Properties().stacksTo(16));
-	public static final DeferredItem<RottenEggItem> BROWN_ROTTEN_EGG = ITEMS.registerItem("brown_rotten_egg", RottenEggItem::new, new Item.Properties().stacksTo(16));
-	public static final DeferredItem<RottenEggItem> BLUE_ROTTEN_EGG = ITEMS.registerItem("blue_rotten_egg", RottenEggItem::new, new Item.Properties().stacksTo(16));
-	public static final DeferredItem<FoodOnAStickItem<ZombifiedPig>> PORKCHOP_ON_A_STICK = ITEMS.registerItem("porkchop_on_a_stick", p -> new FoodOnAStickItem<>(SZEntityTypes.ZOMBIFIED_PIG.get(), 7, p), new Item.Properties().durability(50));
+	public static final DeferredItem<RottenEggItem> ROTTEN_EGG = ITEMS.registerItem("rotten_egg", RottenEggItem::new, p -> p.stacksTo(16));
+	public static final DeferredItem<RottenEggItem> BROWN_ROTTEN_EGG = ITEMS.registerItem("brown_rotten_egg", RottenEggItem::new, p -> p.stacksTo(16));
+	public static final DeferredItem<RottenEggItem> BLUE_ROTTEN_EGG = ITEMS.registerItem("blue_rotten_egg", RottenEggItem::new, p -> p.stacksTo(16));
+	public static final DeferredItem<FoodOnAStickItem<ZombifiedPig>> PORKCHOP_ON_A_STICK = ITEMS.registerItem("porkchop_on_a_stick", p -> new FoodOnAStickItem<>(SZEntityTypes.ZOMBIFIED_PIG.get(), 7, p), p -> p.durability(50));
 	//spawn eggs
-	public static final DeferredItem<SpawnEggItem> ZOMBIFIED_CAT_SPAWN_EGG = ITEMS.registerItem("zombified_cat_spawn_egg", p -> new SpawnEggItem(SZEntityTypes.ZOMBIFIED_CAT.get(), p));
-	public static final DeferredItem<SpawnEggItem> ZOMBIFIED_CHICKEN_SPAWN_EGG = ITEMS.registerItem("zombified_chicken_spawn_egg", p -> new SpawnEggItem(SZEntityTypes.ZOMBIFIED_CHICKEN.get(), p));
-	public static final DeferredItem<SpawnEggItem> ZOMBIFIED_COW_SPAWN_EGG = ITEMS.registerItem("zombified_cow_spawn_egg", p -> new SpawnEggItem(SZEntityTypes.ZOMBIFIED_COW.get(), p));
-	public static final DeferredItem<SpawnEggItem> ZOMBIFIED_PIG_SPAWN_EGG = ITEMS.registerItem("zombified_pig_spawn_egg", p -> new SpawnEggItem(SZEntityTypes.ZOMBIFIED_PIG.get(), p));
-	public static final DeferredItem<SpawnEggItem> ZOMBIFIED_SHEEP_SPAWN_EGG = ITEMS.registerItem("zombified_sheep_spawn_egg", p -> new SpawnEggItem(SZEntityTypes.ZOMBIFIED_SHEEP.get(), p));
+	public static final DeferredItem<SpawnEggItem> ZOMBIFIED_CAT_SPAWN_EGG = ITEMS.registerItem("zombified_cat_spawn_egg", SpawnEggItem::new, p -> p.spawnEgg(SZEntityTypes.ZOMBIFIED_CAT.get()));
+	public static final DeferredItem<SpawnEggItem> ZOMBIFIED_CHICKEN_SPAWN_EGG = ITEMS.registerItem("zombified_chicken_spawn_egg", SpawnEggItem::new, p -> p.spawnEgg(SZEntityTypes.ZOMBIFIED_CHICKEN.get()));
+	public static final DeferredItem<SpawnEggItem> ZOMBIFIED_COW_SPAWN_EGG = ITEMS.registerItem("zombified_cow_spawn_egg", SpawnEggItem::new, p -> p.spawnEgg(SZEntityTypes.ZOMBIFIED_COW.get()));
+	public static final DeferredItem<SpawnEggItem> ZOMBIFIED_PIG_SPAWN_EGG = ITEMS.registerItem("zombified_pig_spawn_egg", SpawnEggItem::new, p -> p.spawnEgg(SZEntityTypes.ZOMBIFIED_PIG.get()));
+	public static final DeferredItem<SpawnEggItem> ZOMBIFIED_SHEEP_SPAWN_EGG = ITEMS.registerItem("zombified_sheep_spawn_egg", SpawnEggItem::new, p -> p.spawnEgg(SZEntityTypes.ZOMBIFIED_SHEEP.get()));
 	//trophies
-	public static final DeferredItem<TrophyItem> CARROT_TROPHY = ITEMS.registerItem("carrot_trophy", p -> new TrophyItem(SZBlocks.CARROT_TROPHY.get(), p), new Item.Properties().stacksTo(1).useBlockDescriptionPrefix());
-	public static final DeferredItem<TrophyItem> POTATO_TROPHY = ITEMS.registerItem("potato_trophy", p -> new TrophyItem(SZBlocks.POTATO_TROPHY.get(), p), new Item.Properties().stacksTo(1).useBlockDescriptionPrefix());
-	public static final DeferredItem<TrophyItem> IRON_INGOT_TROPHY = ITEMS.registerItem("iron_ingot_trophy", p -> new TrophyItem(SZBlocks.IRON_INGOT_TROPHY.get(), p), new Item.Properties().stacksTo(1).useBlockDescriptionPrefix());
+	public static final DeferredItem<TrophyItem> CARROT_TROPHY = ITEMS.registerItem("carrot_trophy", p -> new TrophyItem(SZBlocks.CARROT_TROPHY.get(), p), p -> p.stacksTo(1).useBlockDescriptionPrefix());
+	public static final DeferredItem<TrophyItem> POTATO_TROPHY = ITEMS.registerItem("potato_trophy", p -> new TrophyItem(SZBlocks.POTATO_TROPHY.get(), p), p -> p.stacksTo(1).useBlockDescriptionPrefix());
+	public static final DeferredItem<TrophyItem> IRON_INGOT_TROPHY = ITEMS.registerItem("iron_ingot_trophy", p -> new TrophyItem(SZBlocks.IRON_INGOT_TROPHY.get(), p), p -> p.stacksTo(1).useBlockDescriptionPrefix());
 
 	private SZItems() {}
 }

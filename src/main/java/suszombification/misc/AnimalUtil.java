@@ -25,7 +25,7 @@ public class AnimalUtil {
 	private AnimalUtil() {}
 
 	public static void tick(LivingEntity me) {
-		if (!me.level().isClientSide && me.isAlive()) {
+		if (!me.level().isClientSide() && me.isAlive()) {
 			ZombifiedAnimal zombifiedAnimal = (ZombifiedAnimal) me;
 
 			if (zombifiedAnimal.isConverting()) {
@@ -45,7 +45,7 @@ public class AnimalUtil {
 				if (!player.getAbilities().instabuild)
 					stack.shrink(1);
 
-				if (!me.level().isClientSide)
+				if (!me.level().isClientSide())
 					((ZombifiedAnimal) me).startConverting(me.getRandom().nextInt(2401) + 3600);
 
 				me.level().gameEvent(me, GameEvent.ENTITY_INTERACT, me.getEyePosition());

@@ -8,7 +8,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.model.ColdPigModel;
 import net.minecraft.client.model.PigModel;
 import net.minecraft.client.model.geom.EntityModelSet;
-import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.PigRenderState;
@@ -36,9 +36,9 @@ public class ZombifiedPigZombieLayer extends RenderLayer<PigRenderState, PigMode
 	}
 
 	@Override
-	public void render(PoseStack pose, MultiBufferSource buffer, int packedLight, PigRenderState renderState, float yRot, float xRot) {
+	public void submit(PoseStack pose, SubmitNodeCollector submitNodeCollector, int packedLight, PigRenderState renderState, float yRot, float xRot) {
 		ModelAndTextureWithBaby<PigModel> mat = models.get(renderState.variant.modelAndTexture().model());
 
-		coloredCutoutModelCopyLayerRender(renderState.isBaby ? mat.babyModel() : mat.model(), mat.asset().texturePath(), pose, buffer, packedLight, renderState, 0xFFFFFFFF);
+		coloredCutoutModelCopyLayerRender(renderState.isBaby ? mat.babyModel() : mat.model(), mat.asset().id(), pose, submitNodeCollector, packedLight, renderState, 0, renderState.outlineColor);
 	}
 }

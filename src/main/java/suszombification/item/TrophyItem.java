@@ -33,7 +33,7 @@ public class TrophyItem extends BlockItem {
 				player.playSound(SoundEvents.ZOMBIE_AMBIENT, 0.5F, 0.8F);
 				player.addEffect(new MobEffectInstance(SZEffects.ZOMBIES_CURSE, -1));
 
-				if (!level.isClientSide)
+				if (!level.isClientSide())
 					player.displayClientMessage(Component.translatable("message.suszombification.curse.warning").withStyle(ChatFormatting.RED), false);
 			}
 		}

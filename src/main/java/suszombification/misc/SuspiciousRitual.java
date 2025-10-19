@@ -142,7 +142,7 @@ public final class SuspiciousRitual {
 	}
 
 	public static void maybeSendInfoMessages(Leashable leashedMob, Level level, BlockPos pos, Player player) {
-		if (!level.isClientSide && (leashedMob != null || !level.isDarkOutside())) {
+		if (!level.isClientSide() && (leashedMob != null || !level.isDarkOutside())) {
 			BlockState state = level.getBlockState(pos);
 
 			if (state.is(BlockTags.WOODEN_FENCES) && isStructurePresent(level, pos, false)) {
