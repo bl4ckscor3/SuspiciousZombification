@@ -1,4 +1,4 @@
-license="MIT License https://github.com/bl4ckscor3/SuspiciousZombification/blob/1.21.7/LICENSE"
+license="MIT License https://github.com/bl4ckscor3/SuspiciousZombification/blob/1.21.10/LICENSE"
 issueTrackerURL="https://github.com/bl4ckscor3/SuspiciousZombification/issues"
 
 [[mods]]
@@ -15,13 +15,13 @@ issueTrackerURL="https://github.com/bl4ckscor3/SuspiciousZombification/issues"
 [[dependencies.suszombification]]
 	modId="neoforge"
 	type="required"
-	versionRange="[21.6.6-beta,)"
+	versionRange="[21.10.19-beta,)"
 	ordering="NONE"
 	side="BOTH"
 
 [[dependencies.suszombification]]
 	modId="minecraft"
 	type="required"
-	versionRange="[1.21.6,1.22)"
+	versionRange="[1.21.10,1.22)"
 	ordering="NONE"
 	side="BOTH"
