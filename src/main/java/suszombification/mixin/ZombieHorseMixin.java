@@ -7,9 +7,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import net.minecraft.network.syncher.EntityDataAccessor;
-import net.minecraft.network.syncher.EntityDataSerializers;
-import net.minecraft.network.syncher.SynchedEntityData;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -37,19 +34,15 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.storage.ValueInput;
-import net.minecraft.world.level.storage.ValueOutput;
 import suszombification.entity.ZombifiedAnimal;
 import suszombification.entity.ai.NearestNormalVariantTargetGoal;
 import suszombification.entity.ai.SPPTemptGoal;
 import suszombification.misc.AnimalUtil;
+import suszombification.registration.SZAttachmentTypes;
 
 @Mixin(ZombieHorse.class)
 public class ZombieHorseMixin extends AbstractHorse implements ZombifiedAnimal, NeutralMob {
 	private static final Ingredient FOOD_ITEMS = Ingredient.of(Items.LEATHER);
-	private static final EntityDataAccessor<Boolean> DATA_CONVERTING_ID = SynchedEntityData.defineId(ZombieHorse.class, EntityDataSerializers.BOOLEAN);
-	private static final EntityDataAccessor<Integer> DATA_ID_TYPE_VARIANT = SynchedEntityData.defineId(ZombieHorse.class, EntityDataSerializers.INT);
-	private int conversionTime;
 	private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
 	private int remainingPersistentAngerTime;
 	private UUID persistentAngerTarget;
@@ -76,13 +69,6 @@ public class ZombieHorseMixin extends AbstractHorse implements ZombifiedAnimal, 
 	@Inject(method = "createAttributes", at = @At("HEAD"), cancellable = true)
 	private static void suszombification$createAttributes(CallbackInfoReturnable<AttributeSupplier.Builder> callback) {
 		callback.setReturnValue(createBaseHorseAttributes().add(Attributes.MAX_HEALTH, 15.0D).add(Attributes.MOVEMENT_SPEED, 0.2F).add(Attributes.ATTACK_DAMAGE, 2.0F));
-	}
-
-	@Override
-	protected void defineSynchedData(SynchedEntityData.Builder builder) {
-		super.defineSynchedData(builder);
-		builder.define(DATA_CONVERTING_ID, false);
-		builder.define(DATA_ID_TYPE_VARIANT, 0);
 	}
 
 	@Override
@@ -113,25 +99,6 @@ public class ZombieHorseMixin extends AbstractHorse implements ZombifiedAnimal, 
 	@Override
 	public boolean isFood(ItemStack stack) {
 		return AnimalUtil.isFood(stack, FOOD_ITEMS) || super.isFood(stack);
-	}
-
-	@Override
-	public void readAdditionalSaveData(ValueInput tag) {
-		super.readAdditionalSaveData(tag);
-
-		int conversionTime = tag.getIntOr("ConversionTime", -1);
-
-		if (conversionTime > -1)
-			startConverting(conversionTime);
-
-		entityData.set(DATA_ID_TYPE_VARIANT, tag.getIntOr("Variant", 0));
-	}
-
-	@Override
-	public void addAdditionalSaveData(ValueOutput tag) {
-		super.addAdditionalSaveData(tag);
-		tag.putInt("ConversionTime", isConverting() ? conversionTime : -1);
-		tag.putInt("Variant", entityData.get(DATA_ID_TYPE_VARIANT));
 	}
 
 	@Override
@@ -167,32 +134,32 @@ public class ZombieHorseMixin extends AbstractHorse implements ZombifiedAnimal, 
 	@Override
 	public void readFromVanilla(Animal animal) {
 		if (animal instanceof Horse horse)
-			entityData.set(DATA_ID_TYPE_VARIANT, horse.getTypeVariant());
+			setData(SZAttachmentTypes.ZOMBIE_HORSE_VARIANT, horse.getTypeVariant());
 	}
 
 	@Override
 	public void writeToVanilla(Animal animal) {
 		if (animal instanceof Horse horse)
-			horse.setTypeVariant(entityData.get(DATA_ID_TYPE_VARIANT));
+			horse.setTypeVariant(getData(SZAttachmentTypes.ZOMBIE_HORSE_VARIANT));
 	}
 
 	@Override
 	public boolean isConverting() {
-		return entityData.get(DATA_CONVERTING_ID);
+		return getData(SZAttachmentTypes.ZOMBIE_HORSE_CONVERSION_TIME) >= 0;
 	}
 
 	@Override
 	public void setConverting() {
-		entityData.set(DATA_CONVERTING_ID, true);
+		//Conversion is started through setConversionTime
 	}
 
 	@Override
 	public void setConversionTime(int conversionTime) {
-		this.conversionTime = conversionTime;
+		setData(SZAttachmentTypes.ZOMBIE_HORSE_CONVERSION_TIME, conversionTime);
 	}
 
 	@Override
 	public int getConversionTime() {
-		return conversionTime;
+		return getData(SZAttachmentTypes.ZOMBIE_HORSE_CONVERSION_TIME);
 	}
 }

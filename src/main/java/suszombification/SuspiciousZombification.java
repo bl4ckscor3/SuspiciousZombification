@@ -5,6 +5,7 @@ import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
+import suszombification.registration.SZAttachmentTypes;
 import suszombification.registration.SZBlockEntityTypes;
 import suszombification.registration.SZBlocks;
 import suszombification.registration.SZDataComponents;
@@ -19,6 +20,7 @@ public class SuspiciousZombification {
 	public SuspiciousZombification(IEventBus modEventBus, ModContainer container) {
 		container.registerConfig(ModConfig.Type.SERVER, SZConfig.SERVER_SPEC);
 		SZBlocks.BLOCKS.register(modEventBus);
+		SZAttachmentTypes.ATTACHMENT_TYPES.register(modEventBus);
 		SZBlockEntityTypes.BLOCK_ENTITY_TYPES.register(modEventBus);
 		SZCreativeModeTabs.CREATIVE_MODE_TABS.register(modEventBus);
 		SZDataComponents.DATA_COMPONENTS.register(modEventBus);
