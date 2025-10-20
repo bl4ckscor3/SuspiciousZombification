@@ -8,12 +8,13 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.CatRenderState;
+import net.minecraft.core.ClientAsset;
 import net.minecraft.resources.ResourceLocation;
 import suszombification.SZClientHandler;
 import suszombification.SuspiciousZombification;
 
 public class ZombifiedCatZombieLayer extends RenderLayer<CatRenderState, CatModel> {
-	private static final ResourceLocation TEXTURE = SuspiciousZombification.resLoc("textures/entity/zombified_cat_zombie_layer.png");
+	private static final ResourceLocation TEXTURE = new ClientAsset.ResourceTexture(SuspiciousZombification.resLoc("entity/zombified_cat_zombie_layer")).texturePath();
 	private final CatModel model;
 	private final CatModel babyModel;
 
@@ -25,6 +26,6 @@ public class ZombifiedCatZombieLayer extends RenderLayer<CatRenderState, CatMode
 
 	@Override
 	public void submit(PoseStack pose, SubmitNodeCollector submitNodeCollector, int packedLight, CatRenderState renderState, float yRot, float xRot) {
-		coloredCutoutModelCopyLayerRender(renderState.isBaby ? babyModel : model, TEXTURE, pose, submitNodeCollector, packedLight, renderState, 0, renderState.outlineColor);
+		coloredCutoutModelCopyLayerRender(renderState.isBaby ? babyModel : model, TEXTURE, pose, submitNodeCollector, packedLight, renderState, -1, renderState.outlineColor);
 	}
 }

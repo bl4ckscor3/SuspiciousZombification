@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.PigRenderState;
+import net.minecraft.core.ClientAsset;
 import net.minecraft.world.entity.animal.PigVariant.ModelType;
 import suszombification.SZClientHandler;
 import suszombification.SuspiciousZombification;
@@ -26,11 +27,11 @@ public class ZombifiedPigZombieLayer extends RenderLayer<PigRenderState, PigMode
 				ModelType.NORMAL, new ModelAndTextureWithBaby<>(
 						new PigModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_PIG_ZOMBIE_LAYER)),
 						new PigModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_PIG_ZOMBIE_LAYER_BABY)),
-						SuspiciousZombification.resLoc("entity/zombified_pig/temperate_layer")),
+						() -> new ClientAsset.ResourceTexture(SuspiciousZombification.resLoc("entity/zombified_pig/temperate_layer")).texturePath()),
 				ModelType.COLD, new ModelAndTextureWithBaby<>(
 						new ColdPigModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_COLD_PIG_ZOMBIE_LAYER)),
 						new ColdPigModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_COLD_PIG_ZOMBIE_LAYER_BABY)),
-						SuspiciousZombification.resLoc("entity/zombified_pig/cold_layer"))
+						() -> new ClientAsset.ResourceTexture(SuspiciousZombification.resLoc("entity/zombified_pig/cold_layer")).texturePath())
 		));
 		//@formatter:on
 	}
@@ -39,6 +40,6 @@ public class ZombifiedPigZombieLayer extends RenderLayer<PigRenderState, PigMode
 	public void submit(PoseStack pose, SubmitNodeCollector submitNodeCollector, int packedLight, PigRenderState renderState, float yRot, float xRot) {
 		ModelAndTextureWithBaby<PigModel> mat = models.get(renderState.variant.modelAndTexture().model());
 
-		coloredCutoutModelCopyLayerRender(renderState.isBaby ? mat.babyModel() : mat.model(), mat.asset().id(), pose, submitNodeCollector, packedLight, renderState, 0, renderState.outlineColor);
+		coloredCutoutModelCopyLayerRender(renderState.isBaby ? mat.babyModel() : mat.model(), mat.asset().id(), pose, submitNodeCollector, packedLight, renderState, -1, renderState.outlineColor);
 	}
 }
