@@ -34,6 +34,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.storage.ValueInput;
 import suszombification.entity.ZombifiedAnimal;
 import suszombification.entity.ai.NearestNormalVariantTargetGoal;
 import suszombification.entity.ai.SPPTemptGoal;
@@ -102,6 +103,13 @@ public class ZombieHorseMixin extends AbstractHorse implements ZombifiedAnimal, 
 	}
 
 	@Override
+	public void readAdditionalSaveData(ValueInput tag) {
+		super.readAdditionalSaveData(tag);
+		tag.getInt("ConversionTime").ifPresent(conversionTime -> setData(SZAttachmentTypes.ZOMBIE_HORSE_CONVERSION_TIME, conversionTime));
+		tag.getInt("Variant").ifPresent(variant -> setData(SZAttachmentTypes.ZOMBIE_HORSE_VARIANT, variant));
+	}
+
+	@Override
 	public int getRemainingPersistentAngerTime() {
 		return remainingPersistentAngerTime;
 	}
@@ -149,9 +157,7 @@ public class ZombieHorseMixin extends AbstractHorse implements ZombifiedAnimal, 
 	}
 
 	@Override
-	public void setConverting() {
-		//Conversion is started through setConversionTime
-	}
+	public void setConverting() {} //Conversion is started through setConversionTime
 
 	@Override
 	public void setConversionTime(int conversionTime) {
