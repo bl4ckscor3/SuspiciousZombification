@@ -40,6 +40,6 @@ public class ZombifiedChickenZombieLayer extends RenderLayer<ChickenRenderState,
 	public void submit(PoseStack pose, SubmitNodeCollector submitNodeCollector, int packedLight, ChickenRenderState renderState, float yRot, float xRot) {
 		ModelAndTextureWithBaby<ChickenModel> mat = models.get(renderState.variant.modelAndTexture().model());
 
-		coloredCutoutModelCopyLayerRender(renderState.isBaby ? mat.babyModel() : mat.model(), mat.asset().id(), pose, submitNodeCollector, packedLight, renderState, -1, renderState.outlineColor);
+		coloredCutoutModelCopyLayerRender(renderState.isBaby ? mat.babyModel() : mat.model(), mat.asset().id(), pose, submitNodeCollector, packedLight, renderState, -1, 1);
 	}
 }

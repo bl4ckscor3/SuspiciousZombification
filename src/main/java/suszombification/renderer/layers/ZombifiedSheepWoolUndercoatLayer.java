@@ -28,6 +28,6 @@ public class ZombifiedSheepWoolUndercoatLayer extends RenderLayer<SheepRenderSta
 
 	public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, SheepRenderState renderState, float yRot, float xRot) {
 		if (!renderState.isInvisible && (renderState.isJebSheep || renderState.woolColor != DyeColor.WHITE))
-			coloredCutoutModelCopyLayerRender(renderState.isBaby ? babyModel : adultModel, SHEEP_WOOL_UNDERCOAT_LOCATION, poseStack, submitNodeCollector, packedLight, renderState, renderState.getWoolColor(), renderState.outlineColor);
+			coloredCutoutModelCopyLayerRender(renderState.isBaby ? babyModel : adultModel, SHEEP_WOOL_UNDERCOAT_LOCATION, poseStack, submitNodeCollector, packedLight, renderState, renderState.getWoolColor(), 3);
 	}
 }

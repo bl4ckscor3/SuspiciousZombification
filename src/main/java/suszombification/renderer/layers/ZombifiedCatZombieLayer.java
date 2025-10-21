@@ -26,6 +26,6 @@ public class ZombifiedCatZombieLayer extends RenderLayer<CatRenderState, CatMode
 
 	@Override
 	public void submit(PoseStack pose, SubmitNodeCollector submitNodeCollector, int packedLight, CatRenderState renderState, float yRot, float xRot) {
-		coloredCutoutModelCopyLayerRender(renderState.isBaby ? babyModel : model, TEXTURE, pose, submitNodeCollector, packedLight, renderState, -1, renderState.outlineColor);
+		coloredCutoutModelCopyLayerRender(renderState.isBaby ? babyModel : model, TEXTURE, pose, submitNodeCollector, packedLight, renderState, -1, 2);
 	}
 }

@@ -45,6 +45,6 @@ public class ZombifiedCowZombieLayer extends RenderLayer<CowRenderState, CowMode
 	public void submit(PoseStack pose, SubmitNodeCollector submitNodeCollector, int packedLight, CowRenderState renderState, float yRot, float xRot) {
 		ModelAndTextureWithBaby<CowModel> mat = models.get(renderState.variant.modelAndTexture().model());
 
-		coloredCutoutModelCopyLayerRender(renderState.isBaby ? mat.babyModel() : mat.model(), mat.asset().id(), pose, submitNodeCollector, packedLight, renderState, -1, renderState.outlineColor);
+		coloredCutoutModelCopyLayerRender(renderState.isBaby ? mat.babyModel() : mat.model(), mat.asset().id(), pose, submitNodeCollector, packedLight, renderState, -1, 1);
 	}
 }

@@ -38,7 +38,7 @@ public class ZombifiedSheepWoolLayer extends RenderLayer<SheepRenderState, Sheep
 					submitNodeCollector.submitModel(model, renderState, pose, RenderType.outline(SHEEP_WOOL_LOCATION), packedLight, LivingEntityRenderer.getOverlayCoords(renderState, 0.0F), OverlayTexture.NO_OVERLAY, null, renderState.outlineColor, null);
 			}
 			else
-				coloredCutoutModelCopyLayerRender(model, SHEEP_WOOL_LOCATION, pose, submitNodeCollector, packedLight, renderState, renderState.getWoolColor(), renderState.outlineColor);
+				coloredCutoutModelCopyLayerRender(model, SHEEP_WOOL_LOCATION, pose, submitNodeCollector, packedLight, renderState, renderState.getWoolColor(), 2);
 		}
 	}
 }
