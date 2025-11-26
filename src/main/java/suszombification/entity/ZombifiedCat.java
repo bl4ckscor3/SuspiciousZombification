@@ -1,7 +1,5 @@
 package suszombification.entity;
 
-import java.util.UUID;
-
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.syncher.EntityDataAccessor;
 import net.minecraft.network.syncher.EntityDataSerializers;
@@ -14,8 +12,10 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityReference;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -55,10 +55,10 @@ import suszombification.registration.SZLoot;
 public class ZombifiedCat extends Cat implements NeutralMob, ZombifiedAnimal {
 	private static final Ingredient TEMPT_INGREDIENT = Ingredient.of(Items.STRING);
 	private static final EntityDataAccessor<Boolean> DATA_CONVERTING_ID = SynchedEntityData.defineId(ZombifiedCat.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Long> DATA_ANGER_END_TIME = SynchedEntityData.defineId(ZombifiedCat.class, EntityDataSerializers.LONG);
 	private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
-	private int remainingPersistentAngerTime;
-	private UUID persistentAngerTarget;
 	private int conversionTime;
+	private EntityReference<LivingEntity> persistentAngerTarget;
 
 	public ZombifiedCat(EntityType<? extends Cat> type, Level level) {
 		super(type, level);
@@ -87,6 +87,7 @@ public class ZombifiedCat extends Cat implements NeutralMob, ZombifiedAnimal {
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 		super.defineSynchedData(builder);
 		builder.define(DATA_CONVERTING_ID, false);
+		builder.define(DATA_ANGER_END_TIME, -1L);
 	}
 
 	public static AttributeSupplier.Builder createAttributes() {
@@ -133,6 +134,7 @@ public class ZombifiedCat extends Cat implements NeutralMob, ZombifiedAnimal {
 	@Override
 	public void readAdditionalSaveData(ValueInput tag) {
 		super.readAdditionalSaveData(tag);
+		readPersistentAngerSaveData(level(), tag);
 
 		int conversionTime = tag.getIntOr("ConversionTime", -1);
 
@@ -143,6 +145,7 @@ public class ZombifiedCat extends Cat implements NeutralMob, ZombifiedAnimal {
 	@Override
 	public void addAdditionalSaveData(ValueOutput tag) {
 		super.addAdditionalSaveData(tag);
+		addPersistentAngerSaveData(tag);
 		tag.putInt("ConversionTime", isConverting() ? conversionTime : -1);
 	}
 
@@ -150,28 +153,34 @@ public class ZombifiedCat extends Cat implements NeutralMob, ZombifiedAnimal {
 	protected void reassessTameGoals() {}
 
 	@Override
-	public int getRemainingPersistentAngerTime() {
-		return remainingPersistentAngerTime;
+	public long getPersistentAngerEndTime() {
+		return entityData.get(DATA_ANGER_END_TIME);
 	}
 
 	@Override
-	public void setRemainingPersistentAngerTime(int time) {
-		remainingPersistentAngerTime = time;
+	public void setPersistentAngerEndTime(long time) {
+		entityData.set(DATA_ANGER_END_TIME, time);
 	}
 
 	@Override
-	public UUID getPersistentAngerTarget() {
+	public EntityReference<LivingEntity> getPersistentAngerTarget() {
 		return persistentAngerTarget;
 	}
 
 	@Override
-	public void setPersistentAngerTarget(UUID target) {
-		persistentAngerTarget = target;
+	public void setPersistentAngerTarget(EntityReference<LivingEntity> entity) {
+		persistentAngerTarget = entity;
 	}
 
 	@Override
 	public void startPersistentAngerTimer() {
-		setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(random));
+		setTimeToRemainAngry(PERSISTENT_ANGER_TIME.sample(random));
+	}
+
+	@Override
+	public void customServerAiStep(ServerLevel level) {
+		super.customServerAiStep(level);
+		updatePersistentAnger(level, false);
 	}
 
 	@Override

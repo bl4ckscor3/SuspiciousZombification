@@ -57,6 +57,7 @@ public class ZombifiedPig extends Pig implements NeutralMob, ZombifiedAnimal {
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 		super.defineSynchedData(builder);
 		builder.define(DATA_CONVERTING_ID, false);
+		builder.define(DATA_ANGER_END_TIME, -1L);
 	}
 
 	@Override

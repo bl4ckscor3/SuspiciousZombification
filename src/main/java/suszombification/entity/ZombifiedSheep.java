@@ -1,7 +1,6 @@
 package suszombification.entity;
 
 import java.util.Map;
-import java.util.UUID;
 
 import com.google.common.collect.Maps;
 
@@ -18,8 +17,10 @@ import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.AgeableMob;
+import net.minecraft.world.entity.EntityReference;
 import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -72,10 +73,10 @@ public class ZombifiedSheep extends Sheep implements NeutralMob, ZombifiedAnimal
 	});
 	private static final Ingredient FOOD_ITEMS = Ingredient.of(Items.MUTTON);
 	private static final EntityDataAccessor<Boolean> DATA_CONVERTING_ID = SynchedEntityData.defineId(ZombifiedSheep.class, EntityDataSerializers.BOOLEAN);
+	private static final EntityDataAccessor<Long> DATA_ANGER_END_TIME = SynchedEntityData.defineId(ZombifiedSheep.class, EntityDataSerializers.LONG);
 	private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
 	private int conversionTime;
-	private int remainingPersistentAngerTime;
-	private UUID persistentAngerTarget;
+	private EntityReference<LivingEntity> persistentAngerTarget;
 
 	public ZombifiedSheep(EntityType<? extends Sheep> type, Level level) {
 		super(type, level);
@@ -85,6 +86,7 @@ public class ZombifiedSheep extends Sheep implements NeutralMob, ZombifiedAnimal
 	protected void defineSynchedData(SynchedEntityData.Builder builder) {
 		super.defineSynchedData(builder);
 		builder.define(DATA_CONVERTING_ID, false);
+		builder.define(DATA_ANGER_END_TIME, -1L);
 	}
 
 	@Override
@@ -175,6 +177,7 @@ public class ZombifiedSheep extends Sheep implements NeutralMob, ZombifiedAnimal
 	@Override
 	public void readAdditionalSaveData(ValueInput tag) {
 		super.readAdditionalSaveData(tag);
+		readPersistentAngerSaveData(level(), tag);
 
 		int conversionTime = tag.getIntOr("ConversionTime", -1);
 
@@ -185,32 +188,39 @@ public class ZombifiedSheep extends Sheep implements NeutralMob, ZombifiedAnimal
 	@Override
 	public void addAdditionalSaveData(ValueOutput tag) {
 		super.addAdditionalSaveData(tag);
+		addPersistentAngerSaveData(tag);
 		tag.putInt("ConversionTime", isConverting() ? conversionTime : -1);
 	}
 
 	@Override
-	public int getRemainingPersistentAngerTime() {
-		return remainingPersistentAngerTime;
+	public long getPersistentAngerEndTime() {
+		return entityData.get(DATA_ANGER_END_TIME);
 	}
 
 	@Override
-	public void setRemainingPersistentAngerTime(int time) {
-		remainingPersistentAngerTime = time;
+	public void setPersistentAngerEndTime(long time) {
+		entityData.set(DATA_ANGER_END_TIME, time);
 	}
 
 	@Override
-	public UUID getPersistentAngerTarget() {
+	public EntityReference<LivingEntity> getPersistentAngerTarget() {
 		return persistentAngerTarget;
 	}
 
 	@Override
-	public void setPersistentAngerTarget(UUID target) {
-		persistentAngerTarget = target;
+	public void setPersistentAngerTarget(EntityReference<LivingEntity> entity) {
+		persistentAngerTarget = entity;
 	}
 
 	@Override
 	public void startPersistentAngerTimer() {
-		setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(random));
+		setTimeToRemainAngry(PERSISTENT_ANGER_TIME.sample(random));
+	}
+
+	@Override
+	protected void customServerAiStep(ServerLevel level) {
+		super.customServerAiStep(level);
+		updatePersistentAnger(level, false);
 	}
 
 	@Override

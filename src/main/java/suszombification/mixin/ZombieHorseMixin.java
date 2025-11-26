@@ -1,6 +1,6 @@
 package suszombification.mixin;
 
-import java.util.UUID;
+import java.util.Optional;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -12,7 +12,9 @@ import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.EntityReference;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
@@ -35,6 +37,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
+import net.minecraft.world.level.storage.ValueOutput;
 import suszombification.entity.ZombifiedAnimal;
 import suszombification.entity.ai.NearestNormalVariantTargetGoal;
 import suszombification.entity.ai.SPPTemptGoal;
@@ -45,8 +48,6 @@ import suszombification.registration.SZAttachmentTypes;
 public class ZombieHorseMixin extends AbstractHorse implements ZombifiedAnimal, NeutralMob {
 	private static final Ingredient FOOD_ITEMS = Ingredient.of(Items.LEATHER);
 	private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
-	private int remainingPersistentAngerTime;
-	private UUID persistentAngerTarget;
 
 	protected ZombieHorseMixin(EntityType<? extends AbstractHorse> type, Level level) {
 		super(type, level);
@@ -105,33 +106,53 @@ public class ZombieHorseMixin extends AbstractHorse implements ZombifiedAnimal, 
 	@Override
 	public void readAdditionalSaveData(ValueInput tag) {
 		super.readAdditionalSaveData(tag);
+		readPersistentAngerSaveData(level(), tag);
 		tag.getInt("ConversionTime").ifPresent(conversionTime -> setData(SZAttachmentTypes.ZOMBIE_HORSE_CONVERSION_TIME, conversionTime));
 		tag.getInt("Variant").ifPresent(variant -> setData(SZAttachmentTypes.ZOMBIE_HORSE_VARIANT, variant));
+
+		Optional<Object> angryAt = getData(SZAttachmentTypes.ZOMBIE_HORSE_ANGRY_AT);
+
+		if (angryAt.isPresent())
+			setTarget(EntityReference.getLivingEntity((EntityReference<LivingEntity>) angryAt.get(), level()));
 	}
 
 	@Override
-	public int getRemainingPersistentAngerTime() {
-		return remainingPersistentAngerTime;
+	protected void addAdditionalSaveData(ValueOutput tag) {
+		super.addAdditionalSaveData(tag);
+		addPersistentAngerSaveData(tag);
 	}
 
 	@Override
-	public void setRemainingPersistentAngerTime(int time) {
-		remainingPersistentAngerTime = time;
+	public long getPersistentAngerEndTime() {
+		return getData(SZAttachmentTypes.ZOMBIE_HORSE_ANGER_END_TIME);
 	}
 
 	@Override
-	public UUID getPersistentAngerTarget() {
-		return persistentAngerTarget;
+	public void setPersistentAngerEndTime(long time) {
+		setData(SZAttachmentTypes.ZOMBIE_HORSE_ANGER_END_TIME, time);
 	}
 
 	@Override
-	public void setPersistentAngerTarget(UUID target) {
-		persistentAngerTarget = target;
+	public EntityReference<LivingEntity> getPersistentAngerTarget() {
+		Optional<Object> angryAt = getData(SZAttachmentTypes.ZOMBIE_HORSE_ANGRY_AT);
+
+		return (EntityReference<LivingEntity>) angryAt.orElse(null);
+	}
+
+	@Override
+	public void setPersistentAngerTarget(EntityReference<LivingEntity> entity) {
+		setData(SZAttachmentTypes.ZOMBIE_HORSE_ANGRY_AT, Optional.ofNullable(entity));
 	}
 
 	@Override
 	public void startPersistentAngerTimer() {
-		setRemainingPersistentAngerTime(PERSISTENT_ANGER_TIME.sample(random));
+		setTimeToRemainAngry(PERSISTENT_ANGER_TIME.sample(random));
+	}
+
+	@Override
+	public void customServerAiStep(ServerLevel level) {
+		super.customServerAiStep(level);
+		updatePersistentAnger(level, false);
 	}
 
 	@Override
