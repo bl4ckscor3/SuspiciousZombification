@@ -3,7 +3,7 @@ package suszombification.renderer;
 import net.minecraft.client.renderer.entity.CatRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.CatRenderState;
-import net.minecraft.world.entity.animal.Cat;
+import net.minecraft.world.entity.animal.feline.Cat;
 import suszombification.entity.ZombifiedCat;
 import suszombification.renderer.layers.ZombifiedCatZombieLayer;
 

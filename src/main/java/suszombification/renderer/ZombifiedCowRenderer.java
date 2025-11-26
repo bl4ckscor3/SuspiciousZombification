@@ -3,7 +3,7 @@ package suszombification.renderer;
 import net.minecraft.client.renderer.entity.CowRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.CowRenderState;
-import net.minecraft.world.entity.animal.Cow;
+import net.minecraft.world.entity.animal.cow.Cow;
 import suszombification.entity.ZombifiedCow;
 import suszombification.renderer.layers.ZombifiedCowZombieLayer;
 

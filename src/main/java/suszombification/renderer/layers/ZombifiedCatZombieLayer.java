@@ -2,19 +2,19 @@ package suszombification.renderer.layers;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.model.CatModel;
+import net.minecraft.client.model.animal.feline.CatModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.CatRenderState;
 import net.minecraft.core.ClientAsset;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import suszombification.SZClientHandler;
 import suszombification.SuspiciousZombification;
 
 public class ZombifiedCatZombieLayer extends RenderLayer<CatRenderState, CatModel> {
-	private static final ResourceLocation TEXTURE = new ClientAsset.ResourceTexture(SuspiciousZombification.resLoc("entity/zombified_cat_zombie_layer")).texturePath();
+	private static final Identifier TEXTURE = new ClientAsset.ResourceTexture(SuspiciousZombification.resLoc("entity/zombified_cat_zombie_layer")).texturePath();
 	private final CatModel model;
 	private final CatModel babyModel;
 

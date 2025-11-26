@@ -5,16 +5,16 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.model.ColdCowModel;
-import net.minecraft.client.model.CowModel;
-import net.minecraft.client.model.WarmCowModel;
+import net.minecraft.client.model.animal.cow.ColdCowModel;
+import net.minecraft.client.model.animal.cow.CowModel;
+import net.minecraft.client.model.animal.cow.WarmCowModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.CowRenderState;
 import net.minecraft.core.ClientAsset;
-import net.minecraft.world.entity.animal.CowVariant;
+import net.minecraft.world.entity.animal.cow.CowVariant;
 import suszombification.SZClientHandler;
 import suszombification.SuspiciousZombification;
 

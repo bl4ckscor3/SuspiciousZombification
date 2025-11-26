@@ -1,8 +1,8 @@
 package suszombification.registration;
 
 import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.MobCategory;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -60,6 +60,6 @@ public class SZEntityTypes {
 	}
 
 	private static ResourceKey<EntityType<?>> key(String name) {
-		return ResourceKey.create(Registries.ENTITY_TYPE, ResourceLocation.fromNamespaceAndPath(SuspiciousZombification.MODID, name));
+		return ResourceKey.create(Registries.ENTITY_TYPE, Identifier.fromNamespaceAndPath(SuspiciousZombification.MODID, name));
 	}
 }

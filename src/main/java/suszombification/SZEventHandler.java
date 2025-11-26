@@ -15,7 +15,7 @@ import net.minecraft.world.entity.Mob;
 import net.minecraft.world.entity.PathfinderMob;
 import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.horse.ZombieHorse;
+import net.minecraft.world.entity.animal.equine.ZombieHorse;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -125,8 +125,8 @@ public class SZEventHandler {
 					return;
 
 				killedEntity.convertTo(conversionType, ConversionParams.single(killedEntity, true, true), convertedAnimal -> {
-					if (convertedAnimal != null) {
-						EventHooks.finalizeMobSpawn(convertedAnimal, (ServerLevel) level, level.getCurrentDifficultyAt(convertedAnimal.blockPosition()), EntitySpawnReason.CONVERSION, null);
+					if (convertedAnimal != null && level instanceof ServerLevel serverLevel) {
+						EventHooks.finalizeMobSpawn(convertedAnimal, serverLevel, serverLevel.getCurrentDifficultyAt(convertedAnimal.blockPosition()), EntitySpawnReason.CONVERSION, null);
 						((ZombifiedAnimal) convertedAnimal).readFromVanilla(killedEntity);
 						EventHooks.onLivingConvert(livingEntity, convertedAnimal);
 

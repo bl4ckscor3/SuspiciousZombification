@@ -24,12 +24,12 @@ public class GlobalLootModifierGenerator extends GlobalLootModifierProvider {
 	protected void start() {
 		add("cat_morning_gift", new CatMorningGiftModifier(new LootItemCondition[] {
 				//@formatter:off
-				LootTableIdCondition.builder(BuiltInLootTables.CAT_MORNING_GIFT.location()).build(),
+				LootTableIdCondition.builder(BuiltInLootTables.CAT_MORNING_GIFT.identifier()).build(),
 				LootItemRandomChanceCondition.randomChance(0.5F).build()
 				//@formatter:on
 		}));
 		add("no_decomposing_drops", new NoDecomposingDropsModifier(new LootItemCondition[] {
-				InvertedLootItemCondition.invert(LootTableIdCondition.builder(SZLoot.DEATH_BY_DECOMPOSING.location())).build()
+				InvertedLootItemCondition.invert(LootTableIdCondition.builder(SZLoot.DEATH_BY_DECOMPOSING.identifier())).build()
 		}));
 	}
 }

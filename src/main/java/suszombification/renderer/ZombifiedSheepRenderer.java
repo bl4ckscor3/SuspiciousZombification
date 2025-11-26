@@ -3,7 +3,7 @@ package suszombification.renderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.SheepRenderer;
 import net.minecraft.client.renderer.entity.state.SheepRenderState;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.animal.sheep.Sheep;
 import suszombification.SuspiciousZombification;
 import suszombification.entity.ZombifiedSheep;
@@ -11,7 +11,7 @@ import suszombification.renderer.layers.ZombifiedSheepWoolLayer;
 import suszombification.renderer.layers.ZombifiedSheepWoolUndercoatLayer;
 
 public class ZombifiedSheepRenderer extends SheepRenderer {
-	private static final ResourceLocation SHEEP_LOCATION = SuspiciousZombification.resLoc("textures/entity/zombified_sheep/zombified_sheep.png");
+	private static final Identifier SHEEP_LOCATION = SuspiciousZombification.resLoc("textures/entity/zombified_sheep/zombified_sheep.png");
 
 	public ZombifiedSheepRenderer(EntityRendererProvider.Context ctx) {
 		super(ctx);
@@ -21,7 +21,7 @@ public class ZombifiedSheepRenderer extends SheepRenderer {
 	}
 
 	@Override
-	public ResourceLocation getTextureLocation(SheepRenderState renderState) {
+	public Identifier getTextureLocation(SheepRenderState renderState) {
 		return SHEEP_LOCATION;
 	}
 

@@ -3,7 +3,7 @@ package suszombification.renderer;
 import net.minecraft.client.renderer.entity.ChickenRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.state.ChickenRenderState;
-import net.minecraft.world.entity.animal.Chicken;
+import net.minecraft.world.entity.animal.chicken.Chicken;
 import suszombification.entity.ZombifiedChicken;
 import suszombification.renderer.layers.ZombifiedChickenZombieLayer;
 

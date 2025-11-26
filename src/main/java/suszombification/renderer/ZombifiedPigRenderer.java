@@ -3,7 +3,7 @@ package suszombification.renderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.PigRenderer;
 import net.minecraft.client.renderer.entity.state.PigRenderState;
-import net.minecraft.world.entity.animal.Pig;
+import net.minecraft.world.entity.animal.pig.Pig;
 import suszombification.entity.ZombifiedPig;
 import suszombification.renderer.layers.ZombifiedPigZombieLayer;
 

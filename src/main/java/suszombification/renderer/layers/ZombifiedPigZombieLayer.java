@@ -5,15 +5,15 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.model.ColdPigModel;
-import net.minecraft.client.model.PigModel;
+import net.minecraft.client.model.animal.pig.ColdPigModel;
+import net.minecraft.client.model.animal.pig.PigModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.PigRenderState;
 import net.minecraft.core.ClientAsset;
-import net.minecraft.world.entity.animal.PigVariant.ModelType;
+import net.minecraft.world.entity.animal.pig.PigVariant.ModelType;
 import suszombification.SZClientHandler;
 import suszombification.SuspiciousZombification;
 

@@ -1,19 +1,19 @@
 package suszombification;
 
-import net.minecraft.client.model.CatModel;
-import net.minecraft.client.model.ChickenModel;
-import net.minecraft.client.model.ColdChickenModel;
-import net.minecraft.client.model.ColdCowModel;
-import net.minecraft.client.model.ColdPigModel;
-import net.minecraft.client.model.CowModel;
-import net.minecraft.client.model.FelineModel;
-import net.minecraft.client.model.PigModel;
-import net.minecraft.client.model.WarmCowModel;
+import net.minecraft.client.model.animal.chicken.ChickenModel;
+import net.minecraft.client.model.animal.chicken.ColdChickenModel;
+import net.minecraft.client.model.animal.cow.ColdCowModel;
+import net.minecraft.client.model.animal.cow.CowModel;
+import net.minecraft.client.model.animal.cow.WarmCowModel;
+import net.minecraft.client.model.animal.feline.CatModel;
+import net.minecraft.client.model.animal.feline.FelineModel;
+import net.minecraft.client.model.animal.pig.ColdPigModel;
+import net.minecraft.client.model.animal.pig.PigModel;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
 import net.minecraft.client.renderer.entity.ThrownItemRenderer;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -29,22 +29,22 @@ import suszombification.renderer.ZombifiedSheepRenderer;
 
 @EventBusSubscriber(modid = SuspiciousZombification.MODID, value = Dist.CLIENT)
 public class SZClientHandler {
-	public static final ModelLayerLocation ZOMBIFIED_CAT_ZOMBIE_LAYER = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("cat"), "zombie");
-	public static final ModelLayerLocation ZOMBIFIED_CAT_ZOMBIE_LAYER_BABY = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("cat_baby"), "zombie");
-	public static final ModelLayerLocation ZOMBIFIED_COW_ZOMBIE_LAYER = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("cow"), "zombie");
-	public static final ModelLayerLocation ZOMBIFIED_COW_ZOMBIE_LAYER_BABY = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("cow_baby"), "zombie");
-	public static final ModelLayerLocation ZOMBIFIED_COLD_COW_ZOMBIE_LAYER = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("cold_cow"), "zombie");
-	public static final ModelLayerLocation ZOMBIFIED_COLD_COW_ZOMBIE_LAYER_BABY = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("cold_cow_baby"), "zombie");
-	public static final ModelLayerLocation ZOMBIFIED_WARM_COW_ZOMBIE_LAYER = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("warm_cow"), "zombie");
-	public static final ModelLayerLocation ZOMBIFIED_WARM_COW_ZOMBIE_LAYER_BABY = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("warm_cow_baby"), "zombie");
-	public static final ModelLayerLocation ZOMBIFIED_PIG_ZOMBIE_LAYER = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("pig"), "zombie");
-	public static final ModelLayerLocation ZOMBIFIED_PIG_ZOMBIE_LAYER_BABY = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("pig_baby"), "zombie");
-	public static final ModelLayerLocation ZOMBIFIED_COLD_PIG_ZOMBIE_LAYER = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("cold_pig"), "zombie");
-	public static final ModelLayerLocation ZOMBIFIED_COLD_PIG_ZOMBIE_LAYER_BABY = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("cold_pig_baby"), "zombie");
-	public static final ModelLayerLocation ZOMBIFIED_CHICKEN_ZOMBIE_LAYER = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("chicken"), "zombie");
-	public static final ModelLayerLocation ZOMBIFIED_CHICKEN_ZOMBIE_LAYER_BABY = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("chicken_baby"), "zombie");
-	public static final ModelLayerLocation ZOMBIFIED_COLD_CHICKEN_ZOMBIE_LAYER = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("cold_chicken"), "zombie");
-	public static final ModelLayerLocation ZOMBIFIED_COLD_CHICKEN_ZOMBIE_LAYER_BABY = new ModelLayerLocation(ResourceLocation.withDefaultNamespace("cold_chicken_baby"), "zombie");
+	public static final ModelLayerLocation ZOMBIFIED_CAT_ZOMBIE_LAYER = new ModelLayerLocation(Identifier.withDefaultNamespace("cat"), "zombie");
+	public static final ModelLayerLocation ZOMBIFIED_CAT_ZOMBIE_LAYER_BABY = new ModelLayerLocation(Identifier.withDefaultNamespace("cat_baby"), "zombie");
+	public static final ModelLayerLocation ZOMBIFIED_COW_ZOMBIE_LAYER = new ModelLayerLocation(Identifier.withDefaultNamespace("cow"), "zombie");
+	public static final ModelLayerLocation ZOMBIFIED_COW_ZOMBIE_LAYER_BABY = new ModelLayerLocation(Identifier.withDefaultNamespace("cow_baby"), "zombie");
+	public static final ModelLayerLocation ZOMBIFIED_COLD_COW_ZOMBIE_LAYER = new ModelLayerLocation(Identifier.withDefaultNamespace("cold_cow"), "zombie");
+	public static final ModelLayerLocation ZOMBIFIED_COLD_COW_ZOMBIE_LAYER_BABY = new ModelLayerLocation(Identifier.withDefaultNamespace("cold_cow_baby"), "zombie");
+	public static final ModelLayerLocation ZOMBIFIED_WARM_COW_ZOMBIE_LAYER = new ModelLayerLocation(Identifier.withDefaultNamespace("warm_cow"), "zombie");
+	public static final ModelLayerLocation ZOMBIFIED_WARM_COW_ZOMBIE_LAYER_BABY = new ModelLayerLocation(Identifier.withDefaultNamespace("warm_cow_baby"), "zombie");
+	public static final ModelLayerLocation ZOMBIFIED_PIG_ZOMBIE_LAYER = new ModelLayerLocation(Identifier.withDefaultNamespace("pig"), "zombie");
+	public static final ModelLayerLocation ZOMBIFIED_PIG_ZOMBIE_LAYER_BABY = new ModelLayerLocation(Identifier.withDefaultNamespace("pig_baby"), "zombie");
+	public static final ModelLayerLocation ZOMBIFIED_COLD_PIG_ZOMBIE_LAYER = new ModelLayerLocation(Identifier.withDefaultNamespace("cold_pig"), "zombie");
+	public static final ModelLayerLocation ZOMBIFIED_COLD_PIG_ZOMBIE_LAYER_BABY = new ModelLayerLocation(Identifier.withDefaultNamespace("cold_pig_baby"), "zombie");
+	public static final ModelLayerLocation ZOMBIFIED_CHICKEN_ZOMBIE_LAYER = new ModelLayerLocation(Identifier.withDefaultNamespace("chicken"), "zombie");
+	public static final ModelLayerLocation ZOMBIFIED_CHICKEN_ZOMBIE_LAYER_BABY = new ModelLayerLocation(Identifier.withDefaultNamespace("chicken_baby"), "zombie");
+	public static final ModelLayerLocation ZOMBIFIED_COLD_CHICKEN_ZOMBIE_LAYER = new ModelLayerLocation(Identifier.withDefaultNamespace("cold_chicken"), "zombie");
+	public static final ModelLayerLocation ZOMBIFIED_COLD_CHICKEN_ZOMBIE_LAYER_BABY = new ModelLayerLocation(Identifier.withDefaultNamespace("cold_chicken_baby"), "zombie");
 
 	private SZClientHandler() {}
 

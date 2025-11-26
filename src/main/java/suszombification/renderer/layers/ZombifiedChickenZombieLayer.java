@@ -5,15 +5,15 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import net.minecraft.client.model.ChickenModel;
-import net.minecraft.client.model.ColdChickenModel;
+import net.minecraft.client.model.animal.chicken.ChickenModel;
+import net.minecraft.client.model.animal.chicken.ColdChickenModel;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.RenderLayerParent;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
 import net.minecraft.client.renderer.entity.state.ChickenRenderState;
 import net.minecraft.core.ClientAsset;
-import net.minecraft.world.entity.animal.ChickenVariant;
+import net.minecraft.world.entity.animal.chicken.ChickenVariant;
 import suszombification.SZClientHandler;
 import suszombification.SuspiciousZombification;
 
