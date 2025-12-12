@@ -3,9 +3,6 @@ package suszombification.mixin;
 import java.util.Optional;
 
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-
-import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.TimeUtil;
@@ -22,21 +19,16 @@ import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.camel.Camel;
 import net.minecraft.world.entity.animal.camel.CamelHusk;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import suszombification.entity.ZombifiedAnimal;
 import suszombification.entity.ai.NearestNormalVariantTargetGoal;
-import suszombification.entity.ai.SPPTemptGoal;
 import suszombification.misc.AnimalUtil;
 import suszombification.registration.SZAttachmentTypes;
 
 @Mixin(CamelHusk.class)
 public class CamelHuskMixin extends Camel implements ZombifiedAnimal, NeutralMob {
-	private static final Ingredient FOOD_ITEMS = Ingredient.of(Items.LEATHER);
 	private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
 
 	protected CamelHuskMixin(EntityType<? extends Camel> type, Level level) {
@@ -45,7 +37,6 @@ public class CamelHuskMixin extends Camel implements ZombifiedAnimal, NeutralMob
 
 	@Override
 	protected void addBehaviourGoals() {
-		goalSelector.addGoal(3, new SPPTemptGoal(this, 1.0D, Ingredient.of(Items.LEATHER), false));
 		targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		targetSelector.addGoal(2, new NearestNormalVariantTargetGoal(this, true, false));
 		targetSelector.addGoal(3, new ResetUniversalAngerTargetGoal<>(this, false));
@@ -76,11 +67,6 @@ public class CamelHuskMixin extends Camel implements ZombifiedAnimal, NeutralMob
 	@Override
 	public int getBaseExperienceReward(ServerLevel level) {
 		return super.getBaseExperienceReward(level) + 5;
-	}
-
-	@ModifyReturnValue(method = "isFood", at = @At("RETURN"))
-	public boolean suszombification$addSusZFood(boolean original, ItemStack stack) {
-		return AnimalUtil.isFood(stack, FOOD_ITEMS) || original;
 	}
 
 	@Override
