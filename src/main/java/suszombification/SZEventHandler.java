@@ -17,6 +17,7 @@ import net.minecraft.world.entity.ai.goal.AvoidEntityGoal;
 import net.minecraft.world.entity.animal.Animal;
 import net.minecraft.world.entity.animal.camel.CamelHusk;
 import net.minecraft.world.entity.animal.equine.ZombieHorse;
+import net.minecraft.world.entity.animal.nautilus.ZombieNautilus;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -55,20 +56,23 @@ public class SZEventHandler {
 		if (entity instanceof PathfinderMob mob) {
 			EntityType<?> type = mob.getType();
 
-			if (type == EntityType.CAT)
+			//TODO: Automate and type this with the map in ZombifiedAnimal
+			if (type == EntityType.CAMEL)
+				mob.goalSelector.addGoal(0, new AvoidEntityGoal<>(mob, CamelHusk.class, 4.0F, 1.0F, 1.2F));
+			else if (type == EntityType.CAT)
 				mob.goalSelector.addGoal(0, new AvoidEntityGoal<>(mob, ZombifiedCat.class, 6.0F, 1.0F, 1.2F, animal -> !((ZombifiedCat) animal).isTame()));
 			else if (type == EntityType.CHICKEN)
 				mob.goalSelector.addGoal(0, new AvoidEntityGoal<>(mob, ZombifiedChicken.class, 4.0F, 1.0F, 1.2F));
 			else if (type == EntityType.COW)
 				mob.goalSelector.addGoal(0, new AvoidEntityGoal<>(mob, ZombifiedCow.class, 4.0F, 1.0F, 1.2F));
+			else if (type == EntityType.HORSE)
+				mob.goalSelector.addGoal(0, new AvoidEntityGoal<>(mob, ZombieHorse.class, 4.0F, 1.0F, 1.2F));
+			else if (type == EntityType.NAUTILUS)
+				mob.goalSelector.addGoal(0, new AvoidEntityGoal<>(mob, ZombieNautilus.class, 4.0F, 1.0F, 1.2F));
 			else if (type == EntityType.PIG)
 				mob.goalSelector.addGoal(0, new AvoidEntityGoal<>(mob, ZombifiedPig.class, 4.0F, 1.0F, 1.2F));
 			else if (type == EntityType.SHEEP)
 				mob.goalSelector.addGoal(0, new AvoidEntityGoal<>(mob, ZombifiedSheep.class, 4.0F, 1.0F, 1.2F));
-			else if (type == EntityType.HORSE)
-				mob.goalSelector.addGoal(0, new AvoidEntityGoal<>(mob, ZombieHorse.class, 4.0F, 1.0F, 1.2F));
-			else if (type == EntityType.CAMEL)
-				mob.goalSelector.addGoal(0, new AvoidEntityGoal<>(mob, CamelHusk.class, 4.0F, 1.0F, 1.2F));
 		}
 	}
 

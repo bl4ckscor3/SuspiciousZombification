@@ -5,12 +5,14 @@
 	"refmap": "suszombification.refmap.json",
 	"client": [
 		"CamelHuskRendererMixin",
-		"UndeadHorseRendererMixin"
+		"UndeadHorseRendererMixin",
+		"ZombieNautilusRendererMixin"
 	],
 	"mixins": [
 		"CamelHuskMixin",
 		"LeadItemMixin",
 		"ZombieHorseMixin",
+		"ZombieNautilusMixin",
 		"datafix.ItemStackComponentizationFixMixin",
 		"datafix.V1460Mixin"
 	],

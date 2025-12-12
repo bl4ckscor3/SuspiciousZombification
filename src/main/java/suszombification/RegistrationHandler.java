@@ -36,13 +36,14 @@ public class RegistrationHandler {
 	@SubscribeEvent
 	public static void setup(FMLCommonSetupEvent event) {
 		event.enqueueWork(() -> {
+			ZombifiedAnimal.VANILLA_TO_ZOMBIFIED.put(EntityType.CAMEL, EntityType.CAMEL_HUSK);
 			ZombifiedAnimal.VANILLA_TO_ZOMBIFIED.put(EntityType.CAT, SZEntityTypes.ZOMBIFIED_CAT.get());
 			ZombifiedAnimal.VANILLA_TO_ZOMBIFIED.put(EntityType.CHICKEN, SZEntityTypes.ZOMBIFIED_CHICKEN.get());
 			ZombifiedAnimal.VANILLA_TO_ZOMBIFIED.put(EntityType.COW, SZEntityTypes.ZOMBIFIED_COW.get());
+			ZombifiedAnimal.VANILLA_TO_ZOMBIFIED.put(EntityType.NAUTILUS, EntityType.ZOMBIE_NAUTILUS);
 			ZombifiedAnimal.VANILLA_TO_ZOMBIFIED.put(EntityType.PIG, SZEntityTypes.ZOMBIFIED_PIG.get());
 			ZombifiedAnimal.VANILLA_TO_ZOMBIFIED.put(EntityType.SHEEP, SZEntityTypes.ZOMBIFIED_SHEEP.get());
 			ZombifiedAnimal.VANILLA_TO_ZOMBIFIED.put(EntityType.HORSE, EntityType.ZOMBIE_HORSE);
-			ZombifiedAnimal.VANILLA_TO_ZOMBIFIED.put(EntityType.CAMEL, EntityType.CAMEL_HUSK);
 		});
 	}
 
@@ -97,8 +98,9 @@ public class RegistrationHandler {
 
 	@SubscribeEvent
 	public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
-		event.put(EntityType.ZOMBIE_HORSE, additionalZombieAttributes(0.2F));
 		event.put(EntityType.CAMEL_HUSK, additionalZombieAttributes(0.05F));
+		event.put(EntityType.ZOMBIE_HORSE, additionalZombieAttributes(0.2F));
+		event.put(EntityType.ZOMBIE_NAUTILUS, additionalZombieAttributes(0.8F));
 	}
 
 	private static AttributeSupplier additionalZombieAttributes(float movementSpeed) {

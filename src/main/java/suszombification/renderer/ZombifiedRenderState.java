@@ -5,6 +5,7 @@ import net.minecraft.client.renderer.entity.state.CatRenderState;
 import net.minecraft.client.renderer.entity.state.ChickenRenderState;
 import net.minecraft.client.renderer.entity.state.CowRenderState;
 import net.minecraft.client.renderer.entity.state.EquineRenderState;
+import net.minecraft.client.renderer.entity.state.NautilusRenderState;
 import net.minecraft.client.renderer.entity.state.PigRenderState;
 import net.minecraft.client.renderer.entity.state.SheepRenderState;
 
@@ -26,6 +27,10 @@ public class ZombifiedRenderState {
 	}
 
 	public static class Horse extends EquineRenderState {
+		public boolean isConverting;
+	}
+
+	public static class Nautilus extends NautilusRenderState {
 		public boolean isConverting;
 	}
 
