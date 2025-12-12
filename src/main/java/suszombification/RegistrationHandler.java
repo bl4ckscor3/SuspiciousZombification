@@ -5,6 +5,8 @@ import java.util.List;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.minecraft.world.item.Item;
@@ -15,6 +17,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
+import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.NeoForgeRegistries.Keys;
 import net.neoforged.neoforge.registries.RegisterEvent;
@@ -39,6 +42,7 @@ public class RegistrationHandler {
 			ZombifiedAnimal.VANILLA_TO_ZOMBIFIED.put(EntityType.PIG, SZEntityTypes.ZOMBIFIED_PIG.get());
 			ZombifiedAnimal.VANILLA_TO_ZOMBIFIED.put(EntityType.SHEEP, SZEntityTypes.ZOMBIFIED_SHEEP.get());
 			ZombifiedAnimal.VANILLA_TO_ZOMBIFIED.put(EntityType.HORSE, EntityType.ZOMBIE_HORSE);
+			ZombifiedAnimal.VANILLA_TO_ZOMBIFIED.put(EntityType.CAMEL, EntityType.CAMEL_HUSK);
 		});
 	}
 
@@ -89,5 +93,15 @@ public class RegistrationHandler {
 					event.accept(item);
 			}
 		}
+	}
+
+	@SubscribeEvent
+	public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
+		event.put(EntityType.ZOMBIE_HORSE, additionalZombieAttributes(0.2F));
+		event.put(EntityType.CAMEL_HUSK, additionalZombieAttributes(0.05F));
+	}
+
+	private static AttributeSupplier additionalZombieAttributes(float movementSpeed) {
+		return AttributeSupplier.builder().add(Attributes.MOVEMENT_SPEED, movementSpeed).add(Attributes.ATTACK_DAMAGE, 2.0F).build();
 	}
 }

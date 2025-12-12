@@ -1,5 +1,6 @@
 package suszombification.renderer;
 
+import net.minecraft.client.renderer.entity.state.CamelRenderState;
 import net.minecraft.client.renderer.entity.state.CatRenderState;
 import net.minecraft.client.renderer.entity.state.ChickenRenderState;
 import net.minecraft.client.renderer.entity.state.CowRenderState;
@@ -8,6 +9,10 @@ import net.minecraft.client.renderer.entity.state.PigRenderState;
 import net.minecraft.client.renderer.entity.state.SheepRenderState;
 
 public class ZombifiedRenderState {
+	public static class Camel extends CamelRenderState {
+		public boolean isConverting;
+	}
+
 	public static class Cat extends CatRenderState {
 		public boolean isConverting;
 	}

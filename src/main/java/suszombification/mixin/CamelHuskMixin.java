@@ -4,9 +4,6 @@ import java.util.Optional;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 
@@ -22,9 +19,8 @@ import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.equine.AbstractHorse;
-import net.minecraft.world.entity.animal.equine.Horse;
-import net.minecraft.world.entity.animal.equine.ZombieHorse;
+import net.minecraft.world.entity.animal.camel.Camel;
+import net.minecraft.world.entity.animal.camel.CamelHusk;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -38,17 +34,17 @@ import suszombification.entity.ai.SPPTemptGoal;
 import suszombification.misc.AnimalUtil;
 import suszombification.registration.SZAttachmentTypes;
 
-@Mixin(ZombieHorse.class)
-public class ZombieHorseMixin extends AbstractHorse implements ZombifiedAnimal, NeutralMob {
+@Mixin(CamelHusk.class)
+public class CamelHuskMixin extends Camel implements ZombifiedAnimal, NeutralMob {
 	private static final Ingredient FOOD_ITEMS = Ingredient.of(Items.LEATHER);
 	private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
 
-	protected ZombieHorseMixin(EntityType<? extends AbstractHorse> type, Level level) {
+	protected CamelHuskMixin(EntityType<? extends Camel> type, Level level) {
 		super(type, level);
 	}
 
-	@Inject(method = "addBehaviourGoals", at = @At("Head"))
-	protected void suszombification$addSusZGoals(CallbackInfo ci) {
+	@Override
+	protected void addBehaviourGoals() {
 		goalSelector.addGoal(3, new SPPTemptGoal(this, 1.0D, Ingredient.of(Items.LEATHER), false));
 		targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		targetSelector.addGoal(2, new NearestNormalVariantTargetGoal(this, true, false));
@@ -61,12 +57,14 @@ public class ZombieHorseMixin extends AbstractHorse implements ZombifiedAnimal, 
 		super.tick();
 	}
 
-	@Inject(method = "mobInteract", at = @At("HEAD"), cancellable = true)
-	private void suszombification$mobInteract(Player player, InteractionHand hand, CallbackInfoReturnable<InteractionResult> callback) {
+	@Override
+	public InteractionResult mobInteract(Player player, InteractionHand hand) {
 		InteractionResult returnValue = AnimalUtil.mobInteract(this, player, hand);
 
 		if (returnValue != InteractionResult.PASS)
-			callback.setReturnValue(returnValue);
+			return returnValue;
+		else
+			return super.mobInteract(player, hand);
 	}
 
 	@Override
@@ -90,7 +88,6 @@ public class ZombieHorseMixin extends AbstractHorse implements ZombifiedAnimal, 
 		super.readAdditionalSaveData(tag);
 		readPersistentAngerSaveData(level(), tag);
 		tag.getInt("ConversionTime").ifPresent(conversionTime -> setData(SZAttachmentTypes.CONVERSION_TIME, conversionTime));
-		tag.getInt("Variant").ifPresent(variant -> setData(SZAttachmentTypes.ZOMBIE_HORSE_VARIANT, variant));
 
 		Optional<Object> angryAt = getData(SZAttachmentTypes.ANGRY_AT);
 
@@ -139,19 +136,7 @@ public class ZombieHorseMixin extends AbstractHorse implements ZombifiedAnimal, 
 
 	@Override
 	public EntityType<? extends Animal> getNormalVariant() {
-		return EntityType.HORSE;
-	}
-
-	@Override
-	public void readFromVanilla(Animal animal) {
-		if (animal instanceof Horse horse)
-			setData(SZAttachmentTypes.ZOMBIE_HORSE_VARIANT, horse.getTypeVariant());
-	}
-
-	@Override
-	public void writeToVanilla(Animal animal) {
-		if (animal instanceof Horse horse)
-			horse.setTypeVariant(getData(SZAttachmentTypes.ZOMBIE_HORSE_VARIANT));
+		return EntityType.CAMEL;
 	}
 
 	@Override

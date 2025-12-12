@@ -4,13 +4,15 @@
 	"compatibilityLevel": "JAVA_21",
 	"refmap": "suszombification.refmap.json",
 	"client": [
+		"CamelHuskRendererMixin",
 		"UndeadHorseRendererMixin"
 	],
 	"mixins": [
-		"datafix.ItemStackComponentizationFixMixin",
-		"datafix.V1460Mixin",
+		"CamelHuskMixin",
 		"LeadItemMixin",
-		"ZombieHorseMixin"
+		"ZombieHorseMixin",
+		"datafix.ItemStackComponentizationFixMixin",
+		"datafix.V1460Mixin"
 	],
 	"minVersion": "0.8"
 }
