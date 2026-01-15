@@ -30,6 +30,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.entity.UniquelyIdentifyable;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import suszombification.entity.ZombifiedAnimal;
@@ -92,10 +93,10 @@ public class ZombieHorseMixin extends AbstractHorse implements ZombifiedAnimal, 
 		tag.getInt("ConversionTime").ifPresent(conversionTime -> setData(SZAttachmentTypes.CONVERSION_TIME, conversionTime));
 		tag.getInt("Variant").ifPresent(variant -> setData(SZAttachmentTypes.ZOMBIE_HORSE_VARIANT, variant));
 
-		Optional<Object> angryAt = getData(SZAttachmentTypes.ANGRY_AT);
+		Optional<EntityReference<UniquelyIdentifyable>> angryAt = getData(SZAttachmentTypes.ANGRY_AT);
 
 		if (angryAt.isPresent())
-			setTarget(EntityReference.getLivingEntity((EntityReference<LivingEntity>) angryAt.get(), level()));
+			setTarget(EntityReference.getLivingEntity(SZAttachmentTypes.castReference(angryAt.get()), level()));
 	}
 
 	@Override
@@ -116,14 +117,17 @@ public class ZombieHorseMixin extends AbstractHorse implements ZombifiedAnimal, 
 
 	@Override
 	public EntityReference<LivingEntity> getPersistentAngerTarget() {
-		Optional<Object> angryAt = getData(SZAttachmentTypes.ANGRY_AT);
+		Optional<EntityReference<UniquelyIdentifyable>> angryAt = getData(SZAttachmentTypes.ANGRY_AT);
 
-		return (EntityReference<LivingEntity>) angryAt.orElse(null);
+		if (angryAt.isPresent())
+			return SZAttachmentTypes.castReference(angryAt.get());
+		else
+			return null;
 	}
 
 	@Override
 	public void setPersistentAngerTarget(EntityReference<LivingEntity> entity) {
-		setData(SZAttachmentTypes.ANGRY_AT, Optional.ofNullable(entity));
+		setData(SZAttachmentTypes.ANGRY_AT, SZAttachmentTypes.castOptional(Optional.ofNullable(entity)));
 	}
 
 	@Override

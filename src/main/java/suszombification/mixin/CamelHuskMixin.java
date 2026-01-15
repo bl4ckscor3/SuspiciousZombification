@@ -20,6 +20,7 @@ import net.minecraft.world.entity.animal.camel.Camel;
 import net.minecraft.world.entity.animal.camel.CamelHusk;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.entity.UniquelyIdentifyable;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import suszombification.entity.ZombifiedAnimal;
@@ -75,10 +76,10 @@ public class CamelHuskMixin extends Camel implements ZombifiedAnimal, NeutralMob
 		readPersistentAngerSaveData(level(), tag);
 		tag.getInt("ConversionTime").ifPresent(conversionTime -> setData(SZAttachmentTypes.CONVERSION_TIME, conversionTime));
 
-		Optional<Object> angryAt = getData(SZAttachmentTypes.ANGRY_AT);
+		Optional<EntityReference<UniquelyIdentifyable>> angryAt = getData(SZAttachmentTypes.ANGRY_AT);
 
 		if (angryAt.isPresent())
-			setTarget(EntityReference.getLivingEntity((EntityReference<LivingEntity>) angryAt.get(), level()));
+			setTarget(EntityReference.getLivingEntity(SZAttachmentTypes.castReference(angryAt.get()), level()));
 	}
 
 	@Override
@@ -99,14 +100,17 @@ public class CamelHuskMixin extends Camel implements ZombifiedAnimal, NeutralMob
 
 	@Override
 	public EntityReference<LivingEntity> getPersistentAngerTarget() {
-		Optional<Object> angryAt = getData(SZAttachmentTypes.ANGRY_AT);
+		Optional<EntityReference<UniquelyIdentifyable>> angryAt = getData(SZAttachmentTypes.ANGRY_AT);
 
-		return (EntityReference<LivingEntity>) angryAt.orElse(null);
+		if (angryAt.isPresent())
+			return SZAttachmentTypes.castReference(angryAt.get());
+		else
+			return null;
 	}
 
 	@Override
 	public void setPersistentAngerTarget(EntityReference<LivingEntity> entity) {
-		setData(SZAttachmentTypes.ANGRY_AT, Optional.ofNullable(entity));
+		setData(SZAttachmentTypes.ANGRY_AT, SZAttachmentTypes.castOptional(Optional.ofNullable(entity)));
 	}
 
 	@Override
