@@ -1,6 +1,9 @@
 package suszombification.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import net.minecraft.client.model.animal.nautilus.NautilusModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
@@ -22,9 +25,8 @@ public abstract class ZombieNautilusRendererMixin extends MobRenderer<ZombieNaut
 		return new ZombifiedRenderState.Nautilus();
 	}
 
-	@Override
-	public void extractRenderState(ZombieNautilus nautilus, NautilusRenderState renderState, float partialTicks) {
-		super.extractRenderState(nautilus, renderState, partialTicks);
+	@Inject(method = "extractRenderState(Lnet/minecraft/world/entity/animal/nautilus/ZombieNautilus;Lnet/minecraft/client/renderer/entity/state/NautilusRenderState;F)V", at = @At("TAIL"))
+	public void extractRenderState(ZombieNautilus nautilus, NautilusRenderState renderState, float partialTicks, CallbackInfo ci) {
 		((ZombifiedRenderState.Nautilus) renderState).isConverting = nautilus instanceof ZombifiedAnimal zombifiedAnimal && zombifiedAnimal.isConverting();
 	}
 
