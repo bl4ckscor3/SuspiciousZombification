@@ -108,6 +108,16 @@ public class ZombieHorseMixin extends AbstractHorse implements ZombifiedAnimal, 
 	}
 
 	@Override
+	protected boolean handleEating(Player player, ItemStack stack) {
+		if (AnimalUtil.isFood(stack, FOOD_ITEMS) && isTamed() && getAge() == 0 && !isInLove()) {
+			setInLove(player);
+			return true;
+		}
+
+		return super.handleEating(player, stack);
+	}
+
+	@Override
 	public long getPersistentAngerEndTime() {
 		return getData(SZAttachmentTypes.ANGER_END_TIME);
 	}
