@@ -105,6 +105,7 @@ public class RecipeGenerator extends RecipeProvider {
 		addSusPieRecipe(Items.MUTTON);
 		addSusPieRecipe(Items.STRING);
 		addSusPieRecipe(Items.GUNPOWDER);
+		addSusPieRecipe(Items.NAUTILUS_SHELL);
 		addSusPieRecipe(SZItems.SPOILED_MILK_BUCKET.get());
 		addSusPieRecipe(SZItems.ROTTEN_EGG.get());
 		addSusPieRecipe(SZItems.BROWN_ROTTEN_EGG.get());
