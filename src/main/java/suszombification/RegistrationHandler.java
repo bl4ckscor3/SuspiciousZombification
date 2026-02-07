@@ -5,7 +5,7 @@ import java.util.List;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.ai.attributes.AttributeSupplier;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTabs;
@@ -17,7 +17,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
-import net.neoforged.neoforge.event.entity.EntityAttributeCreationEvent;
+import net.neoforged.neoforge.event.entity.EntityAttributeModificationEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 import net.neoforged.neoforge.registries.NeoForgeRegistries.Keys;
 import net.neoforged.neoforge.registries.RegisterEvent;
@@ -97,13 +97,14 @@ public class RegistrationHandler {
 	}
 
 	@SubscribeEvent
-	public static void onEntityAttributeCreation(EntityAttributeCreationEvent event) {
-		event.put(EntityType.CAMEL_HUSK, additionalZombieAttributes(0.05F));
-		event.put(EntityType.ZOMBIE_HORSE, additionalZombieAttributes(0.2F));
-		event.put(EntityType.ZOMBIE_NAUTILUS, additionalZombieAttributes(0.8F));
+	public static void onEntityAttributeModification(EntityAttributeModificationEvent event) {
+		addAdditionalZombieAttributes(event, EntityType.CAMEL_HUSK, 0.05F);
+		addAdditionalZombieAttributes(event, EntityType.ZOMBIE_HORSE, 0.2F);
+		addAdditionalZombieAttributes(event, EntityType.ZOMBIE_NAUTILUS, 0.8F);
 	}
 
-	private static AttributeSupplier additionalZombieAttributes(float movementSpeed) {
-		return AttributeSupplier.builder().add(Attributes.MOVEMENT_SPEED, movementSpeed).add(Attributes.ATTACK_DAMAGE, 2.0F).build();
+	private static void addAdditionalZombieAttributes(EntityAttributeModificationEvent event, EntityType<? extends LivingEntity> type, float movementSpeed) {
+		event.add(type, Attributes.MOVEMENT_SPEED, movementSpeed);
+		event.add(type, Attributes.ATTACK_DAMAGE, 2.0F);
 	}
 }
