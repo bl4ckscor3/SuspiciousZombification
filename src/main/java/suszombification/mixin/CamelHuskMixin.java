@@ -13,6 +13,7 @@ import net.minecraft.world.entity.EntityReference;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.NeutralMob;
+import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
@@ -38,6 +39,7 @@ public class CamelHuskMixin extends Camel implements ZombifiedAnimal, NeutralMob
 
 	@Override
 	protected void addBehaviourGoals() {
+		goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, false));
 		targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		targetSelector.addGoal(2, new NearestNormalVariantTargetGoal(this, true, false));
 		targetSelector.addGoal(3, new ResetUniversalAngerTargetGoal<>(this, false));
