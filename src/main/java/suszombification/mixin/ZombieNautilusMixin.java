@@ -2,9 +2,12 @@ package suszombification.mixin;
 
 import java.util.Optional;
 
-import org.jspecify.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
+import org.spongepowered.asm.mixin.injection.At;
+
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.Registries;
@@ -15,9 +18,12 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityReference;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.NeutralMob;
+import net.minecraft.world.entity.ai.goal.BreedGoal;
+import net.minecraft.world.entity.ai.goal.FollowParentGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
@@ -47,7 +53,9 @@ public abstract class ZombieNautilusMixin extends AbstractNautilus implements Zo
 	@Shadow
 	public abstract Holder<ZombieNautilusVariant> getVariant();
 
+	@Unique
 	private static final Ingredient FOOD_ITEMS = Ingredient.of(Items.NAUTILUS_SHELL);
+	@Unique
 	private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
 
 	protected ZombieNautilusMixin(EntityType<? extends AbstractNautilus> type, Level level) {
@@ -57,7 +65,9 @@ public abstract class ZombieNautilusMixin extends AbstractNautilus implements Zo
 	@Override
 	protected void registerGoals() {
 		super.registerGoals();
+		goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
 		goalSelector.addGoal(3, new SPPTemptGoal(this, 1.0D, FOOD_ITEMS, false));
+		goalSelector.addGoal(3, new FollowParentGoal(this, 1.1D));
 		goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, false));
 		targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		targetSelector.addGoal(2, new NearestNormalVariantTargetGoal(this, true, false));
@@ -108,9 +118,19 @@ public abstract class ZombieNautilusMixin extends AbstractNautilus implements Zo
 			setTarget(EntityReference.getLivingEntity(SZAttachmentTypes.castReference(angryAt.get()), level()));
 	}
 
+	@ModifyReturnValue(method = "getBreedOffspring", at = @At("RETURN"))
+	public ZombieNautilus suszombification$adjustBreedOffspring(ZombieNautilus original, ServerLevel level, AgeableMob mob) {
+		ZombieNautilus nautilus = EntityType.ZOMBIE_NAUTILUS.create(level, EntitySpawnReason.BREEDING);
+
+		nautilus.setTame(isTame(), true);
+		nautilus.setOwner(getOwner());
+		nautilus.setVariant(getVariant());
+		return nautilus;
+	}
+
 	@Override
-	public @Nullable AgeableMob getBreedOffspring(ServerLevel level, AgeableMob otherParent) {
-		return null;
+	public boolean canFallInLove() {
+		return true;
 	}
 
 	@Override

@@ -3,6 +3,7 @@ package suszombification.mixin;
 import java.util.Optional;
 
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -15,10 +16,14 @@ import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityReference;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.NeutralMob;
+import net.minecraft.world.entity.ai.goal.BreedGoal;
+import net.minecraft.world.entity.ai.goal.FollowParentGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
@@ -42,7 +47,9 @@ import suszombification.registration.SZAttachmentTypes;
 
 @Mixin(ZombieHorse.class)
 public class ZombieHorseMixin extends AbstractHorse implements ZombifiedAnimal, NeutralMob {
+	@Unique
 	private static final Ingredient FOOD_ITEMS = Ingredient.of(Items.LEATHER);
+	@Unique
 	private static final UniformInt PERSISTENT_ANGER_TIME = TimeUtil.rangeOfSeconds(20, 39);
 
 	protected ZombieHorseMixin(EntityType<? extends AbstractHorse> type, Level level) {
@@ -51,7 +58,9 @@ public class ZombieHorseMixin extends AbstractHorse implements ZombifiedAnimal, 
 
 	@Inject(method = "addBehaviourGoals", at = @At("HEAD"))
 	protected void suszombification$addSusZGoals(CallbackInfo ci) {
+		goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
 		goalSelector.addGoal(3, new SPPTemptGoal(this, 1.0D, FOOD_ITEMS, false));
+		goalSelector.addGoal(3, new FollowParentGoal(this, 1.1D));
 		goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, false));
 		targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		targetSelector.addGoal(2, new NearestNormalVariantTargetGoal(this, true, false));
@@ -115,6 +124,20 @@ public class ZombieHorseMixin extends AbstractHorse implements ZombifiedAnimal, 
 		}
 
 		return super.handleEating(player, stack);
+	}
+
+	@ModifyReturnValue(method = "getBreedOffspring", at = @At("RETURN"))
+	public AgeableMob suszombification$adjustBreedOffspring(AgeableMob original, ServerLevel level, AgeableMob otherParent) {
+		ZombieHorse zorse = EntityType.ZOMBIE_HORSE.create(level, EntitySpawnReason.BREEDING);
+
+		zorse.setTamed(isTamed());
+		zorse.setOwner(getOwner());
+		return zorse;
+	}
+
+	@ModifyReturnValue(method = "canFallInLove", at = @At("RETURN"))
+	public boolean suszombification$makeAbleToFallInLove(boolean original) {
+		return true;
 	}
 
 	@Override

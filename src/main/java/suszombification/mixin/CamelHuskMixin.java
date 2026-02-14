@@ -13,10 +13,14 @@ import net.minecraft.util.TimeUtil;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.AgeableMob;
 import net.minecraft.world.entity.EntityReference;
+import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.NeutralMob;
+import net.minecraft.world.entity.ai.goal.BreedGoal;
+import net.minecraft.world.entity.ai.goal.FollowParentGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
@@ -50,7 +54,10 @@ public class CamelHuskMixin extends Camel implements ZombifiedAnimal, NeutralMob
 
 	@Override
 	protected void addBehaviourGoals() {
+		super.addBehaviourGoals();
+		goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
 		goalSelector.addGoal(3, new SPPTemptGoal(this, 1.0D, FOOD_ITEMS, false));
+		goalSelector.addGoal(3, new FollowParentGoal(this, 1.1D));
 		goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, false));
 		targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		targetSelector.addGoal(2, new NearestNormalVariantTargetGoal(this, true, false));
@@ -105,6 +112,25 @@ public class CamelHuskMixin extends Camel implements ZombifiedAnimal, NeutralMob
 	protected void addAdditionalSaveData(ValueOutput tag) {
 		super.addAdditionalSaveData(tag);
 		addPersistentAngerSaveData(tag);
+	}
+
+	@ModifyReturnValue(method = "canMate", at = @At("RETURN"))
+	public boolean suszombification$makeMateable(boolean original) {
+		return true;
+	}
+
+	@ModifyReturnValue(method = "getBreedOffspring", at = @At("RETURN"))
+	public Camel suszombification$adjustBreedOffspring(Camel original, ServerLevel level, AgeableMob mob) {
+		Camel zamel = EntityType.CAMEL_HUSK.create(level, EntitySpawnReason.BREEDING);
+
+		zamel.setTamed(isTamed());
+		zamel.setOwner(getOwner());
+		return zamel;
+	}
+
+	@ModifyReturnValue(method = "canFallInLove", at = @At("RETURN"))
+	public boolean suszombification$makeAbleToFallInLove(boolean original) {
+		return true;
 	}
 
 	@Override
