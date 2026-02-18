@@ -119,6 +119,11 @@ public abstract class ZombieNautilusMixin extends AbstractNautilus implements Zo
 			setTarget(EntityReference.getLivingEntity(SZAttachmentTypes.castReference(angryAt.get()), level()));
 	}
 
+	@Inject(method = "addAdditionalSaveData", at = @At("TAIL"))
+	protected void suszombification$onAddAdditionalSaveData(ValueOutput tag, CallbackInfo ci) {
+		addPersistentAngerSaveData(tag);
+	}
+
 	@ModifyReturnValue(method = "getBreedOffspring", at = @At("RETURN"))
 	public ZombieNautilus suszombification$adjustBreedOffspring(ZombieNautilus original, ServerLevel level, AgeableMob mob) {
 		ZombieNautilus nautilus = EntityType.ZOMBIE_NAUTILUS.create(level, EntitySpawnReason.BREEDING);
@@ -137,12 +142,6 @@ public abstract class ZombieNautilusMixin extends AbstractNautilus implements Zo
 	@Override
 	public boolean canFallInLove() {
 		return true;
-	}
-
-	@Override
-	protected void addAdditionalSaveData(ValueOutput tag) {
-		super.addAdditionalSaveData(tag);
-		addPersistentAngerSaveData(tag);
 	}
 
 	@Override
