@@ -129,6 +129,11 @@ public abstract class ZombieNautilusMixin extends AbstractNautilus implements Zo
 		return nautilus;
 	}
 
+	@ModifyReturnValue(method = "isBaby", at = @At("RETURN"))
+	public boolean suszombification$allowBaby(boolean original) {
+		return getAge() < 0;
+	}
+
 	@Override
 	public boolean canFallInLove() {
 		return true;
