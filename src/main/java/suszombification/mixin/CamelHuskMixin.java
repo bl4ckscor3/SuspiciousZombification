@@ -20,7 +20,6 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.NeutralMob;
 import net.minecraft.world.entity.ai.goal.BreedGoal;
-import net.minecraft.world.entity.ai.goal.FollowParentGoal;
 import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.ResetUniversalAngerTargetGoal;
@@ -37,7 +36,6 @@ import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import suszombification.entity.ZombifiedAnimal;
 import suszombification.entity.ai.NearestNormalVariantTargetGoal;
-import suszombification.entity.ai.SPPTemptGoal;
 import suszombification.misc.AnimalUtil;
 import suszombification.registration.SZAttachmentTypes;
 
@@ -53,11 +51,8 @@ public class CamelHuskMixin extends Camel implements ZombifiedAnimal, NeutralMob
 	}
 
 	@Override
-	protected void addBehaviourGoals() {
-		super.addBehaviourGoals();
+	protected void registerGoals() {
 		goalSelector.addGoal(1, new BreedGoal(this, 1.0D));
-		goalSelector.addGoal(3, new SPPTemptGoal(this, 1.0D, FOOD_ITEMS, false));
-		goalSelector.addGoal(3, new FollowParentGoal(this, 1.1D));
 		goalSelector.addGoal(5, new MeleeAttackGoal(this, 1.0D, false));
 		targetSelector.addGoal(1, new HurtByTargetGoal(this));
 		targetSelector.addGoal(2, new NearestNormalVariantTargetGoal(this, true, false));
@@ -115,11 +110,11 @@ public class CamelHuskMixin extends Camel implements ZombifiedAnimal, NeutralMob
 	}
 
 	@ModifyReturnValue(method = "canMate", at = @At("RETURN"))
-	public boolean suszombification$makeMateable(boolean original) {
-		return true;
+	public boolean suszombification$makeMateable(boolean original, Animal otherAnimal) {
+		return super.canMate(otherAnimal);
 	}
 
-	@ModifyReturnValue(method = "getBreedOffspring", at = @At("RETURN"))
+	@ModifyReturnValue(method = "getBreedOffspring(Lnet/minecraft/server/level/ServerLevel;Lnet/minecraft/world/entity/AgeableMob;)Lnet/minecraft/world/entity/animal/camel/Camel;", at = @At("RETURN"))
 	public Camel suszombification$adjustBreedOffspring(Camel original, ServerLevel level, AgeableMob mob) {
 		Camel zamel = EntityType.CAMEL_HUSK.create(level, EntitySpawnReason.BREEDING);
 
