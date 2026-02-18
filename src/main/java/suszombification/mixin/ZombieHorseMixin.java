@@ -126,13 +126,21 @@ public class ZombieHorseMixin extends AbstractHorse implements ZombifiedAnimal, 
 		return super.handleEating(player, stack);
 	}
 
+	@Override
+	public boolean canMate(Animal otherAnimal) {
+		return otherAnimal != this && otherAnimal instanceof ZombieHorse otherZorse && canParent() && otherZorse.canParent();
+	}
+
 	@ModifyReturnValue(method = "getBreedOffspring", at = @At("RETURN"))
 	public AgeableMob suszombification$adjustBreedOffspring(AgeableMob original, ServerLevel level, AgeableMob otherParent) {
-		ZombieHorse zorse = EntityType.ZOMBIE_HORSE.create(level, EntitySpawnReason.BREEDING);
+		ZombieHorse babyZorse = EntityType.ZOMBIE_HORSE.create(level, EntitySpawnReason.BREEDING);
 
-		zorse.setTamed(isTamed());
-		zorse.setOwner(getOwner());
-		return zorse;
+		if (otherParent instanceof ZombieHorse otherZorse && random.nextBoolean())
+			babyZorse.setData(SZAttachmentTypes.ZOMBIE_HORSE_VARIANT, otherZorse.getData(SZAttachmentTypes.ZOMBIE_HORSE_VARIANT));
+		else
+			babyZorse.setData(SZAttachmentTypes.ZOMBIE_HORSE_VARIANT, getData(SZAttachmentTypes.ZOMBIE_HORSE_VARIANT));
+
+		return babyZorse;
 	}
 
 	@ModifyReturnValue(method = "canFallInLove", at = @At("RETURN"))
