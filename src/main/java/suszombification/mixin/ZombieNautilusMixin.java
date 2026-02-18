@@ -6,6 +6,8 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 
@@ -106,9 +108,8 @@ public abstract class ZombieNautilusMixin extends AbstractNautilus implements Zo
 		return AnimalUtil.isFood(stack, FOOD_ITEMS) || super.isFood(stack);
 	}
 
-	@Override
-	public void readAdditionalSaveData(ValueInput tag) {
-		super.readAdditionalSaveData(tag);
+	@Inject(method = "readAdditionalSaveData", at = @At("TAIL"))
+	public void suszombification$onReadAdditionalSaveData(ValueInput tag, CallbackInfo ci) {
 		readPersistentAngerSaveData(level(), tag);
 		tag.getInt("ConversionTime").ifPresent(conversionTime -> setData(SZAttachmentTypes.CONVERSION_TIME, conversionTime));
 
