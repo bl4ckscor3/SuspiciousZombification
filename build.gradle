@@ -2,10 +2,10 @@ plugins {
     id 'java-library'
     id 'eclipse'
     id 'idea'
-    id 'net.neoforged.gradle.userdev' version '7.0.+'
+    id 'net.neoforged.gradle.userdev' version '7.0.165'
 }
 
-version = '1.3'
+version = '1.4'
 group = 'suszombification'
 
 base {
