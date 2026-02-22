@@ -6,6 +6,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
 import net.minecraft.world.entity.animal.Animal;
+import suszombification.SZConfig;
 import suszombification.entity.ZombifiedAnimal;
 
 public class NearestNormalVariantTargetGoal extends NearestAttackableTargetGoal<LivingEntity> {
@@ -24,7 +25,7 @@ public class NearestNormalVariantTargetGoal extends NearestAttackableTargetGoal<
 
 	@Override
 	public boolean canUse() {
-		return !((ZombifiedAnimal) mob).isConverting() && mobPredicate.test((Animal) mob) && super.canUse();
+		return SZConfig.INSTANCE.zombieAnimalsHostile.get() && !((ZombifiedAnimal) mob).isConverting() && mobPredicate.test((Animal) mob) && super.canUse();
 	}
 
 	@Override

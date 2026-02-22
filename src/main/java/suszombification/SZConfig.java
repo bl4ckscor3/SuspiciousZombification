@@ -10,6 +10,7 @@ public class SZConfig {
 	public static final SZConfig INSTANCE;
 	public final BooleanValue animalZombification;
 	public final BooleanValue candyMorningGifts;
+	public final BooleanValue zombieAnimalsHostile;
 	public final BooleanValue zombiesCurseZombification;
 
 	static {
@@ -27,6 +28,9 @@ public class SZConfig {
 		candyMorningGifts = builder
 				.comment("Set this to false to disable the feature of cats being able to gift players candy.")
 				.define("candy_morning_gifts", true);
+		zombieAnimalsHostile = builder
+				.comment("Set this to false to disable the feature of zombified animals attacking nearby non-zombified animals of the same type.")
+				.define("zombie_animals_hostile", true);
 		zombiesCurseZombification = builder
 				.comment("Set this to false to disable the feature of a player with the Zombies' Curse effect converting every animal in range to its zombified variant.")
 				.define("zombies_curse_zombification", true);
