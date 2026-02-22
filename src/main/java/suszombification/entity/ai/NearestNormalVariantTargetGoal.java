@@ -25,7 +25,7 @@ public class NearestNormalVariantTargetGoal extends NearestAttackableTargetGoal<
 
 	@Override
 	public boolean canUse() {
-		return SZConfig.INSTANCE.zombieAnimalsHostile.get() && !((ZombifiedAnimal) mob).isConverting() && mobPredicate.test((Animal) mob) && super.canUse();
+		return SZConfig.INSTANCE.hostileZombieAnimals.get() && !((ZombifiedAnimal) mob).isConverting() && mobPredicate.test((Animal) mob) && super.canUse();
 	}
 
 	@Override
