@@ -5,6 +5,7 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.minecraft.client.model.animal.pig.BabyPigModel;
 import net.minecraft.client.model.animal.pig.ColdPigModel;
 import net.minecraft.client.model.animal.pig.PigModel;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -26,11 +27,11 @@ public class ZombifiedPigZombieLayer extends RenderLayer<PigRenderState, PigMode
 		models = Maps.newEnumMap(Map.of(
 				ModelType.NORMAL, new ModelAndTextureWithBaby<>(
 						new PigModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_PIG_ZOMBIE_LAYER)),
-						new PigModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_PIG_ZOMBIE_LAYER_BABY)),
+						new BabyPigModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_PIG_ZOMBIE_LAYER_BABY)),
 						() -> new ClientAsset.ResourceTexture(SuspiciousZombification.resLoc("entity/zombified_pig/temperate_layer")).texturePath()),
 				ModelType.COLD, new ModelAndTextureWithBaby<>(
 						new ColdPigModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_COLD_PIG_ZOMBIE_LAYER)),
-						new ColdPigModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_COLD_PIG_ZOMBIE_LAYER_BABY)),
+						new BabyPigModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_PIG_ZOMBIE_LAYER_BABY)),
 						() -> new ClientAsset.ResourceTexture(SuspiciousZombification.resLoc("entity/zombified_pig/cold_layer")).texturePath())
 		));
 		//@formatter:on

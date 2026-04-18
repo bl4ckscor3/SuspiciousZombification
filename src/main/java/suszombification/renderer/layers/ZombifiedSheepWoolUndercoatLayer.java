@@ -18,16 +18,14 @@ import suszombification.SuspiciousZombification;
 public class ZombifiedSheepWoolUndercoatLayer extends RenderLayer<SheepRenderState, SheepModel> {
 	private static final Identifier SHEEP_WOOL_UNDERCOAT_LOCATION = SuspiciousZombification.resLoc("textures/entity/zombified_sheep/zombified_sheep_wool_undercoat.png");
 	private final EntityModel<SheepRenderState> adultModel;
-	private final EntityModel<SheepRenderState> babyModel;
 
 	public ZombifiedSheepWoolUndercoatLayer(RenderLayerParent<SheepRenderState, SheepModel> renderer, EntityModelSet modelSet) {
 		super(renderer);
 		adultModel = new SheepFurModel(modelSet.bakeLayer(ModelLayers.SHEEP_WOOL_UNDERCOAT));
-		babyModel = new SheepFurModel(modelSet.bakeLayer(ModelLayers.SHEEP_BABY_WOOL_UNDERCOAT));
 	}
 
 	public void submit(PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int packedLight, SheepRenderState renderState, float yRot, float xRot) {
 		if (!renderState.isInvisible && (renderState.isJebSheep || renderState.woolColor != DyeColor.WHITE))
-			coloredCutoutModelCopyLayerRender(renderState.isBaby ? babyModel : adultModel, SHEEP_WOOL_UNDERCOAT_LOCATION, poseStack, submitNodeCollector, packedLight, renderState, renderState.getWoolColor(), 3);
+			coloredCutoutModelCopyLayerRender(adultModel, SHEEP_WOOL_UNDERCOAT_LOCATION, poseStack, submitNodeCollector, packedLight, renderState, renderState.getWoolColor(), 3);
 	}
 }

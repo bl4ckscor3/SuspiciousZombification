@@ -4,9 +4,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Stream;
 
-import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
@@ -16,7 +14,7 @@ import net.minecraft.data.recipes.ShapelessRecipeBuilder;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.ItemLike;
@@ -28,11 +26,8 @@ import suszombification.registration.SZBlocks;
 import suszombification.registration.SZItems;
 
 public class RecipeGenerator extends RecipeProvider {
-	private final HolderGetter<Item> items;
-
 	public RecipeGenerator(HolderLookup.Provider lookupProvider, RecipeOutput output) {
 		super(lookupProvider, output);
-		items = lookupProvider.lookupOrThrow(Registries.ITEM);
 	}
 
 	@Override
@@ -136,9 +131,8 @@ public class RecipeGenerator extends RecipeProvider {
 	}
 
 	private void addSusPieRecipe(Item ingredient) {
-		ItemStack result = new ItemStack(SZItems.SUSPICIOUS_PUMPKIN_PIE.get());
+		ItemStackTemplate result = SuspiciousPumpkinPieItem.createPieWithIngredient(ingredient);
 
-		SuspiciousPumpkinPieItem.saveIngredient(result, ingredient);
 		//@formatter:off
 		ShapelessRecipeBuilder.shapeless(items, RecipeCategory.FOOD, result)
 		.group("suszombification:suspicious_pumpkin_pie")

@@ -106,7 +106,7 @@ public final class SuspiciousRitual {
 					player.removeAllEffects();
 					player.addEffect(new MobEffectInstance(SZEffects.ZOMBIES_GRACE, 24000, 0, false, false, true));
 					level.playSound(null, ritualOrigin, SoundEvents.ZOMBIE_VILLAGER_CURE, SoundSource.NEUTRAL, 1.0F, 1.0F);
-					level.playSound(null, ritualOrigin, SoundEvents.ZOMBIE_AMBIENT, SoundSource.NEUTRAL, 2.0F, (level.random.nextFloat() - level.random.nextFloat()) * 0.2F + 1.0F);
+					level.playSound(null, ritualOrigin, SoundEvents.ZOMBIE_AMBIENT, SoundSource.NEUTRAL, 2.0F, (level.getRandom().nextFloat() - level.getRandom().nextFloat()) * 0.2F + 1.0F);
 					return true;
 				}
 			}
@@ -147,9 +147,9 @@ public final class SuspiciousRitual {
 
 			if (state.is(BlockTags.WOODEN_FENCES) && isStructurePresent(level, pos, false)) {
 				if (!(leashedMob instanceof ZombifiedAnimal))
-					player.displayClientMessage(Component.translatable("message.suszombification.ritual.need_zombified_animal"), true);
+					player.sendOverlayMessage(Component.translatable("message.suszombification.ritual.need_zombified_animal"));
 				else if (!level.isDarkOutside())
-					player.displayClientMessage(Component.translatable("message.suszombification.ritual.need_night"), true);
+					player.sendOverlayMessage(Component.translatable("message.suszombification.ritual.need_night"));
 			}
 		}
 	}

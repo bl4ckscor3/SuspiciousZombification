@@ -20,7 +20,7 @@ import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.ZombieNautilusRenderer;
 import net.minecraft.client.renderer.entity.state.NautilusRenderState;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.world.entity.animal.nautilus.ZombieNautilus;
 import net.minecraft.world.entity.animal.nautilus.ZombieNautilusVariant;
 import suszombification.SZModelLayers;

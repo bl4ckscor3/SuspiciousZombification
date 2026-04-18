@@ -2,18 +2,19 @@ package suszombification.mixin;
 
 import org.spongepowered.asm.mixin.Mixin;
 
+import net.minecraft.client.model.animal.camel.CamelModel;
 import net.minecraft.client.renderer.entity.CamelHuskRenderer;
-import net.minecraft.client.renderer.entity.CamelRenderer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.client.renderer.entity.state.CamelRenderState;
 import net.minecraft.world.entity.animal.camel.Camel;
 import suszombification.entity.ZombifiedAnimal;
 import suszombification.renderer.ZombifiedRenderState;
 
 @Mixin(CamelHuskRenderer.class)
-public abstract class CamelHuskRendererMixin extends CamelRenderer {
-	public CamelHuskRendererMixin(EntityRendererProvider.Context ctx) {
-		super(ctx);
+public abstract class CamelHuskRendererMixin extends MobRenderer<Camel, CamelRenderState, CamelModel> {
+	public CamelHuskRendererMixin(EntityRendererProvider.Context context, CamelModel model, float shadow) {
+		super(context, model, shadow);
 	}
 
 	@Override

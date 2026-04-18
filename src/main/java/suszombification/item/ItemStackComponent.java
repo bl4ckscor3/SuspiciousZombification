@@ -1,20 +1,22 @@
 package suszombification.item;
 
+import java.util.Objects;
+
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 
-public record ItemStackComponent(ItemStack stack) {
+public record ItemStackComponent(ItemStackTemplate stack) {
 	//@formatter:off
 	public static final Codec<ItemStackComponent> CODEC = RecordCodecBuilder.create(
-			instance -> instance.group(ItemStack.SINGLE_ITEM_CODEC.fieldOf("stack").forGetter(ItemStackComponent::stack))
-			.apply(instance, ItemStackComponent::new));
+			instance -> instance.group(ItemStackTemplate.CODEC.fieldOf("stack").forGetter(ItemStackComponent::stack))
+			.apply(instance, stack -> new ItemStackComponent(new ItemStackTemplate(stack.item(), 1, stack.components()))));
 	public static final StreamCodec<RegistryFriendlyByteBuf, ItemStackComponent> STREAM_CODEC = StreamCodec.composite(
-			ItemStack.STREAM_CODEC, ItemStackComponent::stack,
+			ItemStackTemplate.STREAM_CODEC, ItemStackComponent::stack,
 			ItemStackComponent::new);
 	//@formatter:on
 
@@ -23,12 +25,26 @@ public record ItemStackComponent(ItemStack stack) {
 	}
 
 	@Override
-	public final boolean equals(Object other) {
-		return other instanceof ItemStackComponent isc && ItemStack.isSameItemSameComponents(stack, isc.stack);
+	public boolean equals(Object other) {
+		return other instanceof ItemStackComponent(ItemStackTemplate check) && isSameItemSameComponents(stack, check);
 	}
 
 	@Override
-	public final int hashCode() {
-		return ItemStack.hashItemAndComponents(stack);
+	public int hashCode() {
+		return hashItemAndComponents(stack);
+	}
+
+	private static boolean isSameItemSameComponents(ItemStackTemplate a, ItemStackTemplate b) {
+		return a.item() == b.item() && Objects.equals(a.components(), b.components());
+	}
+
+	private static int hashItemAndComponents(ItemStackTemplate stack) {
+		if (stack != null) {
+			int result = 31 + stack.item().hashCode();
+
+			return 31 * result + stack.components().hashCode();
+		}
+		else
+			return 0;
 	}
 }

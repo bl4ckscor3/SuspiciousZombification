@@ -5,6 +5,8 @@ import java.util.Map;
 import com.google.common.collect.Maps;
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import net.minecraft.client.model.animal.chicken.AdultChickenModel;
+import net.minecraft.client.model.animal.chicken.BabyChickenModel;
 import net.minecraft.client.model.animal.chicken.ChickenModel;
 import net.minecraft.client.model.animal.chicken.ColdChickenModel;
 import net.minecraft.client.model.geom.EntityModelSet;
@@ -25,12 +27,12 @@ public class ZombifiedChickenZombieLayer extends RenderLayer<ChickenRenderState,
 		//@formatter:off
 		models = Maps.newEnumMap(Map.of(
 				ChickenVariant.ModelType.NORMAL, new ModelAndTextureWithBaby<>(
-						new ChickenModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_CHICKEN_ZOMBIE_LAYER)),
-						new ChickenModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_CHICKEN_ZOMBIE_LAYER_BABY)),
+						new AdultChickenModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_CHICKEN_ZOMBIE_LAYER)),
+						new BabyChickenModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_CHICKEN_ZOMBIE_LAYER_BABY)),
 						() -> new ClientAsset.ResourceTexture(SuspiciousZombification.resLoc("entity/zombified_chicken/temperate_layer")).texturePath()),
 				ChickenVariant.ModelType.COLD, new ModelAndTextureWithBaby<>(
 						new ColdChickenModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_COLD_CHICKEN_ZOMBIE_LAYER)),
-						new ColdChickenModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_COLD_CHICKEN_ZOMBIE_LAYER_BABY)),
+						new BabyChickenModel(modelSet.bakeLayer(SZClientHandler.ZOMBIFIED_CHICKEN_ZOMBIE_LAYER_BABY)),
 						() -> new ClientAsset.ResourceTexture(SuspiciousZombification.resLoc("entity/zombified_chicken/cold_layer")).texturePath())
 		));
 		//@formatter:on

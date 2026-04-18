@@ -8,7 +8,7 @@ import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.feature.ModelFeatureRenderer;
 import net.minecraft.client.renderer.item.ItemModelResolver;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemDisplayContext;
@@ -44,7 +44,7 @@ public class TrophyRenderer implements BlockEntityRenderer<TrophyBlockEntity, Tr
 		int additionalRotation = direction.getAxis() == Direction.Axis.X ? 180 : 0; //fixes item being mirrored when the trophy is placed facing on the X axis
 
 		state.rotation = Axis.YP.rotationDegrees(direction.toYRot() + additionalRotation);
-		itemModelResolver.updateForTopItem(state.item, be.getTrophyType().displayItem, ItemDisplayContext.GROUND, be.getLevel(), null, (int) be.getBlockPos().asLong());
+		itemModelResolver.updateForTopItem(state.item, be.getTrophyType().displayItem(), ItemDisplayContext.GROUND, be.getLevel(), null, (int) be.getBlockPos().asLong());
 		BlockEntityRenderer.super.extractRenderState(be, state, partialTick, cameraPosition, breakProgress);
 
 	}

@@ -7,6 +7,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
@@ -16,6 +17,7 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.alchemy.PotionContents;
@@ -49,11 +51,14 @@ public class SuspiciousPumpkinPieItem extends Item {
 		super(properties);
 	}
 
-	public static void saveIngredient(ItemStack suspiciousPumpkinPie, Item ingredient) {
-		if (ingredient instanceof CandyItem candy)
-			suspiciousPumpkinPie.set(DataComponents.SUSPICIOUS_STEW_EFFECTS, candy.getEffects());
+	public static ItemStackTemplate createPieWithIngredient(Item ingredient) {
+		DataComponentPatch.Builder components = DataComponentPatch.builder();
 
-		suspiciousPumpkinPie.set(SZDataComponents.INGREDIENT, new ItemStackComponent(new ItemStack(ingredient)));
+		if (ingredient instanceof CandyItem candy)
+			components.set(DataComponents.SUSPICIOUS_STEW_EFFECTS, candy.getEffects());
+
+		components.set(SZDataComponents.INGREDIENT.get(), new ItemStackComponent(new ItemStackTemplate(ingredient)));
+		return new ItemStackTemplate(SZItems.SUSPICIOUS_PUMPKIN_PIE.get(), components.build());
 	}
 
 	public static boolean hasIngredient(ItemStack pie, Item test) {
@@ -111,7 +116,7 @@ public class SuspiciousPumpkinPieItem extends Item {
 		ItemStackComponent ingredientComponent = stack.get(SZDataComponents.INGREDIENT);
 
 		if (ingredientComponent != null) {
-			ItemStack ingredient = ingredientComponent.stack();
+			ItemStack ingredient = ingredientComponent.stack().create();
 			boolean foundEffect = false;
 
 			messageSuffix = BuiltInRegistries.ITEM.getKey(ingredient.getItem()).getPath();
@@ -156,6 +161,6 @@ public class SuspiciousPumpkinPieItem extends Item {
 		}
 
 		if (entity instanceof Player player && !entity.level().isClientSide())
-			player.displayClientMessage(Component.translatable("message.suszombification.suspicious_pumpkin_pie." + messageSuffix).withStyle(color), false);
+			player.sendSystemMessage(Component.translatable("message.suszombification.suspicious_pumpkin_pie." + messageSuffix).withStyle(color));
 	}
 }

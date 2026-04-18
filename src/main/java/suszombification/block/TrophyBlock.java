@@ -5,6 +5,7 @@ import com.mojang.serialization.MapCodec;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
@@ -52,14 +53,18 @@ public class TrophyBlock extends HorizontalDirectionalBlock implements EntityBlo
 	}
 
 	public enum TrophyType {
-		CARROT(new ItemStack(Items.CARROT)),
-		POTATO(new ItemStack(Items.POTATO)),
-		IRON_INGOT(new ItemStack(Items.IRON_INGOT));
+		CARROT(new ItemStackTemplate(Items.CARROT)),
+		POTATO(new ItemStackTemplate(Items.POTATO)),
+		IRON_INGOT(new ItemStackTemplate(Items.IRON_INGOT));
 
-		public final ItemStack displayItem;
+		private final ItemStackTemplate displayItem;
 
-		TrophyType(ItemStack displayItem) {
+		TrophyType(ItemStackTemplate displayItem) {
 			this.displayItem = displayItem;
+		}
+
+		public ItemStack displayItem() {
+			return displayItem.create();
 		}
 	}
 

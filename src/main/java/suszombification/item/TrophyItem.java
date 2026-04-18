@@ -34,7 +34,7 @@ public class TrophyItem extends BlockItem {
 				player.addEffect(new MobEffectInstance(SZEffects.ZOMBIES_CURSE, -1));
 
 				if (!level.isClientSide())
-					player.displayClientMessage(Component.translatable("message.suszombification.curse.warning").withStyle(ChatFormatting.RED), false);
+					player.sendSystemMessage(Component.translatable("message.suszombification.curse.warning").withStyle(ChatFormatting.RED));
 			}
 		}
 	}

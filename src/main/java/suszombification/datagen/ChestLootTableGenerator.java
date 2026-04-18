@@ -8,7 +8,7 @@ import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceKey;
-import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.alchemy.PotionContents;
 import net.minecraft.world.item.alchemy.Potions;
@@ -55,7 +55,7 @@ public record ChestLootTableGenerator(HolderLookup.Provider lookupProvider) impl
 						.setRolls(ConstantValue.exactly(1.0F))
 						.add(LootItem.lootTableItem(SZItems.SUSPICIOUS_PUMPKIN_PIE.get())
 								.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
-								.apply(SetComponentsFunction.setComponent(SZDataComponents.INGREDIENT.get(), new ItemStackComponent(new ItemStack(Items.ROTTEN_FLESH)))))));
+								.apply(SetComponentsFunction.setComponent(SZDataComponents.INGREDIENT.get(), new ItemStackComponent(new ItemStackTemplate(Items.ROTTEN_FLESH)))))));
 		lootTables.put(SZLoot.RITUAL_BARREL, LootTable.lootTable()
 				.withPool(LootPool.lootPool()
 						.setRolls(ConstantValue.exactly(1.0F))

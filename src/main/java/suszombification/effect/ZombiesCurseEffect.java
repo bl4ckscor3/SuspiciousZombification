@@ -13,9 +13,9 @@ import suszombification.registration.SZEffects;
 public class ZombiesCurseEffect extends VicinityAffectingEffect {
 	public ZombiesCurseEffect(MobEffectCategory category, int color) {
 		super(category, color,
-		//@formatter:off
+				//@formatter:off
 				amplifier -> 15,
-				e -> !e.getType().is(SZTags.EntityTypes.AFFECTED_BY_ZOMBIES_GRACE)
+				e -> !e.is(SZTags.EntityTypes.AFFECTED_BY_ZOMBIES_GRACE)
 					&& !e.hasEffect(SZEffects.DECOMPOSING)
 					&& (e instanceof Player || (e instanceof Animal a
 							&& !a.hasCustomName() //don't affect animals with name tags

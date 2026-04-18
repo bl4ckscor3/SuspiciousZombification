@@ -7,15 +7,17 @@ import java.util.function.BiConsumer;
 import net.minecraft.advancements.criterion.DataComponentMatchers;
 import net.minecraft.advancements.criterion.EntityPredicate;
 import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentExactPredicate;
 import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.data.loot.EntityLootSubProvider;
 import net.minecraft.data.loot.LootTableSubProvider;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.animal.chicken.ChickenVariant;
 import net.minecraft.world.entity.animal.chicken.ChickenVariants;
-import net.minecraft.world.item.EitherHolder;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -33,10 +35,11 @@ import suszombification.registration.SZEntityTypes;
 import suszombification.registration.SZItems;
 import suszombification.registration.SZLoot;
 
-public record EntityLootTableGenerator(HolderLookup.Provider lookupProvider) implements LootTableSubProvider {
+public record EntityLootTableGenerator(HolderLookup.Provider registries) implements LootTableSubProvider {
 	@Override
 	public void generate(BiConsumer<ResourceKey<LootTable>, LootTable.Builder> consumer) {
 		Map<ResourceKey<LootTable>, LootTable.Builder> lootTables = new HashMap<>();
+		HolderGetter<ChickenVariant> chickenVariants = registries.lookupOrThrow(Registries.CHICKEN_VARIANT);
 
 		//@formatter:off
 		//gameplay
@@ -56,7 +59,7 @@ public record EntityLootTableGenerator(HolderLookup.Provider lookupProvider) imp
 														DataComponentMatchers.Builder.components().exact(
 																		DataComponentExactPredicate.expect(
 																				DataComponents.CHICKEN_VARIANT,
-																				new EitherHolder<>(lookupProvider.getOrThrow(ChickenVariants.TEMPERATE))))
+																				chickenVariants.getOrThrow(ChickenVariants.TEMPERATE)))
 																.build()))),
 								LootItem.lootTableItem(SZItems.BROWN_ROTTEN_EGG).when(
 										LootItemEntityPropertyCondition.hasProperties(
@@ -65,7 +68,7 @@ public record EntityLootTableGenerator(HolderLookup.Provider lookupProvider) imp
 														DataComponentMatchers.Builder.components().exact(
 																		DataComponentExactPredicate.expect(
 																				DataComponents.CHICKEN_VARIANT,
-																				new EitherHolder<>(lookupProvider.getOrThrow(ChickenVariants.WARM))))
+																				chickenVariants.getOrThrow(ChickenVariants.WARM)))
 																.build()))),
 								LootItem.lootTableItem(SZItems.BLUE_ROTTEN_EGG).when(
 										LootItemEntityPropertyCondition.hasProperties(
@@ -74,7 +77,7 @@ public record EntityLootTableGenerator(HolderLookup.Provider lookupProvider) imp
 														DataComponentMatchers.Builder.components().exact(
 																		DataComponentExactPredicate.expect(
 																				DataComponents.CHICKEN_VARIANT,
-																				new EitherHolder<>(lookupProvider.getOrThrow(ChickenVariants.COLD))))
+																				chickenVariants.getOrThrow(ChickenVariants.COLD)))
 																.build())))))));
 		//entity drops
 		lootTables.put(lootTableOf(SZEntityTypes.ZOMBIFIED_CAT), LootTable.lootTable().withPool(rottenFleshDrop(2.0F)));
@@ -83,13 +86,13 @@ public record EntityLootTableGenerator(HolderLookup.Provider lookupProvider) imp
 						.setRolls(ConstantValue.exactly(1.0F))
 						.add(LootItem.lootTableItem(Items.FEATHER)
 								.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
-								.apply(EnchantedCountIncreaseFunction.lootingMultiplier(lookupProvider, UniformGenerator.between(0.0F, 1.0F))))));
+								.apply(EnchantedCountIncreaseFunction.lootingMultiplier(registries, UniformGenerator.between(0.0F, 1.0F))))));
 		lootTables.put(lootTableOf(SZEntityTypes.ZOMBIFIED_COW), LootTable.lootTable().withPool(rottenFleshDrop(3.0F))
 				.withPool(LootPool.lootPool()
 						.setRolls(ConstantValue.exactly(1.0F))
 						.add(LootItem.lootTableItem(Items.LEATHER)
 								.apply(SetItemCountFunction.setCount(UniformGenerator.between(0.0F, 1.0F)))
-								.apply(EnchantedCountIncreaseFunction.lootingMultiplier(lookupProvider, UniformGenerator.between(0.0F, 1.0F))))));
+								.apply(EnchantedCountIncreaseFunction.lootingMultiplier(registries, UniformGenerator.between(0.0F, 1.0F))))));
 		//@formatter:on
 		lootTables.put(lootTableOf(SZEntityTypes.ZOMBIFIED_PIG), LootTable.lootTable().withPool(rottenFleshDrop(3.0F)));
 		lootTables.put(lootTableOf(SZEntityTypes.ZOMBIFIED_SHEEP), LootTable.lootTable().withPool(rottenFleshDrop(3.0F)).withPool(EntityLootSubProvider.createSheepDispatchPool(SZLoot.ZOMBIFIED_SHEEP_BY_DYE)));
@@ -107,7 +110,7 @@ public record EntityLootTableGenerator(HolderLookup.Provider lookupProvider) imp
 				.setRolls(ConstantValue.exactly(1.0F))
 				.add(LootItem.lootTableItem(Items.ROTTEN_FLESH)
 						.apply(SetItemCountFunction.setCount(UniformGenerator.between(1.0F, max)))
-						.apply(EnchantedCountIncreaseFunction.lootingMultiplier(lookupProvider, UniformGenerator.between(0.0F, 1.0F))));
+						.apply(EnchantedCountIncreaseFunction.lootingMultiplier(registries, UniformGenerator.between(0.0F, 1.0F))));
 		//@formatter:on
 	}
 

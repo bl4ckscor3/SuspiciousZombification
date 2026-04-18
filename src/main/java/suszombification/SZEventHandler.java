@@ -114,7 +114,7 @@ public class SZEventHandler {
 	public static void onLivingSetAttackTarget(LivingChangeTargetEvent event) {
 		LivingEntity newAboutToBeSetTarget = event.getNewAboutToBeSetTarget();
 
-		if (newAboutToBeSetTarget != null && newAboutToBeSetTarget.hasEffect(SZEffects.ZOMBIES_GRACE) && event.getEntity().getType().is(SZTags.EntityTypes.AFFECTED_BY_ZOMBIES_GRACE))
+		if (newAboutToBeSetTarget != null && newAboutToBeSetTarget.hasEffect(SZEffects.ZOMBIES_GRACE) && event.getEntity().is(SZTags.EntityTypes.AFFECTED_BY_ZOMBIES_GRACE))
 			event.setCanceled(true);
 	}
 
@@ -128,7 +128,7 @@ public class SZEventHandler {
 			EntityType<? extends Mob> conversionType = (EntityType<? extends Mob>) killer.getType();
 
 			if (livingEntity instanceof Animal killedEntity && killedEntity.getType() == zombifiedAnimal.getNormalVariant() && EventHooks.canLivingConvert(livingEntity, conversionType, timer -> {})) {
-				if (level.getDifficulty() != Difficulty.HARD && level.random.nextBoolean())
+				if (level.getDifficulty() != Difficulty.HARD && level.getRandom().nextBoolean())
 					return;
 
 				killedEntity.convertTo(conversionType, ConversionParams.single(killedEntity, true, true), convertedAnimal -> {
