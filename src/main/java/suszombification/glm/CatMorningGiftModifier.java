@@ -15,8 +15,8 @@ import suszombification.registration.SZLoot;
 public class CatMorningGiftModifier extends LootModifier {
 	public static final MapCodec<CatMorningGiftModifier> CODEC = RecordCodecBuilder.mapCodec(instance -> codecStart(instance).apply(instance, CatMorningGiftModifier::new));
 
-	public CatMorningGiftModifier(LootItemCondition[] conditions) {
-		super(conditions);
+	public CatMorningGiftModifier(LootItemCondition[] conditions, int priority) {
+		super(conditions, priority);
 	}
 
 	@Override

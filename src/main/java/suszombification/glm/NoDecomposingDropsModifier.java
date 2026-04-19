@@ -15,8 +15,8 @@ import suszombification.SZDamageSources;
 public class NoDecomposingDropsModifier extends LootModifier {
 	public static final MapCodec<NoDecomposingDropsModifier> CODEC = RecordCodecBuilder.mapCodec(instance -> codecStart(instance).apply(instance, NoDecomposingDropsModifier::new));
 
-	public NoDecomposingDropsModifier(LootItemCondition[] conditions) {
-		super(conditions);
+	public NoDecomposingDropsModifier(LootItemCondition[] conditions, int priority) {
+		super(conditions, priority);
 	}
 
 	@Override

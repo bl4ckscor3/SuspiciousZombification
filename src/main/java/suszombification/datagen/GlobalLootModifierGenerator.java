@@ -27,9 +27,9 @@ public class GlobalLootModifierGenerator extends GlobalLootModifierProvider {
 				LootTableIdCondition.builder(BuiltInLootTables.CAT_MORNING_GIFT.identifier()).build(),
 				LootItemRandomChanceCondition.randomChance(0.5F).build()
 				//@formatter:on
-		}));
+		}, 100));
 		add("no_decomposing_drops", new NoDecomposingDropsModifier(new LootItemCondition[] {
 				InvertedLootItemCondition.invert(LootTableIdCondition.builder(SZLoot.DEATH_BY_DECOMPOSING.identifier())).build()
-		}));
+		}, 100));
 	}
 }

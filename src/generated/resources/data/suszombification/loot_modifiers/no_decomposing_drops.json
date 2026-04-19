@@ -8,5 +8,6 @@
         "loot_table_id": "suszombification:gameplay/death_by_decomposing"
       }
     }
-  ]
+  ],
+  "priority": 100
 }
